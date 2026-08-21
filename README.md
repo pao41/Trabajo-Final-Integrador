@@ -35,9 +35,9 @@ Funcionalidades
 - Fuera de alcance:	Notificaciones por WhatsApp · Cobro integrado con pasarela de pago · App móvil nativa · Reembolsos · Biometría
 
 ## Tecnologías utilizadas
-Frontend	React
-Backend	Node.js + Express
-Base de datos	PostgreSQL
-Despliegue 
-Control de versiones	Git + GitHub
+- Frontend	React
+- Backend	Node.js + Express
+- Base de datos	PostgreSQL
+- Despliegue
+- Control de versiones	Git + GitHub
 
