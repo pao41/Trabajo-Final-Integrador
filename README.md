@@ -17,8 +17,12 @@ El **Sistema de Gestión para Gimnasios** es una plataforma web integral concebi
 El ecosistema centraliza tres pilares fundamentales de la gestión operativa y comercial:
 
 1. **Gestión Administrativa y Financiera:** Permite el control de alumnos, vencimientos de membresías y registro de cobranzas. Cuenta con un dashboard analítico con indicadores en tiempo real que visibiliza la facturación mensual y el desglose según el método de pago utilizado.
+
 2. **Seguimiento Operativo y de Asistencia:** Incluye un panel interactivo con un módulo tipo *checklist* diario que agiliza el control de acceso de los socios, permitiendo detectar de forma inmediata a usuarios con cuotas vencidas o por vencer.
+
 3. **Módulo Técnico Deportivo e Inteligencia Artificial:** Incorpora una sección para la consulta de rutinas físicas personalizadas y un asistente basado en Inteligencia Artificial. Este módulo actúa como una guía de apoyo para la generación de rutinas básicas de calentamiento, movilidad articular y vuelta a la calma, diseñado estrictamente como una herramienta complementaria para el alumno que no sustituye el criterio, la supervisión ni la labor del entrenador presencial.
+El asistente no genera ejercicios libremente: filtra un banco de rutinas pre-cargado y validado, considerando el estado de salud declarado por el alumno, y toda rutina requiere aprobación del entrenador antes de estar disponible.
+
 
 En conjunto, la solución combina una interfaz ágil en el frontend con una arquitectura de servicios robusta en el backend, garantizando la trazabilidad de la información, la fidelización de los socios y la toma de decisiones basada en datos para los administradores.
 
@@ -30,7 +34,7 @@ Los gimnasios chicos y medianos suelen gestionar sus operaciones principales (so
 * **Falta de visibilidad financiera:** Dificultad para conocer la facturación real del mes, métodos de pago más utilizados y proyecciones de ingresos.
 * **Morosidad no detectada:** Socios con cuotas vencidas que continúan ingresando a las instalaciones por falta de un control automático en la recepción.
 * **Ineficiencia en la planificación:** Ausencia de registros sobre días y horarios de mayor concurrencia para la organización de clases o turnos de entrenadores.
-* **Seguimiento informal del entrenamiento:** Ausencia de un espacio digital centralizado para la consulta de rutinas de ejercicios y la guía física inicial del alumno.
+* **Seguimiento informal del entrenamiento:** Ausencia de un espacio digital centralizado para la consulta de rutinas de ejercicios y la guía física inicial del alumno, sin resguardos ante condiciones de salud particulares de cada persona.
 
 ---
 
@@ -41,19 +45,19 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 * Monitoreo en tiempo real del estado de cada alumno (*activo / por vencer / vencido*).
 * Checklist diario de asistencia y registro histórico de concurrencia.
 * Panel interactivo de alumnos con gestión y visualización de rutinas.
-* Módulo de Inteligencia Artificial para la asistencia en ejercicios básicos de entrada en calor y movilidad.
+* Módulo de Inteligencia Artificial para la asistencia en ejercicios básicos de entrada en calor y movilidad, restringido por parámetros de salud declarados y sujeto a validación profesional antes de llegar al alumno.
 
 ---
 
 ### Alcance (MVP)
 
 #### Funcionalidades del MVP:
-* **Panel de Alumnos:** Vista centralizada para la administración de perfiles, datos de contacto e historial de estados (*activo / por vencer / vencido*).
+* **Panel de Alumnos:** Vista centralizada para la administración de perfiles, datos de contacto, ficha de salud básica e historial de estados (*activo / por vencer / vencido*).
 * **Catálogo de planes e inscripciones:** Configuración de ofertas de membresías y cálculo automático de vencimientos.
 * **Registro de pagos:** Alta de cobranzas con especificación del método de pago (efectivo, transferencia, tarjeta).
 * **Checklist de asistencia:** Módulo rápido de registro manual para la marcación diaria de presencia de los alumnos.
-* **Opciones de Rutinas:** Sección orientada a la visualización, selección y consulta de rutinas de entrenamiento físico.
-* **Asistente de IA:** Generación guiada de ejercicios básicos de calentamiento, movilidad articular y estiramiento (orientado a acompañar al alumno sin reemplazar la labor del entrenador).
+* **Opciones de Rutinas:** Sección orientada a la visualización, selección y consulta de rutinas de entrenamiento físico previamente aprobadas.
+* **Asistente de IA (con supervisión):** Sugerencia guiada de ejercicios básicos de calentamiento, movilidad articular y estiramiento, filtrada por la ficha de salud del alumno y sujeta a aprobación del entrenador antes de estar disponible para consulta.
 * **Dashboard administrativo:** Métricas visuales de facturación total, ingresos por canal de cobro y distribución de alumnos según estado de cuota.
 
 #### Nice to have (Futuras mejoras):
