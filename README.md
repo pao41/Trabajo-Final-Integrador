@@ -49,6 +49,16 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 
 ---
 
+### Seguridad y supervisión del Asistente de IA
+
+1. **Ficha de salud del alumno:** al inscribirse, se registra información básica de salud (problemas cardíacos, lesiones o condiciones relevantes, declaradas por el propio alumno). Es un dato estructurado, no un campo de texto libre, para poder cruzarlo automáticamente con las rutinas disponibles.
+2. **Banco de rutinas predefinido, no generativo:** el asistente de IA no crea ejercicios nuevos ni combina movimientos de forma libre. Selecciona únicamente entre rutinas pre-cargadas y etiquetadas por el equipo/entrenador, indicando para cada una qué condiciones de salud la excluyen.
+3. **Aprobación del entrenador antes de asignar:** ninguna rutina sugerida por el asistente llega al alumno de forma automática. Queda en estado "pendiente de revisión" hasta que un entrenador la valida y aprueba para ese alumno en particular.
+4. **Alcance estrictamente limitado:** el asistente se limita a ejercicios básicos de calentamiento, movilidad articular y vuelta a la calma, nunca rutinas de entrenamiento de fuerza o alta intensidad, que quedan fuera del alcance de este módulo.
+5. **Mensaje explícito al alumno:** toda sugerencia se presenta junto con la aclaración de que es una guía orientativa, aprobada por el entrenador, y no reemplaza su supervisión presencial ni una evaluación médica.
+
+---
+
 ### Alcance (MVP)
 
 #### Funcionalidades del MVP:
