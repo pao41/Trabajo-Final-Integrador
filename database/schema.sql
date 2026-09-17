@@ -1,5 +1,5 @@
 -- Sistema de Gestión para Gimnasios
--- Esquema de base de datos (PostgreSQL)
+-- Esquema de base de datos
 
 CREATE TABLE alumnos (
     id              SERIAL PRIMARY KEY,
@@ -37,3 +37,42 @@ CREATE TABLE inscripciones (
                          CHECK (estado IN ('activo', 'por_vencer', 'vencido'))
 );
 
+CREATE TABLE pagos (
+    id                  SERIAL PRIMARY KEY,
+    inscripcion_id      INTEGER NOT NULL REFERENCES inscripciones(id),
+    fecha_pago          DATE NOT NULL DEFAULT CURRENT_DATE,
+    monto               NUMERIC(10,2) NOT NULL,
+    metodo_pago         VARCHAR(20) NOT NULL
+                         CHECK (metodo_pago IN ('efectivo', 'transferencia', 'debito', 'credito'))
+);
+
+CREATE TABLE asistencias (
+    id          SERIAL PRIMARY KEY,
+    alumno_id   INTEGER NOT NULL REFERENCES alumnos(id),
+    fecha       DATE NOT NULL DEFAULT CURRENT_DATE,
+    hora        TIME NOT NULL DEFAULT CURRENT_TIME
+);
+
+CREATE TABLE rutinas (
+    id                  SERIAL PRIMARY KEY,
+    nombre              VARCHAR(150) NOT NULL,
+    tipo                VARCHAR(30) NOT NULL
+                         CHECK (tipo IN ('calentamiento', 'movilidad', 'vuelta_a_la_calma')),
+    contraindicaciones  TEXT,
+    descripcion         TEXT
+);
+
+CREATE TABLE rutinas_asignadas (
+    id                  SERIAL PRIMARY KEY,
+    alumno_id           INTEGER NOT NULL REFERENCES alumnos(id),
+    rutina_id           INTEGER NOT NULL REFERENCES rutinas(id),
+    estado              VARCHAR(20) NOT NULL DEFAULT 'pendiente'
+                         CHECK (estado IN ('pendiente', 'aprobada', 'rechazada')),
+    entrenador_id       INTEGER,
+    fecha_validacion    DATE
+);
+
+-- Índices básicos para búsquedas frecuentes
+CREATE INDEX idx_inscripciones_alumno ON inscripciones(alumno_id);
+CREATE INDEX idx_pagos_inscripcion ON pagos(inscripcion_id);
+CREATE INDEX idx_asistencias_alumno_fecha ON asistencias(alumno_id, fecha);
