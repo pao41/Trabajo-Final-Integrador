@@ -36,3 +36,52 @@ En este documento detallan los módulos funcionales del sistema
 - Historial de pagos por alumno.
 
 ---
+
+## 4. Módulo de Asistencia
+
+**Descripción:** Registro diario de ingreso de los alumnos al gimnasio.
+
+**Funcionalidades:**
+- Check-in manual: búsqueda del alumno y registro de ingreso con fecha y hora.
+- Historial de asistencia por alumno.
+- Base para los indicadores de concurrencia del dashboard.
+
+---
+
+## 5. Módulo de Dashboard Administrativo
+
+**Descripción:** Panel de indicadores para el personal del gimnasio.
+
+**Funcionalidades:**
+- Facturación total del mes.
+- Facturación desglosada por método de pago.
+- Cantidad de alumnos activos, por vencer y vencidos.
+
+---
+
+## 6. Módulo de Panel del Alumno
+
+**Descripción:** Vista de autoconsulta para que el propio alumno acceda a su información, sin necesidad de un sistema de login con contraseña.
+
+**Funcionalidades:**
+- Acceso mediante código simple o DNI.
+- Consulta de estado de cuota (activo / por vencer / vencido).
+- Consulta de historial de asistencia propio.
+- Checklist personal simple de objetivos.
+
+---
+
+## 7. Módulo de Rutinas y Asistente de IA
+
+**Descripción:** Sección de rutinas físicas básicas, con un asistente que sugiere rutinas dentro de un banco predefinido, sujeto a validación del entrenador.
+
+**Funcionalidades:**
+- Banco de rutinas predefinido (calentamiento, movilidad articular, vuelta a la calma), cargado y mantenido por el entrenador.
+- Cada rutina indica contraindicaciones.
+- El asistente filtra rutinas compatibles con la ficha de salud del alumno — no genera ejercicios nuevos.
+- Toda rutina sugerida queda en estado "pendiente" hasta que un entrenador la aprueba para ese alumno en particular.
+- Mensaje explícito de que la sugerencia es orientativa y no reemplaza la supervisión del entrenador.
+
+---
+
+El esquema completo de estas tablas se encuentra en: /database/schema.sql
