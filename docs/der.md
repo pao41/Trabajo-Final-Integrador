@@ -57,3 +57,25 @@ erDiagram
         date fecha
         time hora
     }
+    RUTINAS {
+        int id PK
+        string nombre
+        string tipo
+        string contraindicaciones
+        string descripcion
+    }
+    RUTINAS_ASIGNADAS {
+        int id PK
+        int alumno_id FK
+        int rutina_id FK
+        string estado
+        int entrenador_id
+        date fecha_validacion
+    }
+    CONFIGURACION {
+        int id PK
+        string nombre_gimnasio
+        int dias_aviso_vencimiento
+        string metodos_pago_habilitados
+    }
+```
