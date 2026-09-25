@@ -24,6 +24,7 @@ El sistema se organiza en dos paneles diferenciados, según el actor que los uti
 | RF11 | El sistema debe permitir cargar un banco de rutinas de calentamiento, movilidad y vuelta a la calma, indicando contraindicaciones de salud para cada una. |
 | RF12 | El sistema debe sugerir rutinas al alumno filtrando el banco de rutinas según su ficha de salud, sin generar ejercicios nuevos. |
 | RF13 | Toda rutina sugerida debe quedar en estado "pendiente" hasta ser aprobada por un entrenador antes de estar disponible para el alumno. |
+| RF14 | El sistema debe conservar el historial completo de pagos e inscripciones de cada alumno, sin eliminarlo ante bajas o cambios de plan. |
 
 ## Requerimientos No Funcionales (RNF)
 
