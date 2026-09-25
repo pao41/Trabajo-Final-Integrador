@@ -36,3 +36,24 @@ erDiagram
         decimal precio
         string tipo
     }
+    INSCRIPCIONES {
+        int id PK
+        int alumno_id FK
+        int plan_id FK
+        date fecha_inicio
+        date fecha_vencimiento
+        string estado
+    }
+    PAGOS {
+        int id PK
+        int inscripcion_id FK
+        date fecha_pago
+        decimal monto
+        string metodo_pago
+    }
+    ASISTENCIAS {
+        int id PK
+        int alumno_id FK
+        date fecha
+        time hora
+    }
