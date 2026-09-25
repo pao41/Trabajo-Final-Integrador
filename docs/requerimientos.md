@@ -39,4 +39,4 @@ El sistema se organiza en dos paneles diferenciados, según el actor que los uti
 | RNF05 | **Mantenibilidad:** el código debe organizarse en capas separadas (frontend, backend, base de datos) para facilitar su mantenimiento y evolución futura. |
 | RNF06 | **Escalabilidad:** la arquitectura relacional debe soportar el crecimiento en cantidad de alumnos y registros sin requerir cambios estructurales mayores. |
 | RNF07 | **Seguridad de acceso:** el acceso del alumno al panel de autoconsulta no debe requerir el ingreso de datos sensibles más allá de un código simple o DNI, evitando el manejo de contraseñas en esta primera versión. |
-| RNF08 | **Integridad de datos:** la base de datos debe garantizar integridad referencial entre entidades relacionadas (alumno, plan, inscripción, pago, asistencia) mediante claves foráneas y restricciones. |
+| RNF08 | **Consistencia de datos:** el sistema debe preservar la consistencia de los datos entre entidades relacionadas (alumno, plan, inscripción, pago, asistencia), evitando registros huérfanos o inconsistentes. |
