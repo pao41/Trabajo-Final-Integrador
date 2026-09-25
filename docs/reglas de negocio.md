@@ -20,6 +20,7 @@
 
 ## Alumnos
 - **RN** — No pueden existir dos alumnos con el mismo DNI; el sistema debe impedir el alta duplicada.
+- **RN** — La baja de un alumno es lógica: el registro no se elimina de la base de datos, sino que se marca como inactivo, preservando su historial de pagos y asistencia.
 
 ## Roles y acceso
 
