@@ -10,11 +10,13 @@
 - **RN06** — El cambio de plan de un alumno se aplica a partir de la próxima renovación; no se hacen cálculos proporcionales del plan anterior a mitad de período.
 - **RN07** — El sistema no gestiona reembolsos ni cancelaciones de pagos ya registrados.
 - **RN08** — El método de pago (efectivo, transferencia, débito, crédito) es un dato informativo para el dashboard; el sistema no integra pasarelas de pago reales.
+- **RN09**— Una inscripción se considera "por vencer" cuando faltan menos de 7 días para su fecha de vencimiento. Este valor es configurable desde el Módulo de Configuración.
 
 ## Asistencia
 
 - **RN09** — El registro de asistencia se realiza mediante check-in manual desde el mostrador, no automatizado.
 - **RN10** — El check-in queda asociado a fecha y hora del momento del registro.
+- **RN11** — Un alumno no puede registrar dos check-ins dentro de la misma franja horaria.
 
 ## Roles y acceso
 
@@ -35,4 +37,4 @@
 
 - **RN20** — El sistema no realiza diagnósticos médicos ni evaluaciones de aptitud física; la ficha de salud es una declaración del propio alumno, sin validación clínica.
 - **RN21** — El sistema no almacena datos de tarjetas de pago; el método de pago se registra solo como categoría (efectivo, transferencia, débito, crédito).
-- **RN22**— Una inscripción se considera "por vencer" cuando faltan menos de 7 días para su fecha de vencimiento. Este valor es configurable desde el Módulo de Configuración.
+
