@@ -72,6 +72,13 @@ CREATE TABLE rutinas_asignadas (
     fecha_validacion    DATE
 );
 
+CREATE TABLE configuracion (
+    id                          SERIAL PRIMARY KEY,
+    nombre_gimnasio             VARCHAR(150) NOT NULL,
+    dias_aviso_vencimiento      INTEGER NOT NULL DEFAULT 7,
+    metodos_pago_habilitados    TEXT[] NOT NULL DEFAULT ARRAY['efectivo','transferencia','debito','credito']
+);
+
 -- Índices básicos para búsquedas frecuentes
 CREATE INDEX idx_inscripciones_alumno ON inscripciones(alumno_id);
 CREATE INDEX idx_pagos_inscripcion ON pagos(inscripcion_id);
