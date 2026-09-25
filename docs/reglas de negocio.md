@@ -18,6 +18,9 @@
 - **RN10** — El check-in queda asociado a fecha y hora del momento del registro.
 - **RN11** — Un alumno no puede registrar dos check-ins dentro de la misma franja horaria.
 
+## Alumnos
+- **RN** — No pueden existir dos alumnos con el mismo DNI; el sistema debe impedir el alta duplicada.
+
 ## Roles y acceso
 
 - **RN11** — El sistema no distingue roles rígidos de "dueño" y "recepcionista": cualquier usuario administrador/staff puede operar todas las funciones administrativas.
@@ -37,4 +40,5 @@
 
 - **RN20** — El sistema no realiza diagnósticos médicos ni evaluaciones de aptitud física; la ficha de salud es una declaración del propio alumno, sin validación clínica.
 - **RN21** — El sistema no almacena datos de tarjetas de pago; el método de pago se registra solo como categoría (efectivo, transferencia, débito, crédito).
+
 
