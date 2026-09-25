@@ -1,15 +1,15 @@
-**Diagrama Entidad-Relación — Sistema de Gestión para Gimnasios**
+# Diagrama Entidad-Relación — Sistema de Gestión para Gimnasios
 
 Diagrama construido con sintaxis Mermaid.
 
 ```mermaid
 erDiagram
-    ALUMNOS --o| FICHA_SALUD : tiene
-    ALUMNOS --|{ INSCRIPCIONES : posee
-    PLANES --|{ INSCRIPCIONES : define
-    INSCRIPCIONES --|{ PAGOS : genera
-    ALUMNOS --|{ ASISTENCIAS : registra
-    ALUMNOS --|{ RUTINAS_ASIGNADAS : recibe
+    ALUMNOS ||--o| FICHA_SALUD : tiene
+    ALUMNOS ||--|{ INSCRIPCIONES : posee
+    PLANES ||--|{ INSCRIPCIONES : define
+    INSCRIPCIONES ||--|{ PAGOS : genera
+    ALUMNOS ||--|{ ASISTENCIAS : registra
+    ALUMNOS ||--|{ RUTINAS_ASIGNADAS : recibe
     RUTINAS ||--|{ RUTINAS_ASIGNADAS : sugiere
 
     ALUMNOS {
@@ -91,3 +91,15 @@ erDiagram
 - **rutinas** — banco de rutinas predefinidas, cargadas por el entrenador, con sus contraindicaciones.
 - **rutinas_asignadas** — relaciona una rutina con un alumno, con su estado de aprobación (pendiente / aprobada / rechazada).
 - **configuracion** — tabla de parámetros generales del sistema, sin relación directa con las demás entidades.
+
+## Cardinalidades principales
+
+| Relación | Cardinalidad |
+|---|---|
+| alumnos → ficha_salud | 1 a 1 |
+| alumnos → inscripciones | 1 a muchos |
+| planes → inscripciones | 1 a muchos |
+| inscripciones → pagos | 1 a muchos |
+| alumnos → asistencias | 1 a muchos |
+| alumnos → rutinas_asignadas | 1 a muchos |
+| rutinas → rutinas_asignadas | 1 a muchos |
