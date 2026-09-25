@@ -14,32 +14,32 @@
 
 ## Asistencia
 
-- **RN09** — El registro de asistencia se realiza mediante check-in manual desde el mostrador, no automatizado.
-- **RN10** — El check-in queda asociado a fecha y hora del momento del registro.
-- **RN11** — Un alumno no puede registrar dos check-ins dentro de la misma franja horaria.
+- **RN10** — El registro de asistencia se realiza mediante check-in manual desde el mostrador, no automatizado.
+- **RN11** — El check-in queda asociado a fecha y hora del momento del registro.
+- **RN12** — Un alumno no puede registrar dos check-ins dentro de la misma franja horaria.
 
 ## Alumnos
-- **RN** — No pueden existir dos alumnos con el mismo DNI; el sistema debe impedir el alta duplicada.
-- **RN** — La baja de un alumno es lógica: el registro no se elimina de la base de datos, sino que se marca como inactivo, preservando su historial de pagos y asistencia.
+- **RN13** — No pueden existir dos alumnos con el mismo DNI; el sistema debe impedir el alta duplicada.
+- **RN14** — La baja de un alumno es lógica: el registro no se elimina de la base de datos, sino que se marca como inactivo, preservando su historial de pagos y asistencia.
 
 ## Roles y acceso
 
-- **RN11** — El sistema no distingue roles rígidos de "dueño" y "recepcionista": cualquier usuario administrador/staff puede operar todas las funciones administrativas.
-- **RN12** — El alumno accede a su panel de autoconsulta mediante un código simple o su DNI, sin sistema de contraseñas en esta versión.
-- **RN13** — El panel de autoconsulta es de solo lectura: el alumno puede ver su información, pero no puede modificar datos de pagos, planes ni asistencia.
+- **RN15** — El sistema no distingue roles rígidos de "dueño" y "recepcionista": cualquier usuario administrador/staff puede operar todas las funciones administrativas.
+- **RN16** — El alumno accede a su panel de autoconsulta mediante un código simple o su DNI, sin sistema de contraseñas en esta versión.
+- **RN17** — El panel de autoconsulta es de solo lectura: el alumno puede ver su información, pero no puede modificar datos de pagos, planes ni asistencia.
 
 ## Rutinas y Asistente de IA
 
-- **RN14** — El asistente de IA no genera ejercicios ni rutinas nuevas: únicamente filtra y sugiere entre un banco de rutinas predefinido, cargado y mantenido por el entrenador.
-- **RN15** — Cada rutina del banco indica explícitamente qué condiciones de salud la excluyen (por ejemplo, no apta para alumnos con problemas cardíacos declarados).
-- **RN16** — El asistente solo puede sugerir rutinas compatibles con la ficha de salud declarada por el alumno.
-- **RN17** — Ninguna rutina sugerida llega al alumno de forma automática: debe quedar en estado `pendiente` y ser aprobada explícitamente por un entrenador antes de estar disponible.
-- **RN18** — El alcance del asistente se limita a ejercicios de calentamiento, movilidad articular y vuelta a la calma. No incluye rutinas de fuerza ni de alta intensidad.
-- **RN19** — Toda rutina mostrada al alumno debe incluir la aclaración de que es una guía orientativa y no reemplaza la supervisión presencial del entrenador ni una evaluación médica profesional.
+- **RN18** — El asistente de IA no genera ejercicios ni rutinas nuevas: únicamente filtra y sugiere entre un banco de rutinas predefinido, cargado y mantenido por el entrenador.
+- **RN19** — Cada rutina del banco indica explícitamente qué condiciones de salud la excluyen (por ejemplo, no apta para alumnos con problemas cardíacos declarados).
+- **RN20** — El asistente solo puede sugerir rutinas compatibles con la ficha de salud declarada por el alumno.
+- **RN21** — Ninguna rutina sugerida llega al alumno de forma automática: debe quedar en estado `pendiente` y ser aprobada explícitamente por un entrenador antes de estar disponible.
+- **RN22** — El alcance del asistente se limita a ejercicios de calentamiento, movilidad articular y vuelta a la calma. No incluye rutinas de fuerza ni de alta intensidad.
+- **RN23** — Toda rutina mostrada al alumno debe incluir la aclaración de que es una guía orientativa y no reemplaza la supervisión presencial del entrenador ni una evaluación médica profesional.
 
 ## Datos y responsabilidad profesional
 
-- **RN20** — El sistema no realiza diagnósticos médicos ni evaluaciones de aptitud física; la ficha de salud es una declaración del propio alumno, sin validación clínica.
-- **RN21** — El sistema no almacena datos de tarjetas de pago; el método de pago se registra solo como categoría (efectivo, transferencia, débito, crédito).
+- **RN24** — El sistema no realiza diagnósticos médicos ni evaluaciones de aptitud física; la ficha de salud es una declaración del propio alumno, sin validación clínica.
+- **RN25** — El sistema no almacena datos de tarjetas de pago; el método de pago se registra solo como categoría (efectivo, transferencia, débito, crédito).
 
 
