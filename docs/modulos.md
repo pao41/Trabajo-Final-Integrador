@@ -71,16 +71,14 @@ En este documento detallan los módulos funcionales del sistema
 
 ---
 
-## 7. Módulo de Rutinas y Asistente de IA
+## 7. Módulo de Rutinas 
 
-**Descripción:** Sección de rutinas físicas básicas, con un asistente que sugiere rutinas dentro de un banco predefinido, sujeto a validación del entrenador.
+**Descripción:** Banco de rutinas físicas básicas, cargado y mantenido por el entrenador.
 
 **Funcionalidades:**
-- Banco de rutinas predefinido (calentamiento, movilidad articular, vuelta a la calma), cargado y mantenido por el entrenador.
+- Alta y edición de rutinas (calentamiento, movilidad articular, vuelta a la calma).
 - Cada rutina indica contraindicaciones.
-- El asistente filtra rutinas compatibles con la ficha de salud del alumno — no genera ejercicios nuevos.
-- Toda rutina sugerida queda en estado "pendiente" hasta que un entrenador la aprueba para ese alumno en particular.
-- Mensaje explícito de que la sugerencia es orientativa y no reemplaza la supervisión del entrenador.
+- Aprobación o rechazo de rutinas sugeridas por el Asistente de IA.
 
 ---
 
