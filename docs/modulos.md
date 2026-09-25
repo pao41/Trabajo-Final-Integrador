@@ -82,4 +82,12 @@ En este documento detallan los módulos funcionales del sistema
 
 ---
 
+## 8. Módulo de Asistente de IA
+
+**Descripción:** Componente que sugiere rutinas del banco predefinido según el perfil de salud del alumno, sin generar contenido nuevo.
+
+**Funcionalidades:**
+- Filtrado de rutinas compatibles con la ficha de salud del alumno.
+- Generación de sugerencia en estado "pendiente" hasta aprobación del entrenador.
+
 El esquema completo de estas tablas se encuentra en: /database/schema.sql
