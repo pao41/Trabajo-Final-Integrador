@@ -53,9 +53,12 @@ En este documento detallan los módulos funcionales del sistema
 **Descripción:** Panel de indicadores para el personal del gimnasio.
 
 **Funcionalidades:**
-- Facturación total del mes.
-- Facturación desglosada por método de pago.
+- Facturación total del mes y desglosada por método de pago.
 - Cantidad de alumnos activos, por vencer y vencidos.
+- Alumnos nuevos del mes.
+- Asistencias registradas por semana.
+- Cuotas vencidas pendientes de cobro.
+- Ingresos proyectados del mes en curso.
 
 ---
 
