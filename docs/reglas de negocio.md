@@ -35,3 +35,4 @@
 
 - **RN20** — El sistema no realiza diagnósticos médicos ni evaluaciones de aptitud física; la ficha de salud es una declaración del propio alumno, sin validación clínica.
 - **RN21** — El sistema no almacena datos de tarjetas de pago; el método de pago se registra solo como categoría (efectivo, transferencia, débito, crédito).
+- **RN22**— Una inscripción se considera "por vencer" cuando faltan menos de 7 días para su fecha de vencimiento. Este valor es configurable desde el Módulo de Configuración.
