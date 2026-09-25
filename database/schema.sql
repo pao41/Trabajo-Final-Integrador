@@ -7,6 +7,7 @@ CREATE TABLE alumnos (
     dni             VARCHAR(20) UNIQUE NOT NULL,
     contacto        VARCHAR(150),
     codigo_acceso   VARCHAR(20) UNIQUE NOT NULL,
+    activo          BOOLEAN NOT NULL DEFAULT TRUE,
     fecha_alta      DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
