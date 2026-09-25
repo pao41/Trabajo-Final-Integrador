@@ -6,8 +6,8 @@
 * Arjona, Martin
 * Arjona, Paola
 
-- **Grupo:** 105
-- **Tutor:** Herrera, Gerardo Adrian
+**Grupo:** 105
+**Tutor:** Herrera, Gerardo Adrian
 ---
 
 ### Descripción del proyecto
