@@ -90,4 +90,15 @@ En este documento detallan los módulos funcionales del sistema
 - Filtrado de rutinas compatibles con la ficha de salud del alumno.
 - Generación de sugerencia en estado "pendiente" hasta aprobación del entrenador.
 
+---
+
+## 9. Módulo de Configuración
+
+**Descripción:** Parámetros generales del sistema, administrables por el personal del gimnasio.
+
+**Funcionalidades:**
+- Datos generales del gimnasio (nombre, contacto).
+- Cantidad de días de anticipación para "por vencer".
+- Métodos de pago habilitados.
+
 El esquema completo de estas tablas se encuentra en: /database/schema.sql
