@@ -17,3 +17,9 @@ flowchart LR
   - **Servicios** — contienen la lógica de negocio (ej. cálculo de vencimientos, validación de check-in duplicado).
   - **Modelos / acceso a datos** — comunicación con PostgreSQL.
 - **Capa de persistencia (Base de datos):** PostgreSQL, con el esquema relacional definido en [`/database/schema.sql`](../database/schema.sql).
+
+## Desiciones
+
+- **Separación de responsabilidades:** cada capa puede modificarse o reemplazarse sin afectar directamente a las demás (por ejemplo, cambiar el frontend sin tocar el backend).
+- **Mantenibilidad:** organizar el backend en capas (rutas/controladores/servicios) facilita ubicar y corregir código a medida que el sistema crezca.
+- **Despliegue independiente:** cada capa se aloja en un servicio distinto en la nube, lo que permite escalar o actualizar una sin afectar a las otras.
