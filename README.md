@@ -102,3 +102,14 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 La arquitectura del proyecto está documentada en detalle en [`docs/arquitectura.md`](./docs/arquitectura.md).
 
 ---
+
+### Estructura del repositorio
+
+/
+├── frontend/ 
+├── backend/ 
+├── database/ 
+├── docs/ 
+└── README.md
+
+---
