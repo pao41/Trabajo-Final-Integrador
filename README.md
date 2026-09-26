@@ -113,3 +113,11 @@ La arquitectura del proyecto está documentada en detalle en [`docs/arquitectura
 └── README.md
 
 ---
+
+### Documentación
+
+* [Listado de módulos](./docs/modulos.md)
+* [Requerimientos funcionales y no funcionales](./docs/requerimientos.md)
+* [Reglas de negocio](./docs/reglas_de_negocio.md)
+* [Diagrama Entidad-Relación](./docs/der.md)
+* [Arquitectura del proyecto](./docs/arquitectura.md)
