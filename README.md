@@ -94,3 +94,11 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 * **Backend:** Node.js + Express
 * **Base de datos:** PostgreSQL
 * **Control de versiones:** Git + GitHub
+
+---
+
+### Arquitectura
+
+La arquitectura del proyecto está documentada en detalle en [`docs/arquitectura.md`](./docs/arquitectura.md).
+
+---
