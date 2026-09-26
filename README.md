@@ -63,13 +63,15 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 ### Alcance (MVP)
 
 #### Funcionalidades del MVP:
-* **Panel de Alumnos:** Vista centralizada para la administración de perfiles, datos de contacto, ficha de salud básica e historial de estados (*activo / por vencer / vencido*).
+* **Panel Administrador — Gestión de Alumnos:** Vista centralizada para la administración de perfiles, datos de contacto, ficha de salud básica, historial de estados (activo / por vencer / vencido) y baja lógica.
+* **Panel del Alumno (autoconsulta):** Acceso mediante código simple o DNI, sin contraseña, donde el alumno consulta su estado de cuota, historial de asistencia, checklist personal de objetivos y las rutinas ya aprobadas por el entrenador.
 * **Catálogo de planes e inscripciones:** Configuración de ofertas de membresías y cálculo automático de vencimientos.
 * **Registro de pagos:** Alta de cobranzas con especificación del método de pago (efectivo, transferencia, tarjeta).
-* **Checklist de asistencia:** Módulo rápido de registro manual para la marcación diaria de presencia de los alumnos.
-* **Opciones de Rutinas:** Sección orientada a la visualización, selección y consulta de rutinas de entrenamiento físico previamente aprobadas.
+* **Checklist de asistencia:** Módulo rápido de registro manual para la marcación diaria de presencia de los alumnos con validación para evitar check-ins duplicados.
+* **Módulo de Rutinas:** Banco de rutinas de entrenamiento físico, cargado y mantenido por el entrenador.
 * **Asistente de IA (con supervisión):** Sugerencia guiada de ejercicios básicos de calentamiento, movilidad articular y estiramiento, filtrada por la ficha de salud del alumno y sujeta a aprobación del entrenador antes de estar disponible para consulta.
-* **Dashboard administrativo:** Métricas visuales de facturación total, ingresos por canal de cobro y distribución de alumnos según estado de cuota.
+* **Dashboard administrativo:** Facturación total y por método de pago, alumnos nuevos del mes, asistencias semanales, cuotas vencidas e ingresos proyectados.
+* **Módulo de Configuración:** Datos generales del gimnasio, días de anticipación para el estado "por vencer" y métodos de pago habilitados.
 
 #### Nice to have (Futuras mejoras):
 * Notificaciones automáticas por email sobre vencimientos de cuota.
