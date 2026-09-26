@@ -18,7 +18,7 @@ flowchart LR
   - **Modelos / acceso a datos** — comunicación con PostgreSQL.
 - **Capa de persistencia (Base de datos):** PostgreSQL, con el esquema relacional definido en [`/database/schema.sql`](../database/schema.sql).
 
-## Desiciones
+## Decisiones
 
 - **Separación de responsabilidades:** cada capa puede modificarse o reemplazarse sin afectar directamente a las demás (por ejemplo, cambiar el frontend sin tocar el backend).
 - **Mantenibilidad:** organizar el backend en capas (rutas/controladores/servicios) facilita ubicar y corregir código a medida que el sistema crezca.

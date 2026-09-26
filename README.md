@@ -66,7 +66,7 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 * **Panel Administrador — Gestión de Alumnos:** Vista centralizada para la administración de perfiles, datos de contacto, ficha de salud básica, historial de estados (activo / por vencer / vencido) y baja lógica.
 * **Panel del Alumno (autoconsulta):** Acceso mediante código simple o DNI, sin contraseña, donde el alumno consulta su estado de cuota, historial de asistencia, checklist personal de objetivos y las rutinas ya aprobadas por el entrenador.
 * **Catálogo de planes e inscripciones:** Configuración de ofertas de membresías y cálculo automático de vencimientos.
-* **Registro de pagos:** Alta de cobranzas con especificación del método de pago (efectivo, transferencia, tarjeta).
+* **Registro de pagos:** Alta de cobranzas con especificación del método de pago (efectivo, transferencia, débito, crédito).
 * **Checklist de asistencia:** Módulo rápido de registro manual para la marcación diaria de presencia de los alumnos con validación para evitar check-ins duplicados.
 * **Módulo de Rutinas:** Banco de rutinas de entrenamiento físico, cargado y mantenido por el entrenador.
 * **Asistente de IA (con supervisión):** Sugerencia guiada de ejercicios básicos de calentamiento, movilidad articular y estiramiento, filtrada por la ficha de salud del alumno y sujeta a aprobación del entrenador antes de estar disponible para consulta.
@@ -105,13 +105,14 @@ La arquitectura del proyecto está documentada en detalle en [`docs/arquitectura
 
 ### Estructura del repositorio
 
+```
 /
 ├── frontend/ 
 ├── backend/ 
 ├── database/ 
 ├── docs/ 
 └── README.md
-
+```
 ---
 
 ### Documentación
