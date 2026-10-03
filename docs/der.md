@@ -66,13 +66,14 @@ erDiagram
         string tipo
         string contraindicaciones
         string descripcion
+        int entrenador_id FK
     }
     RUTINAS_ASIGNADAS {
         int id PK
         int alumno_id FK
         int rutina_id FK
         string estado
-        int entrenador_id
+        int entrenador_id FK
         date fecha_validacion
     }
     CONFIGURACION {
@@ -82,17 +83,16 @@ erDiagram
         string metodos_pago_habilitados
     }
     ENTRENADORES {
-    int id PK
-    string nombre
-    string contacto
-    date fecha_alta
+        int id PK
+        string nombre
+        string contacto
+        date fecha_alta
     }
-
     METAS_ALUMNO {
-    int id PK
-    int alumno_id FK
-    int meta_asistencias_semanales
-    date fecha_actualizacion
+        int id PK
+        int alumno_id FK
+        int meta_asistencias_semanales
+        date fecha_actualizacion
     }
 ```
 
