@@ -17,3 +17,7 @@
 | RF13 | RN21, RN23 | 7. Módulo de Rutinas / 8. Módulo de Asistente de IA |
 | RF14 | — | 3. Módulo de Pagos |
 | RF15 | — | 1. Módulo de Alumnos / 6. Módulo de Panel del Alumno |
+| RF16 | RN09 | 9. Módulo de Configuración |
+| RF17 | RN26 | 10. Módulo de Gestión de Entrenadores |
+| RF18 | RN26 | 10. Módulo de Gestión de Entrenadores |
+| RF19 | RN27 | 6. Módulo de Panel del Alumno |
