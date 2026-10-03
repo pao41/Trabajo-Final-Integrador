@@ -4,7 +4,7 @@ Precondición, acción disparadora y resultado esperado para cada Requerimiento 
 
 | # | Precondición | Acción | Resultado esperado |
 |---|---|---|---|
-| RF01 | El administrador completa el alta con DNI, nombre y contacto. | El alumno queda registrado, activo, con un código de acceso único generado. |
+| RF01 | No existe un alumno con ese DNI. |El administrador completa el alta con DNI, nombre y contacto. | El alumno queda registrado, activo, con un código de acceso único generado. |
 | RF02 | El alumno está registrado. | El administrador carga los datos de salud declarados. | La ficha de salud queda asociada al alumno y disponible para el Asistente de IA. |
 | RF03 | — | El administrador crea o edita un plan (nombre, duración, precio, tipo). | El plan queda disponible para asignar en una inscripción. |
 | RF04 | El alumno y el plan existen. | El administrador inscribe al alumno en un plan. | Se crea la inscripción con fecha de vencimiento calculada automáticamente. |
@@ -17,3 +17,6 @@ Precondición, acción disparadora y resultado esperado para cada Requerimiento 
 | RF11 | El entrenador está registrado (RN26). | El entrenador carga una rutina con tipo y contraindicaciones. | La rutina queda disponible en el banco, asociada a ese entrenador. |
 | RF12 | El alumno tiene ficha de salud y existen rutinas compatibles. | El alumno solicita una sugerencia. | El sistema devuelve una rutina del banco compatible con su ficha de salud, en estado `pendiente`. |
 | RF13 | Existe una rutina sugerida en estado `pendiente`. | El entrenador aprueba o rechaza la sugerencia. | El estado cambia a `aprobada` o `rechazada`; solo las aprobadas son visibles para el alumno. |
+| RF14 | El alumno tiene pagos registrados. | Se da de baja al alumno o cambia de plan. | El historial de pagos e inscripciones previas permanece intacto y consultable. |
+| RF15 | El alumno reporta pérdida de su código. | El administrador solicita la regeneración. | Se genera un nuevo código de acceso único para el alumno. |
+| RF16 | — | El administrador modifica un parámetro general. | El nuevo valor se aplica a los cálculos y validaciones del sistema. |
