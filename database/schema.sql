@@ -88,6 +88,13 @@ CREATE TABLE entrenadores (
     fecha_alta      DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
+CREATE TABLE metas_alumno (
+    id                          SERIAL PRIMARY KEY,
+    alumno_id                   INTEGER NOT NULL REFERENCES alumnos(id),
+    meta_asistencias_semanales  INTEGER NOT NULL DEFAULT 3,
+    fecha_actualizacion         DATE NOT NULL DEFAULT CURRENT_DATE
+);
+
 -- Índices básicos para búsquedas frecuentes
 CREATE INDEX idx_inscripciones_alumno ON inscripciones(alumno_id);
 CREATE INDEX idx_pagos_inscripcion ON pagos(inscripcion_id);
