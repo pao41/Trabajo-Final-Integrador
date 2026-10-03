@@ -10,3 +10,4 @@ Precondición, acción disparadora y resultado esperado para cada Requerimiento 
 | RF04 | El alumno y el plan existen. | El administrador inscribe al alumno en un plan. | Se crea la inscripción con fecha de vencimiento calculada automáticamente. |
 | RF05 | Existe una inscripción. | El sistema evalúa la fecha actual contra el vencimiento. | El estado pasa a `activo`, `por_vencer` o `vencido`. |
 | RF06 | Existe una inscripción. | El administrador registra un pago (fecha, monto, método). | El pago queda registrado y la inscripción se renueva/extiende. |
+| RF07 | El alumno está registrado. | El staff registra su ingreso. | Se crea el registro de asistencia, salvo duplicado en la misma franja horaria. |
