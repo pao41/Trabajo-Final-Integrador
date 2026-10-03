@@ -16,7 +16,7 @@
 
 - **RN10** — El registro de asistencia se realiza mediante check-in manual desde el mostrador, no automatizado.
 - **RN11** — El check-in queda asociado a fecha y hora del momento del registro.
-- **RN12** — Un alumno no puede registrar dos check-ins dentro de la misma franja horaria.
+- **RN12** — Un alumno no puede registrar dos check-ins dentro de una ventana de 2 horas desde su check-in anterior.
 
 ## Alumnos
 - **RN13** — No pueden existir dos alumnos con el mismo DNI; el sistema debe impedir el alta duplicada.
