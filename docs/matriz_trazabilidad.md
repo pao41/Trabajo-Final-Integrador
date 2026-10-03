@@ -31,3 +31,6 @@
 | RNF03 (Portabilidad) | Frontend React responsive, sin instalación |
 | RNF04 (Disponibilidad) | Despliegue en servicios cloud (ver arquitectura.md) |
 | RNF05 (Mantenibilidad) | Arquitectura en capas (arquitectura.md) |
+| RNF06 (Escalabilidad) | Modelo relacional normalizado en schema.sql |
+| RNF07 (Seguridad de acceso) | RN16, acceso por código sin contraseña |
+| RNF08 (Consistencia de datos) | Claves foráneas y restricciones CHECK en schema.sql |
