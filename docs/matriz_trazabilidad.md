@@ -15,11 +15,11 @@
 | RF11 | RN18, RN19, RN24 | 7. Módulo de Rutinas |
 | RF12 | RN18, RN20, RN22 | 8. Módulo de Asistente de IA |
 | RF13 | RN21, RN23, RN24 | 7. Módulo de Rutinas / 8. Módulo de Asistente de IA |
-| RF14 | — | 3. Módulo de Pagos |
+| RF14 | RN14, RN28 | 3. Módulo de Pagos |
 | RF15 | RN16 | 1. Módulo de Alumnos |
 | RF16 | RN09 | 9. Módulo de Configuración |
 | RF17 | RN24 | 10. Módulo de Gestión de Entrenadores |
-| RF18 | RN24 | 10. Módulo de Gestión de Entrenadores |
+| RF18 | RN24, RN28 | 10. Módulo de Gestión de Entrenadores |
 | RF19 | RN25 | 1. Módulo de Alumnos / 6. Módulo de Panel del Alumno |
 
 ## Requerimientos No Funcionales — relación con el diseño

@@ -49,4 +49,6 @@
 - **RN26** — El sistema no realiza diagnósticos médicos ni evaluaciones de aptitud física; la ficha de salud es una declaración del propio alumno, sin validación clínica.
 - **RN27** — El sistema no almacena datos de tarjetas de pago; el método de pago se registra solo como categoría (efectivo, transferencia, débito, crédito).
 
+## Auditoría y trazabilidad operativa
 
+- **RN28** - Todo registro de pago, inscripción, asistencia, carga de rutina y validación de sugerencias del Asistente de IA conserva su fecha de ejecución y el entrenador responsable cuando corresponda, sin permitir el borrado físico de operaciones históricas.
