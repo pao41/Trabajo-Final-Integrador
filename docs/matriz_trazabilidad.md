@@ -14,3 +14,6 @@
 | RF10 | RN16, RN17 | 6. Módulo de Panel del Alumno |
 | RF11 | RN18, RN19 | 7. Módulo de Rutinas |
 | RF12 | RN18, RN20, RN22 | 8. Módulo de Asistente de IA |
+| RF13 | RN21, RN23 | 7. Módulo de Rutinas / 8. Módulo de Asistente de IA |
+| RF14 | — | 3. Módulo de Pagos |
+| RF15 | — | 1. Módulo de Alumnos / 6. Módulo de Panel del Alumno |
