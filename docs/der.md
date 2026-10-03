@@ -18,15 +18,15 @@ erDiagram
     ALUMNOS {
         int id PK
         string nombre
-        string dni
+        string dni "UNIQUE"
         string contacto
-        string codigo_acceso
+        string codigo_acceso "UNIQUE"
         boolean activo
         date fecha_alta
     }
     FICHA_SALUD {
         int id PK
-        int alumno_id FK
+        int alumno_id FK, "UNIQUE"
         boolean problemas_cardiacos
         string lesiones
         string observaciones
@@ -34,7 +34,7 @@ erDiagram
     }
     PLANES {
         int id PK
-        string nombre
+        string nombre "UNIQUE"
         int duracion_dias
         decimal precio
         string tipo
@@ -106,6 +106,8 @@ erDiagram
 - **asistencias** — un registro por cada check-in de un alumno.
 - **rutinas** — banco de rutinas predefinidas, cargadas por el entrenador, con sus contraindicaciones.
 - **rutinas_asignadas** — relaciona una rutina con un alumno, con su estado de aprobación (pendiente / aprobada / rechazada).
+- **entrenadores** — personal responsable de cargar las rutinas al banco y de aprobar o rechazar las sugerencias emitidas por el Asistente de IA.
+- **metas_alumno** — relación 1 a 1 con alumnos. Almacena el objetivo de asistencias semanales configurado para cada alumno, utilizado para calcular su checklist personal en el Panel del Alumno.
 - **configuracion** — tabla de parámetros generales del sistema, sin relación directa con las demás entidades.
 
 ## Cardinalidades principales
@@ -113,9 +115,12 @@ erDiagram
 | Relación | Cardinalidad |
 |---|---|
 | alumnos → ficha_salud | 1 a 1 |
+| alumnos → metas_alumno |1 a 1 |
 | alumnos → inscripciones | 1 a muchos |
 | planes → inscripciones | 1 a muchos |
 | inscripciones → pagos | 1 a muchos |
 | alumnos → asistencias | 1 a muchos |
 | alumnos → rutinas_asignadas | 1 a muchos |
 | rutinas → rutinas_asignadas | 1 a muchos |
+| entrenadores → rutinas | 1 a muchos |
+| entrenadores → rutinas_asignadas | 1 a muchos |
