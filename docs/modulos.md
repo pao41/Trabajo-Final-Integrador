@@ -116,7 +116,10 @@ En este documento detallan los módulos funcionales del sistema
 
 | Módulo | Tablas relacionadas |
 |---|---|
-| 1. Alumnos | alumnos, ficha_salud |
-| 2. Planes e Inscripciones | planes, inscripciones |
-| 3. Pagos | pagos |
-
+| 1. Alumnos | `alumnos`, `ficha_salud` |
+| 2. Planes e Inscripciones | `planes`, `inscripciones` |
+| 3. Pagos | `pagos` |
+| 4. Asistencia | `asistencias` |
+| 5. Dashboard Administrativo | *(consultas agregadas sobre `pagos`, `inscripciones`, `asistencias`)* |
+| 6. Panel del Alumno | `alumnos`, `inscripciones`, `asistencias`, `rutinas_asignadas`, `metas_alumno` |
+| 7. Rutinas | `rutinas`, `entrenadores` |
