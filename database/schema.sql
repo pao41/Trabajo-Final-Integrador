@@ -69,7 +69,7 @@ CREATE TABLE rutinas_asignadas (
     rutina_id           INTEGER NOT NULL REFERENCES rutinas(id),
     estado              VARCHAR(20) NOT NULL DEFAULT 'pendiente'
                          CHECK (estado IN ('pendiente', 'aprobada', 'rechazada')),
-    entrenador_id       INTEGER,
+    entrenador_id       INTEGER REFERENCES entrenadores(id),
     fecha_validacion    DATE
 );
 
