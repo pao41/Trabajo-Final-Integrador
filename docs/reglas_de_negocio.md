@@ -41,9 +41,12 @@
 
 - **RN24** — Un entrenador debe existir registrado en el sistema antes de poder cargar rutinas o aprobar sugerencias generadas por el Asistente de IA.
 
+## Checklist y metas personales
+- **RN25** — Cada alumno tiene una meta semanal de asistencias configurable (valor por defecto: 3 por semana). El checklist del Panel del Alumno se calcula comparando las asistencias registradas en la semana en curso contra esta meta.
+
 ## Datos y responsabilidad profesional
 
-- **RN25** — El sistema no realiza diagnósticos médicos ni evaluaciones de aptitud física; la ficha de salud es una declaración del propio alumno, sin validación clínica.
-- **RN26** — El sistema no almacena datos de tarjetas de pago; el método de pago se registra solo como categoría (efectivo, transferencia, débito, crédito).
+- **RN26** — El sistema no realiza diagnósticos médicos ni evaluaciones de aptitud física; la ficha de salud es una declaración del propio alumno, sin validación clínica.
+- **RN27** — El sistema no almacena datos de tarjetas de pago; el método de pago se registra solo como categoría (efectivo, transferencia, débito, crédito).
 
 
