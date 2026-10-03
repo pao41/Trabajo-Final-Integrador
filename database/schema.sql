@@ -80,6 +80,13 @@ CREATE TABLE configuracion (
     metodos_pago_habilitados    TEXT[] NOT NULL DEFAULT ARRAY['efectivo','transferencia','debito','credito']
 );
 
+CREATE TABLE entrenadores (
+    id              SERIAL PRIMARY KEY,
+    nombre          VARCHAR(150) NOT NULL,
+    contacto        VARCHAR(150),
+    fecha_alta      DATE NOT NULL DEFAULT CURRENT_DATE
+);
+
 -- Índices básicos para búsquedas frecuentes
 CREATE INDEX idx_inscripciones_alumno ON inscripciones(alumno_id);
 CREATE INDEX idx_pagos_inscripcion ON pagos(inscripcion_id);
