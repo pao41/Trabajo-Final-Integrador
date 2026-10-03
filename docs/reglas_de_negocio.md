@@ -37,9 +37,13 @@
 - **RN22** — El alcance del asistente se limita a ejercicios de calentamiento, movilidad articular y vuelta a la calma. No incluye rutinas de fuerza ni de alta intensidad.
 - **RN23** — Toda rutina mostrada al alumno debe incluir la aclaración de que es una guía orientativa y no reemplaza la supervisión presencial del entrenador ni una evaluación médica profesional.
 
+## Entrenadores
+
+- **RN24** — Un entrenador debe existir registrado en el sistema antes de poder cargar rutinas o aprobar sugerencias generadas por el Asistente de IA.
+
 ## Datos y responsabilidad profesional
 
-- **RN24** — El sistema no realiza diagnósticos médicos ni evaluaciones de aptitud física; la ficha de salud es una declaración del propio alumno, sin validación clínica.
-- **RN25** — El sistema no almacena datos de tarjetas de pago; el método de pago se registra solo como categoría (efectivo, transferencia, débito, crédito).
+- **RN25** — El sistema no realiza diagnósticos médicos ni evaluaciones de aptitud física; la ficha de salud es una declaración del propio alumno, sin validación clínica.
+- **RN26** — El sistema no almacena datos de tarjetas de pago; el método de pago se registra solo como categoría (efectivo, transferencia, débito, crédito).
 
 
