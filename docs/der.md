@@ -18,15 +18,15 @@ erDiagram
     ALUMNOS {
         int id PK
         string nombre
-        string dni "UNIQUE"
+        string dni 
         string contacto
-        string codigo_acceso "UNIQUE"
+        string codigo_acceso 
         boolean activo
         date fecha_alta
     }
     FICHA_SALUD {
         int id PK
-        int alumno_id FK, "UNIQUE"
+        int alumno_id FK
         boolean problemas_cardiacos
         string lesiones
         string observaciones
@@ -34,7 +34,7 @@ erDiagram
     }
     PLANES {
         int id PK
-        string nombre "UNIQUE"
+        string nombre
         int duracion_dias
         decimal precio
         string tipo
