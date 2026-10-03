@@ -104,4 +104,12 @@ En este documento detallan los módulos funcionales del sistema
 - Cantidad de días de anticipación para "por vencer".
 - Métodos de pago habilitados.
 
+## 10. Módulo de Gestión de Entrenadores
+
+**Descripción:** Administración de los entrenadores que cargan rutinas y aprueban sugerencias del Asistente de IA.
+
+**Funcionalidades:**
+- Alta y edición de entrenadores (nombre, contacto).
+- Asociación de cada rutina cargada y cada aprobación al entrenador correspondiente.
+
 El esquema completo de estas tablas se encuentra en: /database/schema.sql
