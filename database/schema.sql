@@ -60,7 +60,8 @@ CREATE TABLE rutinas (
     tipo                VARCHAR(30) NOT NULL
                          CHECK (tipo IN ('calentamiento', 'movilidad', 'vuelta_a_la_calma')),
     contraindicaciones  TEXT,
-    descripcion         TEXT
+    descripcion         TEXT,
+    entrenador_id       INTEGER REFERENCES entrenadores(id)
 );
 
 CREATE TABLE rutinas_asignadas (
