@@ -112,7 +112,7 @@ En este documento detallan los módulos funcionales del sistema
 - Alta y edición de entrenadores (nombre, contacto).
 - Asociación de cada rutina cargada y cada aprobación al entrenador correspondiente.
 
-## 11. Resumen de trazabilidad con el modelo de datos
+## Resumen de trazabilidad con el modelo de datos
 
 | Módulo | Tablas relacionadas |
 |---|---|
