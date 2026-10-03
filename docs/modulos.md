@@ -123,3 +123,8 @@ En este documento detallan los módulos funcionales del sistema
 | 5. Dashboard Administrativo | *(consultas agregadas sobre `pagos`, `inscripciones`, `asistencias`)* |
 | 6. Panel del Alumno | `alumnos`, `inscripciones`, `asistencias`, `rutinas_asignadas`, `metas_alumno` |
 | 7. Rutinas | `rutinas`, `entrenadores` |
+| 8. Asistente de IA | `rutinas`, `rutinas_asignadas`, `ficha_salud` |
+| 9. Configuración | `configuracion` |
+| 10. Gestión de Entrenadores | `entrenadores` |
+
+El esquema completo de estas tablas se encuentra en [`/database/schema.sql`](../database/schema.sql).
