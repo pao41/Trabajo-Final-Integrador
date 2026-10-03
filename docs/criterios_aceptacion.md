@@ -20,3 +20,6 @@ Precondición, acción disparadora y resultado esperado para cada Requerimiento 
 | RF14 | El alumno tiene pagos registrados. | Se da de baja al alumno o cambia de plan. | El historial de pagos e inscripciones previas permanece intacto y consultable. |
 | RF15 | El alumno reporta pérdida de su código. | El administrador solicita la regeneración. | Se genera un nuevo código de acceso único para el alumno. |
 | RF16 | — | El administrador modifica un parámetro general. | El nuevo valor se aplica a los cálculos y validaciones del sistema. |
+| RF17 | — | El administrador da de alta o edita un entrenador. | El entrenador queda disponible para cargar y aprobar rutinas. |
+| RF18 | Existe al menos un entrenador registrado. | Se carga una rutina o se aprueba una sugerencia. | La acción queda asociada al entrenador que la realizó (trazabilidad). |
+| RF19 | El alumno está registrado. | El administrador configura su meta semanal de asistencias. | El Panel del Alumno calcula el checklist comparando asistencias de la semana contra la meta. |
