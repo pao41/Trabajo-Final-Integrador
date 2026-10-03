@@ -81,6 +81,19 @@ erDiagram
         int dias_aviso_vencimiento
         string metodos_pago_habilitados
     }
+    ENTRENADORES {
+    int id PK
+    string nombre
+    string contacto
+    date fecha_alta
+    }
+
+    METAS_ALUMNO {
+    int id PK
+    int alumno_id FK
+    int meta_asistencias_semanales
+    date fecha_actualizacion
+    }
 ```
 
 ## Entidades y relaciones
