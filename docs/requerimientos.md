@@ -27,6 +27,8 @@ El sistema se organiza en dos paneles diferenciados, según el actor que los uti
 | RF14 | El sistema debe conservar el historial completo de pagos e inscripciones de cada alumno, sin eliminarlo ante bajas o cambios de plan. |
 | RF15 | El sistema debe permitir al personal del gimnasio regenerar el código de acceso de un alumno desde el Panel Administrador, en caso de pérdida u olvido. |
 | RF16 | El sistema debe permitir configurar parámetros generales: datos del gimnasio, días de anticipación para el estado "por vencer", y métodos de pago habilitados. |
+| RF17 | El sistema debe permitir al administrador dar de alta y editar entrenadores. |
+
 
 ## Requerimientos No Funcionales (RNF)
 
