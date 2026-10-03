@@ -11,6 +11,9 @@ erDiagram
     ALUMNOS ||--|{ ASISTENCIAS : registra
     ALUMNOS ||--|{ RUTINAS_ASIGNADAS : recibe
     RUTINAS ||--|{ RUTINAS_ASIGNADAS : sugiere
+    ENTRENADORES ||--o{ RUTINAS : carga
+    ENTRENADORES ||--o{ RUTINAS_ASIGNADAS : aprueba
+    ALUMNOS ||--o| METAS_ALUMNO : define
 
     ALUMNOS {
         int id PK
