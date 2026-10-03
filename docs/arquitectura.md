@@ -36,3 +36,7 @@ flowchart LR
 ## Comunicación entre capas
 
 El frontend se comunica con el backend exclusivamente a través de una API REST. El backend es el único componente con acceso directo a la base de datos — el frontend nunca consulta PostgreSQL de forma directa, lo que mantiene la lógica de negocio y las validaciones centralizadas del lado del servidor.
+
+## Seguridad
+
+El acceso del alumno es por código simple sin contraseña, y el personal administrativo opera sin distinción de roles. No se gestionan datos de tarjetas ni información sensible más allá de la ficha de salud declarada. La incorporación de autenticación con contraseña para el staff queda planteada como mejora futura, fuera del alcance del MVP.
