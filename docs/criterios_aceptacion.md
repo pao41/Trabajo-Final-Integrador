@@ -7,3 +7,6 @@ Precondición, acción disparadora y resultado esperado para cada Requerimiento 
 | RF01 | El administrador completa el alta con DNI, nombre y contacto. | El alumno queda registrado, activo, con un código de acceso único generado. |
 | RF02 | El alumno está registrado. | El administrador carga los datos de salud declarados. | La ficha de salud queda asociada al alumno y disponible para el Asistente de IA. |
 | RF03 | — | El administrador crea o edita un plan (nombre, duración, precio, tipo). | El plan queda disponible para asignar en una inscripción. |
+| RF04 | El alumno y el plan existen. | El administrador inscribe al alumno en un plan. | Se crea la inscripción con fecha de vencimiento calculada automáticamente. |
+| RF05 | Existe una inscripción. | El sistema evalúa la fecha actual contra el vencimiento. | El estado pasa a `activo`, `por_vencer` o `vencido`. |
+| RF06 | Existe una inscripción. | El administrador registra un pago (fecha, monto, método). | El pago queda registrado y la inscripción se renueva/extiende. |
