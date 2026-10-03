@@ -28,3 +28,6 @@
 |---|---|
 | RNF01 (Usabilidad) | Diseño de interfaz simple en Frontend (arquitectura.md) |
 | RNF02 (Rendimiento) | Índices definidos en schema.sql (idx_inscripciones_alumno, idx_pagos_inscripcion, idx_asistencias_alumno_fecha) |
+| RNF03 (Portabilidad) | Frontend React responsive, sin instalación |
+| RNF04 (Disponibilidad) | Despliegue en servicios cloud (ver arquitectura.md) |
+| RNF05 (Mantenibilidad) | Arquitectura en capas (arquitectura.md) |
