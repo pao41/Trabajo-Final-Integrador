@@ -124,3 +124,10 @@ erDiagram
 | rutinas → rutinas_asignadas | 1 a muchos |
 | entrenadores → rutinas | 1 a muchos |
 | entrenadores → rutinas_asignadas | 1 a muchos |
+
+## Restricciones de Unicidad (UNIQUE)
+
+- **`alumnos.dni` (UNIQUE):** Impide el registro duplicado de un mismo documento de identidad.
+- **`alumnos.codigo_acceso` (UNIQUE):** Garantiza que el código simple de autoconsulta identifique de forma unívoca a cada alumno.
+- **`ficha_salud.alumno_id` y `metas_alumno.alumno_id` (UNIQUE + FK):** Aseguran a nivel físico en la base de datos la relación estricta 1 a 1 con la entidad `alumnos`.
+- **`planes.nombre` (UNIQUE):** Evita la duplicación de nombres en el catálogo de planes.
