@@ -11,3 +11,6 @@ Precondición, acción disparadora y resultado esperado para cada Requerimiento 
 | RF05 | Existe una inscripción. | El sistema evalúa la fecha actual contra el vencimiento. | El estado pasa a `activo`, `por_vencer` o `vencido`. |
 | RF06 | Existe una inscripción. | El administrador registra un pago (fecha, monto, método). | El pago queda registrado y la inscripción se renueva/extiende. |
 | RF07 | El alumno está registrado. | El staff registra su ingreso. | Se crea el registro de asistencia, salvo duplicado en la misma franja horaria. |
+| RF08 | Existen pagos, inscripciones y asistencias cargadas. | El administrador abre el dashboard. | Se muestran facturación, alumnos nuevos, asistencias semanales, cuotas vencidas e ingresos proyectados actualizados. |
+| RF09 | Existen alumnos con inscripciones. | El administrador filtra el listado por estado. | Se muestra solo a los alumnos cuyo estado coincide con el filtro. |
+| RF10 | El alumno tiene código de acceso válido. | El alumno ingresa su código o DNI. | Se muestra su estado de cuota, asistencia y checklist personal. |
