@@ -112,4 +112,11 @@ En este documento detallan los módulos funcionales del sistema
 - Alta y edición de entrenadores (nombre, contacto).
 - Asociación de cada rutina cargada y cada aprobación al entrenador correspondiente.
 
-El esquema completo de estas tablas se encuentra en: /database/schema.sql
+## 11. Resumen de trazabilidad con el modelo de datos
+
+| Módulo | Tablas relacionadas |
+|---|---|
+| 1. Alumnos | alumnos, ficha_salud |
+| 2. Planes e Inscripciones | planes, inscripciones |
+| 3. Pagos | pagos |
+
