@@ -40,3 +40,7 @@ El frontend se comunica con el backend exclusivamente a través de una API REST.
 ## Seguridad
 
 El acceso del alumno es por código simple sin contraseña, y el personal administrativo opera sin distinción de roles. No se gestionan datos de tarjetas ni información sensible más allá de la ficha de salud declarada. La incorporación de autenticación con contraseña para el staff queda planteada como mejora futura, fuera del alcance del MVP.
+
+## Despliegue
+
+El despliegue de la aplicación —previsto en Vercel (frontend), Render o Railway (backend) y Railway o Supabase (base de datos PostgreSQL)— se definirá de manera definitiva en etapas posteriores, dando cumplimiento al Requerimiento No Funcional RNF04 (Disponibilidad), el cual exige garantizar la accesibilidad continua del sistema mediante servicios de hosting en la nube, sin condicionar la arquitectura a un proveedor tecnológico específico en esta fase.
