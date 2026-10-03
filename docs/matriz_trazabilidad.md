@@ -21,3 +21,10 @@
 | RF17 | RN26 | 10. Módulo de Gestión de Entrenadores |
 | RF18 | RN26 | 10. Módulo de Gestión de Entrenadores |
 | RF19 | RN27 | 6. Módulo de Panel del Alumno |
+
+## Requerimientos No Funcionales — relación con el diseño
+
+| RNF | Dónde se refleja |
+|---|---|
+| RNF01 (Usabilidad) | Diseño de interfaz simple en Frontend (arquitectura.md) |
+| RNF02 (Rendimiento) | Índices definidos en schema.sql (idx_inscripciones_alumno, idx_pagos_inscripcion, idx_asistencias_alumno_fecha) |
