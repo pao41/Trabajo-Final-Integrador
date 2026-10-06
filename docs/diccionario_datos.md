@@ -61,4 +61,14 @@
 | id | SERIAL | Identificador único | PK |
 | alumno_id | INTEGER | Alumno que registró ingreso | NOT NULL, FK → alumnos(id) |
 | fecha | DATE | Fecha del check-in | NOT NULL, DEFAULT hoy |
-| hora | TIME | Hora del check-in | NOT NULL, DEFAULT ahora (validado contra RN12 a nivel aplicación) |
+| hora | TIME | Hora del check-in | NOT NULL, DEFAULT ahora |
+
+## Tabla: entrenadores
+
+| Columna | Tipo | Descripción | Restricciones |
+|---|---|---|---|
+| id | SERIAL | Identificador único | PK |
+| nombre | VARCHAR(150) | Nombre del entrenador | NOT NULL |
+| contacto | VARCHAR(150) | Teléfono o email | — |
+| fecha_alta | DATE | Fecha de alta en el sistema | NOT NULL, DEFAULT hoy |
+
