@@ -43,3 +43,13 @@
 | fecha_inicio | DATE | Inicio del período contratado | NOT NULL |
 | fecha_vencimiento | DATE | Vencimiento calculado (RN02) | NOT NULL |
 | estado | VARCHAR(20) | `activo` / `por_vencer` / `vencido` | NOT NULL, CHECK, DEFAULT 'activo' (RN01) |
+
+## Tabla: pagos
+
+| Columna | Tipo | Descripción | Restricciones |
+|---|---|---|---|
+| id | SERIAL | Identificador único | PK |
+| inscripcion_id | INTEGER | Inscripción asociada | NOT NULL, FK → inscripciones(id) |
+| fecha_pago | DATE | Fecha en que se registró el pago | NOT NULL, DEFAULT hoy |
+| monto | NUMERIC(10,2) | Monto abonado | NOT NULL (RN05: siempre valor completo del período) |
+| metodo_pago | VARCHAR(20) | `efectivo` / `transferencia` / `debito` / `credito` | NOT NULL, CHECK (RN27) |
