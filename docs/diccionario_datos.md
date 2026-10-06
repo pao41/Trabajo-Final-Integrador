@@ -22,3 +22,13 @@
 | lesiones | TEXT | Lesiones declaradas | — |
 | observaciones | TEXT | Otras observaciones de salud | — |
 | fecha_registro | DATE | Fecha de carga de la ficha | NOT NULL, DEFAULT hoy |
+
+## Tabla: planes
+
+| Columna | Tipo | Descripción | Restricciones |
+|---|---|---|---|
+| id | SERIAL | Identificador único | PK |
+| nombre | VARCHAR(100) | Nombre del plan | NOT NULL, UNIQUE |
+| duracion_dias | INTEGER | Duración del plan en días | NOT NULL |
+| precio | NUMERIC(10,2) | Precio del plan | NOT NULL |
+| tipo | VARCHAR(20) | `tiempo` o `clases` | NOT NULL, CHECK |
