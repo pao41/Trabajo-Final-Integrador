@@ -122,3 +122,8 @@ La arquitectura del proyecto está documentada en detalle en [`docs/arquitectura
 * [Reglas de negocio](./docs/reglas_de_negocio.md)
 * [Diagrama Entidad-Relación](./docs/der.md)
 * [Arquitectura del proyecto](./docs/arquitectura.md)
+* [Diccionario de datos](./docs/diccionario_datos.md)
+* [Casos de uso](./docs/casos_de_uso.md)
+* [Diagrama de clases](./docs/diagrama_clases.md)
+* [Diagramas de secuencia](./docs/diagramas_secuencia.md)
+* [Diagramas de actividades](./docs/diagrama_actividades.md)
