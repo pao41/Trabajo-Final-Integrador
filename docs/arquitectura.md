@@ -44,3 +44,10 @@ El acceso del alumno es por código simple sin contraseña, y el personal admini
 ## Despliegue
 
 El despliegue de la aplicación —previsto en Vercel (frontend), Render o Railway (backend) y Railway o Supabase (base de datos PostgreSQL)— se definirá de manera definitiva en etapas posteriores, dando cumplimiento al Requerimiento No Funcional RNF04 (Disponibilidad), el cual exige garantizar la accesibilidad continua del sistema mediante servicios de hosting en la nube, sin condicionar la arquitectura a un proveedor tecnológico específico en esta fase.
+
+## Métricas operativas (propuestas)
+
+- Cantidad de alumnos activos / por vencer / vencidos (en tiempo real, vía Dashboard).
+- Tiempo de respuesta promedio de los endpoints principales (objetivo: < 2s).
+- Tasa de errores de la API.
+- Cantidad de sugerencias de IA generadas vs. aprobadas por semana.
