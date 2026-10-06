@@ -53,3 +53,12 @@
 | fecha_pago | DATE | Fecha en que se registró el pago | NOT NULL, DEFAULT hoy |
 | monto | NUMERIC(10,2) | Monto abonado | NOT NULL (RN05: siempre valor completo del período) |
 | metodo_pago | VARCHAR(20) | `efectivo` / `transferencia` / `debito` / `credito` | NOT NULL, CHECK (RN27) |
+
+## Tabla: asistencias
+
+| Columna | Tipo | Descripción | Restricciones |
+|---|---|---|---|
+| id | SERIAL | Identificador único | PK |
+| alumno_id | INTEGER | Alumno que registró ingreso | NOT NULL, FK → alumnos(id) |
+| fecha | DATE | Fecha del check-in | NOT NULL, DEFAULT hoy |
+| hora | TIME | Hora del check-in | NOT NULL, DEFAULT ahora (validado contra RN12 a nivel aplicación) |
