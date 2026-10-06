@@ -19,3 +19,21 @@ sequenceDiagram
     Backend-->>Frontend: Pago registrado, nuevo estado
     Frontend-->>Staff: Confirmacion
 ```
+
+## 2. Alumno solicita sugerencia de rutina y entrenador la aprueba (RF12, RF13)
+
+```mermaid
+sequenceDiagram
+    actor Alumno
+    participant Frontend
+    participant Backend
+    participant DB as Base de Datos
+    actor Entrenador
+
+    Alumno->>Frontend: Solicita sugerencia de rutina
+    Frontend->>Backend: GET /rutinas/sugerencia
+    Backend->>DB: Consultar ficha_salud del alumno
+    DB-->>Backend: Ficha de salud
+    Backend->>DB: Filtrar rutinas compatibles (RN18, RN20)
+    DB-->>Backend: Rutina candidata
+    Backend->>DB: Crear rutina_asignada (estado=pendiente)
