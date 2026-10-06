@@ -32,3 +32,14 @@
 | duracion_dias | INTEGER | Duración del plan en días | NOT NULL |
 | precio | NUMERIC(10,2) | Precio del plan | NOT NULL |
 | tipo | VARCHAR(20) | `tiempo` o `clases` | NOT NULL, CHECK |
+
+## Tabla: inscripciones
+
+| Columna | Tipo | Descripción | Restricciones |
+|---|---|---|---|
+| id | SERIAL | Identificador único | PK |
+| alumno_id | INTEGER | Alumno inscripto | NOT NULL, FK → alumnos(id) |
+| plan_id | INTEGER | Plan contratado | NOT NULL, FK → planes(id) |
+| fecha_inicio | DATE | Inicio del período contratado | NOT NULL |
+| fecha_vencimiento | DATE | Vencimiento calculado (RN02) | NOT NULL |
+| estado | VARCHAR(20) | `activo` / `por_vencer` / `vencido` | NOT NULL, CHECK, DEFAULT 'activo' (RN01) |
