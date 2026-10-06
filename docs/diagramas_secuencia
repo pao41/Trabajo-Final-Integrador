@@ -8,3 +8,14 @@ sequenceDiagram
     participant Frontend
     participant Backend
     participant DB as Base de Datos
+    
+    Staff->>Frontend: Ingresa pago (alumno, monto, metodo)
+    Frontend->>Backend: POST /pagos
+    Backend->>DB: Verificar inscripcion existente
+    DB-->>Backend: Inscripcion encontrada
+    Backend->>DB: Insertar pago
+    Backend->>DB: Actualizar fecha_vencimiento (RN02, RN03, RN04)
+    DB-->>Backend: OK
+    Backend-->>Frontend: Pago registrado, nuevo estado
+    Frontend-->>Staff: Confirmacion
+```
