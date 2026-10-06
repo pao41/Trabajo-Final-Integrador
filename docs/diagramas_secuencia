@@ -53,3 +53,16 @@ sequenceDiagram
     participant Frontend
     participant Backend
     participant DB as Base de Datos
+
+    Staff->>Frontend: Busca alumno y registra ingreso
+    Frontend->>Backend: POST /asistencias
+    Backend->>DB: Verificar ultimo check-in del alumno
+    DB-->>Backend: Ultima asistencia (hora)
+    alt Dentro de ventana de 2 horas
+        Backend-->>Frontend: Rechazado - check-in duplicado
+    else Fuera de la ventana
+        Backend->>DB: Insertar asistencia
+        DB-->>Backend: OK
+        Backend-->>Frontend: Check-in registrado
+    end
+```
