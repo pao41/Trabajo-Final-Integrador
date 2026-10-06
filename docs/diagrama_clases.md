@@ -31,3 +31,14 @@ classDiagram
         +date fechaVencimiento
         +string estado
     }
+    class Pago {
+        +int id
+        +date fechaPago
+        +decimal monto
+        +string metodoPago
+    }
+    class Asistencia {
+        +int id
+        +date fecha
+        +time hora
+    }
