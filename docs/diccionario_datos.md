@@ -103,3 +103,11 @@
 | dias_aviso_vencimiento | INTEGER | Días para considerar "por vencer" (RN09) | NOT NULL, DEFAULT 7 |
 | metodos_pago_habilitados | TEXT[] | Métodos de pago habilitados | NOT NULL |
 
+## Tabla: metas_alumno
+
+| Columna | Tipo | Descripción | Restricciones |
+|---|---|---|---|
+| id | SERIAL | Identificador único | PK |
+| alumno_id | INTEGER | Alumno al que pertenece la meta | NOT NULL, UNIQUE, FK → alumnos(id) |
+| meta_asistencias_semanales | INTEGER | Objetivo semanal de asistencias (RN25) | NOT NULL, DEFAULT 3 |
+| fecha_actualizacion | DATE | Última modificación de la meta | NOT NULL, DEFAULT hoy |
