@@ -13,7 +13,7 @@ CREATE TABLE alumnos (
 
 CREATE TABLE ficha_salud (
     id                  SERIAL PRIMARY KEY,
-    alumno_id           INTEGER NOT NULL REFERENCES alumnos(id),
+    alumno_id           INTEGER NOT NULL UNIQUE REFERENCES alumnos(id),
     problemas_cardiacos BOOLEAN NOT NULL DEFAULT FALSE,
     lesiones            TEXT,
     observaciones       TEXT,
@@ -22,7 +22,7 @@ CREATE TABLE ficha_salud (
 
 CREATE TABLE planes (
     id              SERIAL PRIMARY KEY,
-    nombre          VARCHAR(100) NOT NULL,
+    nombre          VARCHAR(100) NOT NULL UNIQUE,
     duracion_dias   INTEGER NOT NULL,
     precio          NUMERIC(10,2) NOT NULL,
     tipo            VARCHAR(20) NOT NULL CHECK (tipo IN ('tiempo', 'clases'))
@@ -54,6 +54,13 @@ CREATE TABLE asistencias (
     hora        TIME NOT NULL DEFAULT CURRENT_TIME
 );
 
+CREATE TABLE entrenadores (
+    id              SERIAL PRIMARY KEY,
+    nombre          VARCHAR(150) NOT NULL,
+    contacto        VARCHAR(150),
+    fecha_alta      DATE NOT NULL DEFAULT CURRENT_DATE
+);
+
 CREATE TABLE rutinas (
     id                  SERIAL PRIMARY KEY,
     nombre              VARCHAR(150) NOT NULL,
@@ -81,16 +88,9 @@ CREATE TABLE configuracion (
     metodos_pago_habilitados    TEXT[] NOT NULL DEFAULT ARRAY['efectivo','transferencia','debito','credito']
 );
 
-CREATE TABLE entrenadores (
-    id              SERIAL PRIMARY KEY,
-    nombre          VARCHAR(150) NOT NULL,
-    contacto        VARCHAR(150),
-    fecha_alta      DATE NOT NULL DEFAULT CURRENT_DATE
-);
-
 CREATE TABLE metas_alumno (
     id                          SERIAL PRIMARY KEY,
-    alumno_id                   INTEGER NOT NULL REFERENCES alumnos(id),
+    alumno_id                   INTEGER NOT NULL UNIQUE REFERENCES alumnos(id),
     meta_asistencias_semanales  INTEGER NOT NULL DEFAULT 3,
     fecha_actualizacion         DATE NOT NULL DEFAULT CURRENT_DATE
 );
