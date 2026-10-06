@@ -42,3 +42,16 @@ classDiagram
         +date fecha
         +time hora
     }
+    class Entrenador {
+        +int id
+        +string nombre
+        +string contacto
+        +date fechaAlta
+    }
+    class Rutina {
+        +int id
+        +string nombre
+        +string tipo
+        +string contraindicaciones
+        +string descripcion
+    }
