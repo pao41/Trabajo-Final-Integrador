@@ -17,6 +17,7 @@ flowchart TD
     I --> B
     G --> End([Fin])
 ```
+
 ## 2. Aprobación de rutina sugerida por el Asistente de IA
 
 ```mermaid
@@ -26,3 +27,11 @@ flowchart TD
     B --> C{Existe rutina compatible?}
     C -->|No| D[Sistema informa que no hay sugerencias disponibles]
     C -->|Si| E[Se crea rutina_asignada en estado pendiente]
+    E --> F[Entrenador revisa la sugerencia]
+    F --> G{Aprueba?}
+    G -->|Si| H[Estado: aprobada - visible para el alumno]
+    G -->|No| I[Estado: rechazada - no visible]
+    D --> End([Fin])
+    H --> End
+    I --> End
+```
