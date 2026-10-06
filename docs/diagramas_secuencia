@@ -1,0 +1,10 @@
+# Diagramas de Secuencia — Sistema de Gestión para Gimnasios
+
+## 1. Registrar pago y renovar inscripción (RF06)
+
+```mermaid
+sequenceDiagram
+    actor Staff
+    participant Frontend
+    participant Backend
+    participant DB as Base de Datos
