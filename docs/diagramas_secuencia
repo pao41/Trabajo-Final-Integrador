@@ -45,3 +45,11 @@ sequenceDiagram
     DB-->>Backend: OK
     Backend-->>Frontend: Rutina aprobada visible para el alumno
 ```
+## 3. Check-in de asistencia con validación de duplicado (RF07, RN12)
+
+```mermaid
+sequenceDiagram
+    actor Staff
+    participant Frontend
+    participant Backend
+    participant DB as Base de Datos
