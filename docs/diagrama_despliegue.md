@@ -10,3 +10,12 @@ flowchart LR
     end
     subgraph Nube_Backend [Hosting Backend candidato: Render o Railway]
         BE[Node.js + Express - API REST]
+    end
+    subgraph Nube_DB [Hosting Base de Datos candidato: Railway o Supabase]
+        DB[(PostgreSQL)]
+    end
+
+    Browser -->|HTTPS| FE
+    FE -->|HTTPS / JSON| BE
+    BE -->|Conexion SQL| DB
+```
