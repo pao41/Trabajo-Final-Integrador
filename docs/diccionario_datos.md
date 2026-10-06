@@ -93,3 +93,13 @@
 | estado | VARCHAR(20) | `pendiente` / `aprobada` / `rechazada` | NOT NULL, CHECK, DEFAULT 'pendiente' (RN21) |
 | entrenador_id | INTEGER | Entrenador que aprobó/rechazó | FK → entrenadores(id) (RN24) |
 | fecha_validacion | DATE | Fecha de aprobación o rechazo | — |
+
+## Tabla: configuracion
+
+| Columna | Tipo | Descripción | Restricciones |
+|---|---|---|---|
+| id | SERIAL | Identificador único | PK |
+| nombre_gimnasio | VARCHAR(150) | Nombre del gimnasio | NOT NULL |
+| dias_aviso_vencimiento | INTEGER | Días para considerar "por vencer" (RN09) | NOT NULL, DEFAULT 7 |
+| metodos_pago_habilitados | TEXT[] | Métodos de pago habilitados | NOT NULL |
+
