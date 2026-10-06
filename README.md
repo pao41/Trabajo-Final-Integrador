@@ -127,3 +127,7 @@ La arquitectura del proyecto está documentada en detalle en [`docs/arquitectura
 * [Diagrama de clases](./docs/diagrama_clases.md)
 * [Diagramas de secuencia](./docs/diagramas_secuencia.md)
 * [Diagramas de actividades](./docs/diagrama_actividades.md)
+* [Diagrama de despliegue](./docs/diagrama_despliegue.md)
+* [Matriz de trazabilidad](./docs/matriz_trazabilidad.md)
+* [Criterios de aceptación](./docs/criterios_aceptacion.md)
+* [Casos de prueba](./docs/casos_prueba.md)
