@@ -43,3 +43,15 @@ flowchart LR
 | UC09 | Solicitar Sugerencia de Rutina | Alumno | RF12 |
 | UC10 | Cargar Rutinas | Entrenador | RF11, RF18 |
 | UC11 | Aprobar o Rechazar Rutinas Sugeridas | Entrenador | RF13, RF18 |
+
+## Especificación detallada de los casos de uso principales
+
+### UC03 — Registrar Pagos
+- **Actor:** Administrador
+- **Precondición:** El alumno tiene una inscripción existente.
+- **Flujo principal:**
+  1. El administrador busca al alumno.
+  2. Ingresa monto, fecha y método de pago.
+  3. El sistema calcula la nueva fecha de vencimiento (RN02, RN03, RN04).
+  4. El sistema confirma el registro.
+
