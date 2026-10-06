@@ -55,3 +55,14 @@ classDiagram
         +string contraindicaciones
         +string descripcion
     }
+    class RutinaAsignada {
+        +int id
+        +string estado
+        +date fechaValidacion
+    }
+    class Configuracion {
+        +int id
+        +string nombreGimnasio
+        +int diasAvisoVencimiento
+        +string[] metodosPagoHabilitados
+    }
