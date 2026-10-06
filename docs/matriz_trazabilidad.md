@@ -11,7 +11,7 @@
 | RF07 | RN10, RN11, RN12 | 4. Módulo de Asistencia |
 | RF08 | — | 5. Módulo de Dashboard Administrativo |
 | RF09 | RN01 | 1. Módulo de Alumnos / 5. Módulo de Dashboard Administrativo |
-| RF10 | RN16, RN17, RN25 | 6. Módulo de Panel del Alumno |
+| RF10 | RN16, RN17 | 6. Módulo de Panel del Alumno |
 | RF11 | RN18, RN19, RN24 | 7. Módulo de Rutinas |
 | RF12 | RN18, RN20, RN22 | 8. Módulo de Asistente de IA |
 | RF13 | RN21, RN23, RN24 | 7. Módulo de Rutinas / 8. Módulo de Asistente de IA |
