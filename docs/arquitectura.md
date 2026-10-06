@@ -51,3 +51,10 @@ El despliegue de la aplicación —previsto en Vercel (frontend), Render o Railw
 - Tiempo de respuesta promedio de los endpoints principales (objetivo: < 2s).
 - Tasa de errores de la API.
 - Cantidad de sugerencias de IA generadas vs. aprobadas por semana.
+
+## Lineamientos de despliegue
+
+- Variables de entorno (credenciales de base de datos, puertos) gestionadas fuera del código fuente, mediante archivos .env no versionados.
+- El backend se despliega como servicio independiente del frontend, permitiendo actualizar uno sin reconstruir el otro.
+- La base de datos mantiene backups automáticos provistos por el servicio de hosting elegido.
+- Ver diagrama de despliegue candidato en [`docs/diagrama_despliegue.md`](./diagrama_despliegue.md).
