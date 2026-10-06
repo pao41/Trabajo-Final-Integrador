@@ -66,3 +66,14 @@ classDiagram
         +int diasAvisoVencimiento
         +string[] metodosPagoHabilitados
     }
+     class MetaAlumno {
+        +int id
+        +int metaAsistenciasSemanales
+        +date fechaActualizacion
+    }
+
+    Alumno "1" --> "1" FichaSalud
+    Alumno "1" --> "1" MetaAlumno
+    Alumno "1" --> "*" Inscripcion
+    Plan "1" --> "*" Inscripcion
+    Inscripcion "1" --> "*" Pago
