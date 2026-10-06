@@ -72,3 +72,13 @@
 | contacto | VARCHAR(150) | Teléfono o email | — |
 | fecha_alta | DATE | Fecha de alta en el sistema | NOT NULL, DEFAULT hoy |
 
+## Tabla: rutinas
+
+| Columna | Tipo | Descripción | Restricciones |
+|---|---|---|---|
+| id | SERIAL | Identificador único | PK |
+| nombre | VARCHAR(150) | Nombre de la rutina | NOT NULL |
+| tipo | VARCHAR(30) | `calentamiento` / `movilidad` / `vuelta_a_la_calma` | NOT NULL, CHECK (RN22) |
+| contraindicaciones | TEXT | Condiciones de salud que la excluyen | — (RN19) |
+| descripcion | TEXT | Detalle de la rutina | — |
+| entrenador_id | INTEGER | Entrenador que la cargó | FK → entrenadores(id) (RN24) |
