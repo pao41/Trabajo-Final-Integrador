@@ -82,3 +82,14 @@
 | contraindicaciones | TEXT | Condiciones de salud que la excluyen | — (RN19) |
 | descripcion | TEXT | Detalle de la rutina | — |
 | entrenador_id | INTEGER | Entrenador que la cargó | FK → entrenadores(id) (RN24) |
+
+## Tabla: rutinas_asignadas
+
+| Columna | Tipo | Descripción | Restricciones |
+|---|---|---|---|
+| id | SERIAL | Identificador único | PK |
+| alumno_id | INTEGER | Alumno al que se sugirió | NOT NULL, FK → alumnos(id) |
+| rutina_id | INTEGER | Rutina sugerida | NOT NULL, FK → rutinas(id) |
+| estado | VARCHAR(20) | `pendiente` / `aprobada` / `rechazada` | NOT NULL, CHECK, DEFAULT 'pendiente' (RN21) |
+| entrenador_id | INTEGER | Entrenador que aprobó/rechazó | FK → entrenadores(id) (RN24) |
+| fecha_validacion | DATE | Fecha de aprobación o rechazo | — |
