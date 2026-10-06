@@ -54,4 +54,14 @@ flowchart LR
   2. Ingresa monto, fecha y método de pago.
   3. El sistema calcula la nueva fecha de vencimiento (RN02, RN03, RN04).
   4. El sistema confirma el registro.
+- **Flujo alternativo:** Si el alumno no tiene inscripción activa, el sistema solicita primero inscribirlo (UC02).
 
+### UC09 — Solicitar Sugerencia de Rutina
+- **Actor:** Alumno
+- **Precondición:** El alumno tiene ficha de salud cargada.
+- **Flujo principal:**
+  1. El alumno solicita una sugerencia desde el Panel del Alumno.
+  2. El sistema filtra el banco de rutinas según su ficha de salud (RN18, RN20).
+  3. El sistema crea la sugerencia en estado `pendiente`.
+  4. El alumno recibe el mensaje de que la sugerencia está sujeta a aprobación del entrenador (RN23).
+- **Flujo alternativo:** Si no hay rutinas compatibles, el sistema informa que no hay sugerencias disponibles.
