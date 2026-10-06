@@ -2,7 +2,7 @@
 
 ## Actores
 
-- **Administrador/Staff** — personal del gimnasio, opera el Panel Administrador (RN15: sin distinción de roles).
+- **Administrador/Staff** — personal del gimnasio, opera el Panel Administrador.
 - **Alumno** — consulta el Panel del Alumno.
 - **Entrenador** — carga rutinas y aprueba sugerencias del Asistente de IA.
 
@@ -37,3 +37,9 @@ flowchart LR
 | UC03 | Registrar Pagos | Administrador | RF06, RF14 |
 | UC04 | Registrar Asistencia | Administrador | RF07 |
 | UC05 | Ver Dashboard | Administrador | RF08 |
+| UC06 | Configurar Sistema | Administrador | RF16 |
+| UC07 | Gestionar Entrenadores | Administrador | RF17 |
+| UC08 | Consultar Panel del Alumno | Alumno | RF10, RF19 |
+| UC09 | Solicitar Sugerencia de Rutina | Alumno | RF12 |
+| UC10 | Cargar Rutinas | Entrenador | RF11, RF18 |
+| UC11 | Aprobar o Rechazar Rutinas Sugeridas | Entrenador | RF13, RF18 |
