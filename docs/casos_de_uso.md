@@ -27,3 +27,13 @@ flowchart LR
     E --> UC10([Cargar Rutinas])
     E --> UC11([Aprobar o Rechazar Rutinas Sugeridas])
 ```
+
+## Listado de Casos de Uso
+
+| ID | Nombre | Actor | RF relacionado |
+|---|---|---|---|
+| UC01 | Gestionar Alumnos | Administrador | RF01, RF02, RF09, RF15 |
+| UC02 | Gestionar Planes e Inscripciones | Administrador | RF03, RF04, RF05 |
+| UC03 | Registrar Pagos | Administrador | RF06, RF14 |
+| UC04 | Registrar Asistencia | Administrador | RF07 |
+| UC05 | Ver Dashboard | Administrador | RF08 |
