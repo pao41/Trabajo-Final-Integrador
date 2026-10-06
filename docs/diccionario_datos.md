@@ -11,3 +11,14 @@
 | codigo_acceso | VARCHAR(20) | Código para el Panel del Alumno | NOT NULL, UNIQUE |
 | activo | BOOLEAN | Indica si el alumno está dado de baja (lógica) | NOT NULL, DEFAULT TRUE (RN14) |
 | fecha_alta | DATE | Fecha de registro en el sistema | NOT NULL, DEFAULT hoy |
+
+## Tabla: ficha_salud
+
+| Columna | Tipo | Descripción | Restricciones |
+|---|---|---|---|
+| id | SERIAL | Identificador único | PK |
+| alumno_id | INTEGER | Alumno al que pertenece | NOT NULL, UNIQUE, FK → alumnos(id) |
+| problemas_cardiacos | BOOLEAN | Declaración de problemas cardíacos | NOT NULL, DEFAULT FALSE |
+| lesiones | TEXT | Lesiones declaradas | — |
+| observaciones | TEXT | Otras observaciones de salud | — |
+| fecha_registro | DATE | Fecha de carga de la ficha | NOT NULL, DEFAULT hoy |
