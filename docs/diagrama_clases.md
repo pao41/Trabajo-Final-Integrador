@@ -77,3 +77,11 @@ classDiagram
     Alumno "1" --> "*" Inscripcion
     Plan "1" --> "*" Inscripcion
     Inscripcion "1" --> "*" Pago
+    Alumno "1" --> "*" Asistencia
+    Alumno "1" --> "*" RutinaAsignada
+    Rutina "1" --> "*" RutinaAsignada
+    Entrenador "1" --> "*" Rutina
+    Entrenador "1" --> "*" RutinaAsignada
+```
+
+Este diagrama es la representación orientada a objetos del modelo relacional definido en [`/database/schema.sql`](../database/schema.sql) — cada clase corresponde a una tabla, y cada atributo a una columna. `Configuracion` no participa de ninguna relación, por ser una entidad de parámetros globales del sistema.
