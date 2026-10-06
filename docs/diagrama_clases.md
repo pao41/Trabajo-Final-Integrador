@@ -17,3 +17,17 @@ classDiagram
         +string lesiones
         +string observaciones
         +date fechaRegistro
+    }
+    class Plan {
+        +int id
+        +string nombre
+        +int duracionDias
+        +decimal precio
+        +string tipo
+    }
+    class Inscripcion {
+        +int id
+        +date fechaInicio
+        +date fechaVencimiento
+        +string estado
+    }
