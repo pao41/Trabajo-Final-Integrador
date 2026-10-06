@@ -65,3 +65,12 @@ flowchart LR
   3. El sistema crea la sugerencia en estado `pendiente`.
   4. El alumno recibe el mensaje de que la sugerencia está sujeta a aprobación del entrenador (RN23).
 - **Flujo alternativo:** Si no hay rutinas compatibles, el sistema informa que no hay sugerencias disponibles.
+
+### UC11 — Aprobar o Rechazar Rutinas Sugeridas
+- **Actor:** Entrenador
+- **Precondición:** Existe al menos una rutina en estado `pendiente` (requiere RN24: entrenador registrado).
+- **Flujo principal:**
+  1. El entrenador revisa las sugerencias pendientes.
+  2. Aprueba o rechaza cada una.
+  3. El sistema actualiza el estado y registra el entrenador y la fecha de validación.
+- **Flujo alternativo:** Si rechaza, la rutina no queda visible para el alumno (RN21).
