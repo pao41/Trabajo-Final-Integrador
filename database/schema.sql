@@ -21,21 +21,31 @@ CREATE TABLE ficha_salud (
 );
 
 CREATE TABLE planes (
-    id              SERIAL PRIMARY KEY,
-    nombre          VARCHAR(100) NOT NULL UNIQUE,
-    duracion_dias   INTEGER NOT NULL,
-    precio          NUMERIC(10,2) NOT NULL,
-    tipo            VARCHAR(20) NOT NULL CHECK (tipo IN ('tiempo', 'clases'))
+    id                  SERIAL PRIMARY KEY,
+    nombre              VARCHAR(100) NOT NULL UNIQUE,
+    duracion_dias       INTEGER NOT NULL CHECK (duracion_dias > 0),
+    precio              NUMERIC(10,2) NOT NULL CHECK (precio > 0),
+    tipo                VARCHAR(20) NOT NULL CHECK (tipo IN ('tiempo', 'clases')),
+    cantidad_clases     INTEGER,
+    -- Un plan por clases debe indicar su cantidad de clases
+    CONSTRAINT chk_plan_clases CHECK (
+        (tipo = 'clases' AND cantidad_clases IS NOT NULL AND cantidad_clases > 0)
+        OR (tipo = 'tiempo' AND cantidad_clases IS NULL)
+    )
 );
 
 CREATE TABLE inscripciones (
     id                  SERIAL PRIMARY KEY,
-    alumno_id           INTEGER NOT NULL REFERENCES alumnos(id),
-    plan_id             INTEGER NOT NULL REFERENCES planes(id),
+    alumno_id           INTEGER NOT NULL REFERENCES alumnos(id) ON DELETE RESTRICT,
+    plan_id             INTEGER NOT NULL REFERENCES planes(id) ON DELETE RESTRICT,
     fecha_inicio        DATE NOT NULL,
     fecha_vencimiento   DATE NOT NULL,
+    clases_restantes    INTEGER,
     estado              VARCHAR(20) NOT NULL DEFAULT 'activo'
-                         CHECK (estado IN ('activo', 'por_vencer', 'vencido'))
+                         CHECK (estado IN ('activo', 'por_vencer', 'vencido')),
+    CONSTRAINT chk_inscripcion_fechas CHECK (fecha_vencimiento >= fecha_inicio),
+    -- El saldo de clases nunca puede ser negativo (RN30)
+    CONSTRAINT chk_inscripcion_saldo CHECK (clases_restantes IS NULL OR clases_restantes >= 0)
 );
 
 CREATE TABLE pagos (
@@ -48,10 +58,11 @@ CREATE TABLE pagos (
 );
 
 CREATE TABLE asistencias (
-    id          SERIAL PRIMARY KEY,
-    alumno_id   INTEGER NOT NULL REFERENCES alumnos(id),
-    fecha       DATE NOT NULL DEFAULT CURRENT_DATE,
-    hora        TIME NOT NULL DEFAULT CURRENT_TIME
+    id                  SERIAL PRIMARY KEY,
+    alumno_id           INTEGER NOT NULL REFERENCES alumnos(id) ON DELETE RESTRICT,
+    inscripcion_id      INTEGER REFERENCES inscripciones(id) ON DELETE RESTRICT,
+    fecha               DATE NOT NULL DEFAULT CURRENT_DATE,
+    hora                TIME NOT NULL DEFAULT CURRENT_TIME
 );
 
 CREATE TABLE entrenadores (
