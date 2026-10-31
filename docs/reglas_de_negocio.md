@@ -52,3 +52,10 @@
 ## Auditoría y trazabilidad operativa
 
 - **RN28** — Todo registro de pago, inscripción, asistencia, carga de rutina y validación de sugerencias del Asistente de IA conserva su fecha de ejecución y el entrenador responsable cuando corresponda, sin permitir el borrado físico de operaciones históricas.
+
+## Planes por cantidad de clases
+
+- **RN29** — Un plan de tipo `clases` define una cantidad de clases (`cantidad_clases`) y una vigencia en días (`duracion_dias`). Un plan de tipo `tiempo` no define cantidad de clases.
+- **RN30** — Al inscribir a un alumno en un plan por clases, su saldo (`clases_restantes`) se inicializa con la cantidad de clases del plan. Cada ingreso registrado descuenta una (1) clase del saldo, en la misma operación que guarda la asistencia. El saldo nunca puede ser negativo.
+- **RN31** — Una inscripción por clases pasa a `vencido` cuando su saldo llega a cero o cuando vence su vigencia, lo que ocurra primero. Las clases no utilizadas al vencer la vigencia se pierden.
+- **RN32** — Si el saldo es cero, el sistema no registra el ingreso y avisa al personal que corresponde renovar. Al renovar con un nuevo pago se aplica RN03 si la vigencia todavía no venció (el saldo se suma a las clases restantes y la vigencia se extiende) o RN04 si ya venció (el saldo se reinicia con la cantidad de clases del plan). El criterio es la fecha de vencimiento, no el estado.
