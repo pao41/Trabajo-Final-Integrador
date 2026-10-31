@@ -7,7 +7,7 @@ classDiagram
         +string nombre
         +string dni
         +string contacto
-        +string codigoAcceso
+        +string codigoAccesoHash
         +boolean activo
         +date fechaAlta
     }
@@ -24,11 +24,13 @@ classDiagram
         +int duracionDias
         +decimal precio
         +string tipo
+        +int cantidadClases
     }
     class Inscripcion {
         +int id
         +date fechaInicio
         +date fechaVencimiento
+        +int clasesRestantes
         +string estado
     }
     class Pago {
@@ -46,6 +48,14 @@ classDiagram
         +int id
         +string nombre
         +string contacto
+        +date fechaAlta
+    }
+    class Usuario {
+        +int id
+        +string nombreUsuario
+        +string passwordHash
+        +string rol
+        +boolean activo
         +date fechaAlta
     }
     class Rutina {
@@ -72,16 +82,18 @@ classDiagram
         +date fechaActualizacion
     }
 
-    Alumno "1" --> "1" FichaSalud
-    Alumno "1" --> "1" MetaAlumno
+    Alumno "1" --> "0..1" FichaSalud
+    Alumno "1" --> "0..1" MetaAlumno
     Alumno "1" --> "*" Inscripcion
     Plan "1" --> "*" Inscripcion
     Inscripcion "1" --> "*" Pago
     Alumno "1" --> "*" Asistencia
+    Inscripcion "0..1" --> "*" Asistencia
     Alumno "1" --> "*" RutinaAsignada
     Rutina "1" --> "*" RutinaAsignada
     Entrenador "1" --> "*" Rutina
     Entrenador "1" --> "*" RutinaAsignada
+    Entrenador "0..1" --> "0..1" Usuario
 ```
 
 Este diagrama es la representación orientada a objetos del modelo relacional definido en [`/database/schema.sql`](../database/schema.sql) — cada clase corresponde a una tabla, y cada atributo a una columna. `Configuracion` no participa de ninguna relación, por ser una entidad de parámetros globales del sistema.
