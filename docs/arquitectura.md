@@ -14,6 +14,7 @@ flowchart LR
 - **Capa de lógica de negocio (Backend):** Node.js + Express, expuesto como una API REST. Organizado internamente por capas:
   - **Rutas** — definen los endpoints disponibles.
   - **Controladores** — reciben la petición y coordinan la respuesta.
+  - **Middleware** — autenticación de sesiones, control de permisos según el perfil del usuario, límite de intentos fallidos y registro de acciones sensibles.
   - **Servicios** — contienen la lógica de negocio.
   - **Modelos / acceso a datos** — comunicación con PostgreSQL.
 - **Capa de persistencia (Base de datos):** PostgreSQL, con el esquema relacional definido en [`/database/schema.sql`](../database/schema.sql).
@@ -39,7 +40,12 @@ El frontend se comunica con el backend exclusivamente a través de una API REST.
 
 ## Seguridad
 
-El acceso del alumno es por código simple sin contraseña, y el personal administrativo opera sin distinción de roles. No se gestionan datos de tarjetas ni información sensible más allá de la ficha de salud declarada. La incorporación de autenticación con contraseña para el staff queda planteada como mejora futura, fuera del alcance del MVP.
+El detalle completo está en [`seguridad_y_permisos.md`](./seguridad_y_permisos.md). En resumen:
+
+- **Acceso del alumno:** requiere DNI y código de acceso. El código lo genera el sistema, se guarda como hash y, tras 5 intentos fallidos seguidos, el acceso se bloquea 15 minutos. El Panel del Alumno es de solo lectura y no muestra la ficha de salud.
+- **Acceso del personal:** requiere usuario y contraseña (guardada como hash). Cada usuario tiene un perfil (administrador o entrenador) y el backend valida los permisos en cada petición.
+- **Datos personales y de salud:** el acceso se limita por perfil, la comunicación usa HTTPS y se toman como marco los principios de la Ley 25.326. No se almacenan datos de tarjetas.
+- **Integridad:** las reglas críticas se controlan también en la base de datos (ver [`integridad_datos.md`](./integridad_datos.md)).
 
 ## Despliegue
 
@@ -57,4 +63,9 @@ El despliegue de la aplicación —previsto en Vercel (frontend), Render o Railw
 - Variables de entorno (credenciales de base de datos, puertos) gestionadas fuera del código fuente, mediante archivos .env no versionados.
 - El backend se despliega como servicio independiente del frontend, permitiendo actualizar uno sin reconstruir el otro.
 - La base de datos mantiene backups automáticos provistos por el servicio de hosting elegido.
-- Ver diagrama de despliegue candidato en [`docs/diagrama_despliegue.md`](./diagrama_despliegue.md).
+- Toda la comunicación usa HTTPS, y el backend acepta solo el origen del frontend (CORS).
+- Ver el diagrama de despliegue en [`diagrama_despliegue.md`](./diagrama_despliegue.md).
+
+## Auditoría, contingencia y recuperación
+
+El sistema registra las acciones sensibles en el log del backend y conserva el historial de operaciones sin borrado físico. Para continuar operando ante una caída se usa una planilla manual de contingencia, y para recuperar datos se usan copias de respaldo periódicas junto con `database/schema.sql`. El detalle está en [`contingencia_auditoria_recuperacion.md`](./contingencia_auditoria_recuperacion.md).
