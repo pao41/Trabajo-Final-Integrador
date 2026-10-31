@@ -95,3 +95,9 @@ Se toman como marco los principios de la Ley 25.326 de Protección de Datos Pers
 - **Minimización:** se piden solo los datos necesarios (condición cardíaca, lesiones, observaciones).
 - **Confidencialidad:** acceso limitado por perfil y comunicación cifrada con HTTPS.
 - **Registros sin datos sensibles:** el log del backend no incluye contraseñas, códigos de acceso ni datos de salud.
+
+## 7. Limitaciones del MVP y mejoras futuras
+
+- No se incluye doble factor de autenticación ni recuperación de contraseña por email: el administrador restablece las credenciales.
+- El cifrado de los datos en reposo depende del proveedor de hosting de la base de datos.
+- La recuperación de contraseña autoservicio y las notificaciones por email quedan como mejora futura.
