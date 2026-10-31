@@ -1,16 +1,36 @@
 # Casos de Prueba — Sistema de Gestión para Gimnasios
 
-| ID | Objetivo | Precondición | Pasos | Resultado esperado |
-|---|---|---|---|---|
-| CP01 | Alta de alumno exitosa | No existe alumno con ese DNI | Completar formulario de alta con datos válidos | Alumno creado, activo, con código de acceso único |
-| CP02 | Rechazar DNI duplicado | Ya existe un alumno con ese DNI (RN13) | Intentar dar de alta otro alumno con el mismo DNI | El sistema rechaza el alta e informa el motivo |
-| CP03 | Cálculo correcto de vencimiento | Alumno inscripto en un plan de 30 días | Registrar pago el día de inicio | `fecha_vencimiento` = fecha de pago + 30 días (RN02) |
-| CP04 | Reactivación tras pago vencido | Inscripción en estado `vencido` | Registrar un nuevo pago | El plan se reactiva desde la fecha del nuevo pago, sin recuperar días perdidos (RN04) |
-| CP05 | Dashboard refleja facturación por método | Existen pagos con distintos métodos | Abrir el dashboard | El total coincide con la suma real de pagos, desglosado correctamente por método |
-| CP06 | Rechazar check-in duplicado | Alumno registró ingreso hace 1 hora | Intentar registrar un nuevo check-in | El sistema rechaza el check-in por estar dentro de la ventana de 2 horas (RN12) |
-| CP07 | Sugerencia de IA respeta ficha de salud | Alumno con `problemas_cardiacos = true` | Solicitar sugerencia de rutina | El sistema no sugiere ninguna rutina marcada como contraindicada para esa condición (RN20) |
-| CP08 | Rutina no visible sin aprobación | Existe una sugerencia en estado `pendiente` | Consultar el Panel del Alumno antes de la aprobación | La rutina no aparece en el panel hasta que el entrenador la aprueba (RN21) |
-| CP09 | Baja lógica conserva historial | Alumno con pagos e inscripciones registrados | Dar de baja al alumno | El registro pasa a `activo = false`; los pagos e inscripciones previos siguen existiendo y son consultables (RN14, RF14) |
-| CP10 | Regeneración de código de acceso | Alumno reporta pérdida del código | El administrador solicita la regeneración | Se genera un código nuevo, distinto al anterior, y el código viejo deja de ser válido |
-| CP11 | Configuración de días "por vencer" | Parámetro `dias_aviso_vencimiento` modificado a 10 | Consultar estado de una inscripción a 8 días del vencimiento | El estado se muestra como `por_vencer` (antes hubiera sido `activo` con el valor por defecto de 7) |
-| CP12 | Alta de entrenador habilita carga de rutinas | No existe el entrenador en el sistema | Intentar cargar una rutina sin entrenador registrado, luego registrarlo y reintentar | La carga falla sin entrenador registrado (RN24) y se completa correctamente una vez dado de alta |
+| ID | RF | Objetivo | Precondición | Pasos | Resultado esperado |
+|---|---|---|---|---|---|
+| CP01 | RF01 | Alta de alumno exitosa | No existe alumno con ese DNI | Completar formulario de alta con datos válidos | Alumno creado, activo y código de acceso generado, que se muestra una única vez (RN37) |
+| CP02 | RF01 | Rechazar DNI duplicado | Ya existe un alumno con ese DNI (RN13) | Intentar dar de alta otro alumno con el mismo DNI | El sistema rechaza el alta e informa el motivo |
+| CP03 | RF04, RF06 | Cálculo correcto de vencimiento | Alumno inscripto en un plan de 30 días | Registrar pago el día de inicio | `fecha_vencimiento` = fecha de pago + 30 días (RN02) |
+| CP04 | RF06 | Reactivación tras pago vencido | Inscripción en estado `vencido` | Registrar un nuevo pago | El plan se reactiva desde la fecha del nuevo pago, sin recuperar días perdidos (RN04) |
+| CP05 | RF08 | Dashboard refleja facturación por método | Existen pagos con distintos métodos | Abrir el dashboard | El total coincide con la suma real de pagos, desglosado correctamente por método |
+| CP06 | RF07 | Rechazar check-in duplicado | Alumno registró ingreso hace 1 hora | Intentar registrar un nuevo check-in | El sistema rechaza el check-in por estar dentro de la ventana de 2 horas (RN12) |
+| CP07 | RF12 | Sugerencia de IA respeta ficha de salud | Alumno con `problemas_cardiacos = true` | Solicitar sugerencia de rutina | El sistema no sugiere ninguna rutina marcada como contraindicada para esa condición (RN20) |
+| CP08 | RF13 | Rutina no visible sin aprobación | Existe una sugerencia en estado `pendiente` | Consultar el Panel del Alumno antes de la aprobación | La rutina no aparece en el panel hasta que el entrenador la aprueba (RN21) |
+| CP09 | RF14 | Baja lógica conserva historial | Alumno con pagos e inscripciones registrados | Dar de baja al alumno | El registro pasa a `activo = false`; los pagos e inscripciones previos siguen existiendo y son consultables (RN14, RF14) |
+| CP10 | RF15 | Regeneración de código de acceso | Alumno reporta pérdida del código | El administrador solicita la regeneración | Se genera un código nuevo, distinto al anterior, y el código viejo deja de ser válido |
+| CP11 | RF05, RF16 | Configuración de días "por vencer" | Parámetro `dias_aviso_vencimiento` modificado a 10 | Consultar estado de una inscripción a 8 días del vencimiento | El estado se muestra como `por_vencer` (antes hubiera sido `activo` con el valor por defecto de 7) |
+| CP12 | RF17, RF18 | Alta de entrenador habilita carga de rutinas | No existe el entrenador en el sistema | Intentar cargar una rutina sin entrenador registrado, luego registrarlo y reintentar | La carga falla sin entrenador registrado (RN24) y se completa correctamente una vez dado de alta |
+| CP13 | RF02 | Carga de ficha de salud | Alumno registrado sin ficha | Cargar la ficha con los datos declarados | La ficha queda asociada al alumno; no se admite una segunda ficha para el mismo alumno |
+| CP14 | RF03 | Alta de plan por clases | Usuario con perfil administrador | Crear un plan de tipo `clases` sin cantidad de clases, y luego otro con 10 clases | El primero es rechazado (RN29); el segundo se crea correctamente |
+| CP15 | RF09 | Listado filtrado por estado | Existen alumnos con inscripciones activas y vencidas | Filtrar el listado por estado `vencido` | Solo se muestran los alumnos con inscripción vencida |
+| CP16 | RF10 | Acceso del alumno exitoso | Alumno con código de acceso vigente | Ingresar DNI y código correctos | Se muestra el panel con su cuota, asistencia y checklist (RN16) |
+| CP17 | RF10 | Acceso rechazado con código incorrecto | Alumno registrado | Ingresar el DNI correcto y un código incorrecto | Se rechaza con un mensaje genérico que no indica qué dato falló (RN16, RN38) |
+| CP18 | RF10 | Bloqueo por intentos fallidos | Alumno registrado | Realizar 5 intentos fallidos seguidos y luego uno con datos correctos | El sexto intento se rechaza por bloqueo durante 15 minutos (RN38) |
+| CP19 | RF11 | Carga de rutina por el entrenador | Usuario con perfil entrenador | Cargar una rutina de movilidad con sus contraindicaciones | La rutina queda en el banco asociada a ese entrenador (RN35) |
+| CP20 | RF19 | Meta semanal y checklist | Alumno con meta de 4 asistencias semanales y 3 ingresos en la semana | Consultar el Panel del Alumno | El checklist muestra 3 de 4 asistencias de la semana (RN25) |
+| CP21 | RF07, RF20 | Ingreso descuenta una clase | Inscripción por clases vigente con saldo 10 | Registrar el ingreso del alumno | Se crea la asistencia asociada a la inscripción y el saldo pasa a 9 (RN30) |
+| CP22 | RF20 | Saldo agotado bloquea el ingreso | Inscripción por clases con saldo 0 y vigencia no vencida | Intentar registrar el ingreso | El ingreso se rechaza, el estado es `vencido` y se avisa al personal que corresponde renovar (RN31, RN32) |
+| CP23 | RF20, RF06 | Renovación antes del vencimiento suma el saldo | Plan de 10 clases y 60 días; inscripción vigente hasta el 31/12/2026 con saldo 6 | Registrar un pago el 15/12/2026 | El saldo pasa a 16 y el vencimiento a 01/03/2027 (RN03, RN32) |
+| CP24 | RF20 | Vigencia vencida pierde las clases sobrantes | Inscripción por clases vencida por fecha con saldo 3 | Registrar un pago el 10/01/2027 | El saldo se reinicia en 10 y el vencimiento es 11/03/2027 (RN04, RN31, RN32) |
+| CP25 | RF21 | Inicio de sesión del personal | Usuario del personal activo | Ingresar con credenciales correctas, y luego con una contraseña incorrecta | El primer intento accede al panel; el segundo se rechaza con un mensaje genérico (RN33, RN38) |
+| CP26 | RF22 | Entrenador no accede a la gestión del gimnasio | Sesión iniciada con perfil entrenador | Intentar abrir el dashboard de facturación o crear un entrenador | El sistema rechaza la acción (RN36) |
+| CP27 | RF22 | Entrenador no registra pagos | Sesión iniciada con perfil entrenador | Intentar registrar un pago | El sistema rechaza la acción (RN34) |
+| CP28 | RF23 | Alta de usuario entrenador | Sesión de administrador y un entrenador registrado | Crear un usuario con perfil entrenador vinculado a ese entrenador | El usuario queda creado y vinculado (RN35) |
+| CP29 | RF23 | Usuario desactivado no inicia sesión | Usuario del personal activo | El administrador lo desactiva y el usuario intenta iniciar sesión | El acceso se rechaza y su historial de acciones se conserva (RN34) |
+| CP30 | RF14 | La base impide borrar historial | Alumno con inscripciones y pagos | Intentar eliminar físicamente al alumno | La base de datos rechaza la eliminación (`ON DELETE RESTRICT`, RN28) |
+| CP31 | RF06 | La base rechaza pagos inválidos | Inscripción existente | Intentar insertar un pago con monto 0 o con método inexistente | La base de datos rechaza el registro (`CHECK`, RN27) |
+| CP32 | RF13, RF18 | La base rechaza una aprobación sin entrenador | Sugerencia en estado `pendiente` | Intentar pasarla a `aprobada` sin entrenador ni fecha de validación | La base de datos rechaza el cambio (`chk_validacion_coherente`, RN21, RN24) |
