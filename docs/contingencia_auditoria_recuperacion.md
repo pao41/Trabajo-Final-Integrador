@@ -53,3 +53,29 @@ Contraseñas, códigos de acceso ni datos de salud, para no exponer información
 |---|---|
 | Pérdida máxima de datos aceptable | 24 horas (una copia por día) |
 | Tiempo de recuperación | Dentro de una jornada laboral |
+
+### Procedimiento de recuperación
+
+```mermaid
+flowchart TD
+    A([Se detecta pérdida o corrupción de datos]) --> B[Pasar a la planilla manual de contingencia]
+    B --> C[Crear una base nueva y ejecutar database/schema.sql]
+    C --> D[Restaurar la última copia de respaldo válida]
+    D --> E{Los datos son consistentes?}
+    E -->|No| F[Probar con la copia anterior]
+    F --> D
+    E -->|Si| G[Apuntar el backend a la base recuperada]
+    G --> H[Cargar las operaciones de la planilla manual]
+    H --> I([Sistema operativo nuevamente])
+```
+
+El archivo `schema.sql` permite reconstruir la estructura completa de la base ante una pérdida total, y las copias de respaldo recuperan los datos.
+
+## 4. Responsabilidades
+
+| Tarea | Responsable |
+|---|---|
+| Realizar y guardar las copias de respaldo | Administrador |
+| Consultar el registro de acciones sensibles | Administrador |
+| Mantener la planilla de contingencia disponible en el mostrador | Administrador |
+| Redesplegar el sistema ante una falla del servicio | Equipo de desarrollo |
