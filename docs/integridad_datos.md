@@ -16,3 +16,30 @@ La aplicación valida los datos primero, para dar mensajes claros al usuario. La
 | Pagos con monto válido | `CHECK (monto > 0)` | `pagos.monto` |
 | RN08, RN27 — método de pago válido y sin datos de tarjeta | `CHECK` (`efectivo`, `transferencia`, `debito`, `credito`); no existen columnas para datos de tarjeta | `pagos.metodo_pago` |
 | Relación 1 a 1 entre alumno y ficha de salud | `UNIQUE` + `FK` | `ficha_salud.alumno_id` |
+| RN25 — una meta por alumno, entre 1 y 7 asistencias | `UNIQUE` + `CHECK (BETWEEN 1 AND 7)` | `metas_alumno` |
+| RN22 — tipos de rutina permitidos | `CHECK` (`calentamiento`, `movilidad`, `vuelta_a_la_calma`) | `rutinas.tipo` |
+| RN21, RN24 — una sugerencia pendiente no tiene entrenador ni fecha; una aprobada o rechazada tiene ambos | `CHECK chk_validacion_coherente` + `FK` a `entrenadores` | `rutinas_asignadas` |
+| RN24 — el entrenador debe existir | `FK` | `rutinas.entrenador_id`, `rutinas_asignadas.entrenador_id` |
+| RN34 — perfiles de usuario válidos | `CHECK` (`administrador`, `entrenador`) | `usuarios.rol` |
+| RN35 — el usuario entrenador está vinculado a un entrenador y los demás perfiles no | `CHECK chk_usuario_entrenador` + `UNIQUE` | `usuarios.entrenador_id` |
+| Usuario único | `UNIQUE` | `usuarios.nombre_usuario` |
+| RN33, RN37 — las credenciales no se guardan en texto plano | Solo existen las columnas `*_hash` | `usuarios.password_hash`, `alumnos.codigo_acceso_hash` |
+| Configuración única | `id` fijo en 1 con `CHECK (id = 1)`: no admite una segunda fila | `configuracion` |
+| RN09 — días de aviso positivos | `CHECK (dias_aviso_vencimiento > 0)` | `configuracion` |
+
+## 2. Reglas controladas por la aplicación
+
+Estas reglas dependen de cálculos, del tiempo o de varias tablas a la vez, por lo que no se expresan como una restricción simple. La aplicación las valida antes de escribir en la base.
+
+| Regla | Por qué no la controla la base | Cómo se resuelve |
+|---|---|---|
+| RN12 — ventana de 2 horas entre check-ins | Compara con el ingreso anterior | El backend consulta el último ingreso del alumno antes de insertar. Podría reforzarse en el futuro con una restricción de exclusión sobre rangos de tiempo |
+| RN02, RN03, RN04 — cálculo del vencimiento | Es un cálculo con fechas | Lo calcula el servicio de pagos |
+| RN01, RN09 — estado de la inscripción | Depende de la fecha actual | Se recalcula al consultar o al registrar un pago |
+| RN30, RN32 — descuento y renovación de clases | Involucra varias tablas | Ver "Operaciones atómicas" |
+| Coherencia entre `planes.tipo` y `inscripciones.clases_restantes` | Compara dos tablas | La aplicación inicializa el saldo solo para planes por clases |
+| RN05 — el monto del pago es el precio completo del plan | Compara dos tablas | El backend toma el monto del plan |
+| RN20 — rutinas compatibles con la ficha de salud | Filtro de negocio | El backend filtra por contraindicaciones |
+| RN34, RN36 — permisos por perfil | Depende del usuario autenticado | Middleware de autorización en el backend |
+| RN38 — bloqueo por intentos fallidos | Depende del tiempo | Límite de intentos en el backend |
+
