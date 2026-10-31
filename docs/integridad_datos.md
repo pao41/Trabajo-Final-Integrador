@@ -43,3 +43,12 @@ Estas reglas dependen de cálculos, del tiempo o de varias tablas a la vez, por 
 | RN34, RN36 — permisos por perfil | Depende del usuario autenticado | Middleware de autorización en el backend |
 | RN38 — bloqueo por intentos fallidos | Depende del tiempo | Límite de intentos en el backend |
 
+## 3. Operaciones atómicas
+
+Estas operaciones modifican varias tablas y deben ejecutarse dentro de una **transacción**: si un paso falla, no se aplica ninguno.
+
+| Operación | Pasos que se ejecutan juntos |
+|---|---|
+| Registrar ingreso en plan por clases | Insertar la asistencia con su `inscripcion_id` + descontar una clase de `clases_restantes` |
+| Registrar un pago | Insertar el pago + actualizar `fecha_vencimiento`, `clases_restantes` y `estado` de la inscripción |
+| Aprobar o rechazar una sugerencia | Actualizar `estado`, `entrenador_id` y `fecha_validacion` en un solo UPDATE (lo exige `chk_validacion_coherente`) |
