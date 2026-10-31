@@ -30,6 +30,10 @@ El sistema se organiza en dos paneles diferenciados, según el actor que los uti
 | RF17 | El sistema debe permitir al administrador dar de alta y editar entrenadores. |
 | RF18 | El sistema debe asociar cada rutina cargada y cada rutina aprobada al entrenador que realizó la acción. |
 | RF19 | El sistema debe permitir configurar una meta semanal de asistencias por alumno, utilizada para calcular el checklist del Panel del Alumno. |
+| RF20 | El sistema debe gestionar el saldo de clases de las inscripciones por clases: inicializarlo al inscribir, descontar una clase por cada ingreso registrado y no registrar ingresos cuando el saldo sea cero (ver [`planes_por_clases.md`](./planes_por_clases.md)). |
+| RF21 | El sistema debe requerir usuario y contraseña al personal del gimnasio para acceder al Panel Administrador. |
+| RF22 | El sistema debe restringir las funciones del Panel Administrador según el perfil del usuario (administrador o entrenador), conforme a la matriz de permisos. |
+| RF23 | El sistema debe permitir al administrador crear usuarios del personal con su perfil, desactivarlos y restablecer sus contraseñas. |
 
 
 ## Requerimientos No Funcionales (RNF)
@@ -44,3 +48,7 @@ El sistema se organiza en dos paneles diferenciados, según el actor que los uti
 | RNF06 | **Escalabilidad:** la arquitectura relacional debe soportar el crecimiento en cantidad de alumnos y registros sin requerir cambios estructurales mayores. |
 | RNF07 | **Seguridad de acceso:** el alumno accede con DNI y código de acceso y el personal con usuario y contraseña. Las credenciales se almacenan cifradas (hash) y los intentos fallidos consecutivos provocan un bloqueo temporal. |
 | RNF08 | **Consistencia de datos:** el sistema debe preservar la consistencia de los datos entre entidades relacionadas (alumno, plan, inscripción, pago, asistencia), evitando registros huérfanos o inconsistentes. |
+| RNF09 | **Protección de datos personales y de salud:** las comunicaciones deben realizarse por HTTPS, las sesiones deben ser temporales y el acceso a los datos personales y de salud debe limitarse según el perfil del usuario, tomando como marco los principios de la Ley 25.326. |
+| RNF10 | **Auditoría:** las acciones sensibles deben quedar registradas (usuario, acción, fecha y hora) y las operaciones históricas no deben eliminarse físicamente. |
+| RNF11 | **Recuperación:** deben existir copias de respaldo periódicas de la base de datos y un procedimiento de restauración, con objetivo de pérdida máxima de datos de 24 horas y recuperación dentro de una jornada laboral. |
+| RNF12 | **Continuidad operativa:** ante la indisponibilidad del sistema, el gimnasio debe poder seguir operando con un procedimiento manual de contingencia y cargar luego la información. |
