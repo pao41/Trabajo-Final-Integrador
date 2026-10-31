@@ -4,28 +4,28 @@
 
 El sistema se organiza en dos paneles diferenciados, según el actor que los utiliza:
 
-- **Panel Administrador:** utilizado por el personal del gimnasio. Concentra la gestión de alumnos, planes, inscripciones, pagos, asistencia, el dashboard de facturación y la aprobación de rutinas sugeridas por el asistente de IA antes de que lleguen al alumno.
-- **Panel del Alumno:** de solo lectura, accesible mediante un código simple o DNI. Permite al alumno consultar su estado de cuota, su historial de asistencia, su checklist personal, y las rutinas ya aprobadas por el entrenador.
+- **Panel Administrador:** utilizado por el personal del gimnasio, que debe iniciar sesión con usuario y contraseña. Concentra la gestión de alumnos, planes, inscripciones, pagos, asistencia, el dashboard de facturación, la configuración, la gestión de usuarios y entrenadores, y la aprobación de rutinas sugeridas por el asistente de IA. Cada usuario tiene un perfil (administrador o entrenador) que determina qué funciones tiene habilitadas.
+- **Panel del Alumno:** de solo lectura, accesible ingresando DNI y código de acceso. Permite al alumno consultar su estado de cuota, su historial de asistencia, su checklist personal, y las rutinas ya aprobadas por el entrenador.
 
 ## Requerimientos Funcionales (RF)
 
 | # | Requerimiento |
 |---|---|
-| RF01 | El sistema debe permitir registrar, editar y dar de baja alumnos (nombre, DNI, contacto, código de acceso). |
+| RF01 | El sistema debe permitir registrar, editar y dar de baja (lógica) alumnos (nombre, DNI, contacto), generando un código de acceso para el Panel del Alumno. |
 | RF02 | El sistema debe permitir registrar la ficha de salud básica de cada alumno (problemas cardíacos, lesiones, observaciones). |
-| RF03 | El sistema debe permitir crear y editar planes (nombre, duración, precio, tipo: por tiempo o por clases). |
+| RF03 | El sistema debe permitir crear y editar planes (nombre, duración, precio y tipo: por tiempo o por clases; en los planes por clases, también la cantidad de clases incluidas). |
 | RF04 | El sistema debe permitir inscribir a un alumno en un plan, calculando automáticamente la fecha de vencimiento. |
 | RF05 | El sistema debe actualizar automáticamente el estado de cada inscripción (activo / por vencer / vencido) según la fecha actual. |
 | RF06 | El sistema debe permitir registrar pagos asociados a una inscripción, indicando fecha, monto y método de pago. |
-| RF07 | El sistema debe permitir registrar el ingreso diario de un alumno (check-in manual desde el mostrador). |
+| RF07 | El sistema debe permitir registrar el ingreso diario de un alumno (check-in manual desde el mostrador), asociándolo a su inscripción vigente. |
 | RF08 | El sistema debe mostrar un dashboard con facturación total del mes y desglose por método de pago. |
 | RF09 | El sistema debe mostrar el listado de alumnos filtrado por estado (activo / por vencer / vencido). |
-| RF10 | El sistema debe ofrecer un panel de autoconsulta para que el alumno vea su estado de cuota e historial de asistencia, accediendo mediante código simple o DNI. |
+| RF10 | El sistema debe ofrecer un panel de autoconsulta para que el alumno vea su estado de cuota e historial de asistencia, accediendo con su DNI y su código de acceso. |
 | RF11 | El sistema debe permitir cargar un banco de rutinas de calentamiento, movilidad y vuelta a la calma, indicando contraindicaciones de salud para cada una. |
 | RF12 | El sistema debe sugerir rutinas al alumno filtrando el banco de rutinas según su ficha de salud, sin generar ejercicios nuevos. |
 | RF13 | Toda rutina sugerida debe quedar en estado "pendiente" hasta ser aprobada por un entrenador antes de estar disponible para el alumno. |
 | RF14 | El sistema debe conservar el historial completo de pagos e inscripciones de cada alumno, sin eliminarlo ante bajas o cambios de plan. |
-| RF15 | El sistema debe permitir al personal del gimnasio regenerar el código de acceso de un alumno desde el Panel Administrador, en caso de pérdida u olvido. |
+| RF15 | El sistema debe permitir al personal del gimnasio regenerar el código de acceso de un alumno desde el Panel Administrador, en caso de pérdida u olvido; el código anterior deja de ser válido. |
 | RF16 | El sistema debe permitir configurar parámetros generales: datos del gimnasio, días de anticipación para el estado "por vencer", y métodos de pago habilitados. |
 | RF17 | El sistema debe permitir al administrador dar de alta y editar entrenadores. |
 | RF18 | El sistema debe asociar cada rutina cargada y cada rutina aprobada al entrenador que realizó la acción. |
@@ -42,5 +42,5 @@ El sistema se organiza en dos paneles diferenciados, según el actor que los uti
 | RNF04 | **Disponibilidad:** el sistema debe estar desplegado en servicios de hosting en la nube, accesible de forma continua. |
 | RNF05 | **Mantenibilidad:** el código debe organizarse en capas separadas (frontend, backend, base de datos) para facilitar su mantenimiento y evolución futura. |
 | RNF06 | **Escalabilidad:** la arquitectura relacional debe soportar el crecimiento en cantidad de alumnos y registros sin requerir cambios estructurales mayores. |
-| RNF07 | **Seguridad de acceso:** el acceso del alumno al panel de autoconsulta no debe requerir el ingreso de datos sensibles más allá de un código simple o DNI, evitando el manejo de contraseñas en esta primera versión. |
+| RNF07 | **Seguridad de acceso:** el alumno accede con DNI y código de acceso y el personal con usuario y contraseña. Las credenciales se almacenan cifradas (hash) y los intentos fallidos consecutivos provocan un bloqueo temporal. |
 | RNF08 | **Consistencia de datos:** el sistema debe preservar la consistencia de los datos entre entidades relacionadas (alumno, plan, inscripción, pago, asistencia), evitando registros huérfanos o inconsistentes. |
