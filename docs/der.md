@@ -115,7 +115,7 @@ erDiagram
 - **alumnos** — entidad central del sistema. Un alumno tiene una ficha_salud, puede tener varias inscripciones a lo largo del tiempo, varios registros de asistencias, y varias rutinas_asignadas. Guarda el código de acceso solo como hash.
 - **ficha_salud** — como máximo una por alumno (relación 1 a 0..1). Guarda los datos de salud declarados, usados para filtrar rutinas seguras.
 - **planes** — catálogo de planes disponibles (mensual, trimestral, por clases, etc.), independiente de los alumnos. Los planes por clases indican `cantidad_clases`.
-- **inscripciones** — relaciona un alumno con un plan en un período determinado, con su fecha de vencimiento y estado. En los planes por clases lleva el saldo `clases_restantes`..
+- **inscripciones** — relaciona un alumno con un plan en un período determinado, con su fecha de vencimiento y estado. En los planes por clases lleva el saldo `clases_restantes`.
 - **pagos** — cada pago pertenece a una inscripción; un alumno puede tener muchos pagos a lo largo del tiempo (historial completo, ver RF14).
 - **asistencias** — un registro por cada check-in de un alumno. Se asocia a la inscripción contra la que se registró el ingreso, lo que permite reconstruir el consumo de clases.
 - **rutinas** — banco de rutinas predefinidas, cargadas por el entrenador, con sus contraindicaciones.
@@ -134,7 +134,8 @@ erDiagram
 | alumnos → inscripciones | 1 a muchos |
 | planes → inscripciones | 1 a muchos |
 | inscripciones → pagos | 1 a muchos |
-| alumnos → asistencias | 0..1 a muchos |
+| alumnos → asistencias | 1 a muchos |
+| inscripciones → asistencias | 0..1 a muchos |
 | alumnos → rutinas_asignadas | 1 a muchos |
 | rutinas → rutinas_asignadas | 1 a muchos |
 | entrenadores → rutinas | 1 a muchos |
