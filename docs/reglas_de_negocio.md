@@ -70,3 +70,8 @@
 - **RN38** — Después de 5 intentos fallidos consecutivos de acceso (alumno o personal) el sistema bloquea nuevos intentos durante 15 minutos. Los mensajes de error son genéricos y no indican qué dato falló.
 - **RN39** — La ficha de salud solo puede ser consultada por personal autenticado según su perfil (administrador y entrenador). Nunca se muestra en el Panel del Alumno.
 - **RN40** — Las acciones sensibles (baja de alumnos, regeneración de códigos, gestión de entrenadores y usuarios, cambios de configuración, planes y precios, y aprobación o rechazo de rutinas) se registran en el log del backend con usuario, acción, fecha y hora. El registro no incluye contraseñas, códigos de acceso ni datos de salud.
+
+## Contingencia y recuperación
+
+- **RN41** — Ante la indisponibilidad del sistema, el personal registra ingresos y pagos en una planilla manual de contingencia y los carga al restablecerse el servicio, conservando la fecha y hora reales de cada operación.
+- **RN42** — Se realizan copias de respaldo periódicas de la base de datos. El archivo `database/schema.sql` permite reconstruir su estructura ante una pérdida total.
