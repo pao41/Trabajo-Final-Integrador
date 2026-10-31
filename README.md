@@ -64,14 +64,15 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 
 #### Funcionalidades del MVP:
 * **Panel Administrador — Gestión de Alumnos:** Vista centralizada para la administración de perfiles, datos de contacto, ficha de salud básica, historial de estados (activo / por vencer / vencido) y baja lógica.
-* **Panel del Alumno (autoconsulta):** Acceso mediante código simple o DNI, sin contraseña, donde el alumno consulta su estado de cuota, historial de asistencia, checklist personal de objetivos y las rutinas ya aprobadas por el entrenador.
-* **Catálogo de planes e inscripciones:** Configuración de ofertas de membresías y cálculo automático de vencimientos.
+* **Panel del Alumno (autoconsulta):** Acceso con DNI y código de acceso, donde el alumno consulta (solo lectura) su estado de cuota, clases restantes, historial de asistencia, checklist personal de objetivos y las rutinas ya aprobadas por el entrenador.
+* **Catálogo de planes e inscripciones:** Configuración de planes por tiempo o por cantidad de clases, con cálculo automático de vencimientos y descuento automático de una clase por cada ingreso en los planes por clases.
 * **Registro de pagos:** Alta de cobranzas con especificación del método de pago (efectivo, transferencia, débito, crédito).
 * **Checklist de asistencia:** Módulo rápido de registro manual para la marcación diaria de presencia de los alumnos con validación para evitar check-ins duplicados.
 * **Módulo de Rutinas:** Banco de rutinas de entrenamiento físico, cargado y mantenido por el entrenador.
 * **Asistente de IA (con supervisión):** Sugerencia guiada de ejercicios básicos de calentamiento, movilidad articular y estiramiento, filtrada por la ficha de salud del alumno y sujeta a aprobación del entrenador antes de estar disponible para consulta.
 * **Dashboard administrativo:** Facturación total y por método de pago, alumnos nuevos del mes, asistencias semanales, cuotas vencidas e ingresos proyectados.
 * **Módulo de Configuración:** Datos generales del gimnasio, días de anticipación para el estado "por vencer" y métodos de pago habilitados.
+* **Usuarios y Seguridad:** Inicio de sesión del personal con usuario y contraseña y dos perfiles (administrador y entrenador) con permisos diferenciados.
 
 #### Nice to have (Futuras mejoras):
 * Notificaciones automáticas por email sobre vencimientos de cuota.
@@ -85,6 +86,7 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 * Aplicación móvil nativa (iOS / Android).
 * Gestión automatizada de devoluciones y reembolsos.
 * Control de acceso físico mediante hardware biométrico.
+* Autenticación de dos factores y recuperación de contraseña por email (el administrador restablece las credenciales).
 
 ---
 
@@ -131,3 +133,7 @@ La arquitectura del proyecto está documentada en detalle en [`docs/arquitectura
 * [Matriz de trazabilidad](./docs/matriz_trazabilidad.md)
 * [Criterios de aceptación](./docs/criterios_aceptacion.md)
 * [Casos de prueba](./docs/casos_prueba.md)
+* [Planes por cantidad de clases](./docs/planes_por_clases.md)
+* [Seguridad y permisos](./docs/seguridad_y_permisos.md)
+* [Integridad de datos](./docs/integridad_datos.md)
+* [Auditoría, contingencia y recuperación](./docs/contingencia_auditoria_recuperacion.md)
