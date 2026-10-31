@@ -6,7 +6,7 @@ CREATE TABLE alumnos (
     nombre          VARCHAR(150) NOT NULL,
     dni             VARCHAR(20) UNIQUE NOT NULL,
     contacto        VARCHAR(150),
-    codigo_acceso   VARCHAR(20) UNIQUE NOT NULL,
+    codigo_acceso_hash  VARCHAR(255) NOT NULL,
     activo          BOOLEAN NOT NULL DEFAULT TRUE,
     fecha_alta      DATE NOT NULL DEFAULT CURRENT_DATE
 );
@@ -70,6 +70,22 @@ CREATE TABLE entrenadores (
     nombre          VARCHAR(150) NOT NULL,
     contacto        VARCHAR(150),
     fecha_alta      DATE NOT NULL DEFAULT CURRENT_DATE
+);
+
+CREATE TABLE usuarios (
+    id                  SERIAL PRIMARY KEY,
+    nombre_usuario      VARCHAR(50) NOT NULL UNIQUE,
+    password_hash       VARCHAR(255) NOT NULL,
+    rol                 VARCHAR(20) NOT NULL
+                         CHECK (rol IN ('administrador', 'entrenador')),
+    entrenador_id       INTEGER UNIQUE REFERENCES entrenadores(id) ON DELETE RESTRICT,
+    activo              BOOLEAN NOT NULL DEFAULT TRUE,
+    fecha_alta          DATE NOT NULL DEFAULT CURRENT_DATE,
+    -- Un usuario entrenador debe estar vinculado a un entrenador;
+    CONSTRAINT chk_usuario_entrenador CHECK (
+        (rol = 'entrenador' AND entrenador_id IS NOT NULL)
+        OR (rol <> 'entrenador' AND entrenador_id IS NULL)
+    )
 );
 
 CREATE TABLE rutinas (
