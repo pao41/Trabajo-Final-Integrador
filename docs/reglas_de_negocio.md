@@ -59,3 +59,14 @@
 - **RN30** — Al inscribir a un alumno en un plan por clases, su saldo (`clases_restantes`) se inicializa con la cantidad de clases del plan. Cada ingreso registrado descuenta una (1) clase del saldo, en la misma operación que guarda la asistencia. El saldo nunca puede ser negativo.
 - **RN31** — Una inscripción por clases pasa a `vencido` cuando su saldo llega a cero o cuando vence su vigencia, lo que ocurra primero. Las clases no utilizadas al vencer la vigencia se pierden.
 - **RN32** — Si el saldo es cero, el sistema no registra el ingreso y avisa al personal que corresponde renovar. Al renovar con un nuevo pago se aplica RN03 si la vigencia todavía no venció (el saldo se suma a las clases restantes y la vigencia se extiende) o RN04 si ya venció (el saldo se reinicia con la cantidad de clases del plan). El criterio es la fecha de vencimiento, no el estado.
+
+## Seguridad, usuarios y permisos
+
+- **RN33** — El personal accede al Panel Administrador con usuario y contraseña. Las contraseñas se almacenan cifradas (hash) y nunca en texto plano.
+- **RN34** — Cada usuario del personal tiene un único perfil (administrador o entrenador) y solo puede ejecutar las funciones habilitadas para ese perfil. Los usuarios no se eliminan: se desactivan.
+- **RN35** — Un usuario con perfil entrenador queda vinculado a un registro de entrenadores. La carga de rutinas y la validación de sugerencias se registran a nombre de ese entrenador (ver RN24).
+- **RN36** — El perfil administrador tiene a su cargo toda la gestión del gimnasio: alumnos (incluida la baja lógica), planes y precios, inscripciones, pagos, asistencia, dashboard, configuración, entrenadores y usuarios. El perfil entrenador solo puede cargar rutinas, aprobar o rechazar sugerencias y consultar fichas de salud y rutinas.
+- **RN37** — El código de acceso del alumno lo genera el sistema de forma aleatoria y no se deriva del DNI. Se almacena cifrado (hash) y se muestra al personal una única vez, al generarlo o regenerarlo. Al regenerarlo, el código anterior deja de ser válido.
+- **RN38** — Después de 5 intentos fallidos consecutivos de acceso (alumno o personal) el sistema bloquea nuevos intentos durante 15 minutos. Los mensajes de error son genéricos y no indican qué dato falló.
+- **RN39** — La ficha de salud solo puede ser consultada por personal autenticado según su perfil (administrador y entrenador). Nunca se muestra en el Panel del Alumno.
+- **RN40** — Las acciones sensibles (baja de alumnos, regeneración de códigos, gestión de entrenadores y usuarios, cambios de configuración, planes y precios, y aprobación o rechazo de rutinas) se registran en el log del backend con usuario, acción, fecha y hora. El registro no incluye contraseñas, códigos de acceso ni datos de salud.
