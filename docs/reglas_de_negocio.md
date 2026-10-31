@@ -10,7 +10,7 @@
 - **RN06** — El cambio de plan de un alumno se aplica a partir de la próxima renovación; no se hacen cálculos proporcionales del plan anterior a mitad de período.
 - **RN07** — El sistema no gestiona reembolsos ni cancelaciones de pagos ya registrados.
 - **RN08** — El método de pago (efectivo, transferencia, débito, crédito) es un dato informativo para el dashboard; el sistema no integra pasarelas de pago reales.
-- **RN09**— Una inscripción se considera "por vencer" cuando faltan menos de 7 días para su fecha de vencimiento. Este valor es configurable desde el Módulo de Configuración.
+- **RN09** — Una inscripción se considera "por vencer" cuando faltan menos de 7 días para su fecha de vencimiento. Este valor es configurable desde el Módulo de Configuración.
 
 ## Asistencia
 
@@ -24,9 +24,9 @@
 
 ## Roles y acceso
 
-- **RN15** — El sistema no distingue roles rígidos de "dueño" y "recepcionista": cualquier usuario administrador/staff puede operar todas las funciones administrativas.
-- **RN16** — El alumno accede a su panel de autoconsulta mediante un código simple o su DNI, sin sistema de contraseñas en esta versión.
-- **RN17** — El panel de autoconsulta es de solo lectura: el alumno puede ver su información, pero no puede modificar datos de pagos, planes ni asistencia.
+- **RN15** — El sistema distingue dos perfiles de personal (administrador y entrenador). Cada perfil accede solo a las funciones habilitadas en la matriz de permisos de [`seguridad_y_permisos.md`](./seguridad_y_permisos.md)
+- **RN16** — El alumno accede a su panel de autoconsulta ingresando su DNI y su código de acceso; ambos datos son obligatorios. El DNI solo no habilita el acceso.
+- **RN17** — El panel de autoconsulta es de solo lectura y muestra únicamente los datos del propio alumno: no puede modificar datos de pagos, planes ni asistencia, ni ver información de otros alumnos.
 
 ## Rutinas y Asistente de IA
 
@@ -51,4 +51,4 @@
 
 ## Auditoría y trazabilidad operativa
 
-- **RN28** - Todo registro de pago, inscripción, asistencia, carga de rutina y validación de sugerencias del Asistente de IA conserva su fecha de ejecución y el entrenador responsable cuando corresponda, sin permitir el borrado físico de operaciones históricas.
+- **RN28** — Todo registro de pago, inscripción, asistencia, carga de rutina y validación de sugerencias del Asistente de IA conserva su fecha de ejecución y el entrenador responsable cuando corresponda, sin permitir el borrado físico de operaciones históricas.
