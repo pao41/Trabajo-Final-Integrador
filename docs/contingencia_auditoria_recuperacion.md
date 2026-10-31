@@ -36,3 +36,20 @@ Contraseñas, códigos de acceso ni datos de salud, para no exponer información
 | Carga errónea de un dato | Un pago o ingreso mal cargado | El registro no se elimina (RN28): el administrador corrige el dato y la modificación queda registrada en el log (RN40) |
 | Contraseña de personal olvidada | Un usuario no puede entrar | El administrador restablece la contraseña (RF23) |
 | Código de acceso de alumno perdido | El alumno no puede ver su panel | El personal regenera el código (RF15) |
+
+**Planilla manual de contingencia:** hoja impresa con los campos fecha, hora, alumno (DNI), tipo de operación (ingreso o pago), monto y método de pago, y quién la anotó. Al restablecerse el sistema, se carga conservando la fecha y hora reales de cada operación (RN41).
+
+## 3. Recuperación
+
+### Copias de respaldo
+
+- Se hacen copias de respaldo periódicas de la base de datos (RN42): automáticas, si el plan del proveedor de hosting las incluye; si no, exportaciones manuales con `pg_dump` al menos una vez por día hábil.
+- Las copias se guardan fuera del servicio donde está la base (por ejemplo, un almacenamiento en la nube distinto) y con acceso restringido.
+- Antes de la entrega final se realiza una prueba de restauración en una base de prueba, para verificar que la copia sirve.
+
+### Objetivos propuestos
+
+| Indicador | Objetivo |
+|---|---|
+| Pérdida máxima de datos aceptable | 24 horas (una copia por día) |
+| Tiempo de recuperación | Dentro de una jornada laboral |
