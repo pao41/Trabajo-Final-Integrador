@@ -26,3 +26,49 @@ El acceso por DNI solo no es seguro, porque el DNI no es un dato secreto. Por es
 | La ficha de salud no se muestra en el Panel del Alumno | Exposición de datos sensibles | RN39 |
 | Al regenerar el código, el anterior deja de ser válido | Uso de un código perdido o robado | RF15, RN37 |
 | La sesión es temporal (token con vencimiento) y todo viaja por HTTPS | Sesiones abiertas indefinidamente e interceptación | RNF09 |
+
+## 3. Acceso del personal (Panel Administrador)
+
+El personal ingresa con **usuario y contraseña** (RF21, RN33).
+
+- Las contraseñas se guardan con hash (por ejemplo, bcrypt), nunca en texto plano.
+- Se aplica el mismo bloqueo temporal por intentos fallidos que en el acceso del alumno (RN38).
+- Los usuarios no se borran: se desactivan (`usuarios.activo = false`), para conservar el historial de quién realizó cada acción.
+- El administrador crea los usuarios con su perfil, los desactiva y restablece contraseñas (RF23). No hay autoregistro.
+- El backend valida el perfil del usuario en **cada** petición; ocultar un botón en el frontend no alcanza como control.
+
+## 4. Perfiles y matriz de permisos
+
+El sistema tiene dos perfiles y cada usuario tiene uno solo (RN34). Se mantienen pocos perfiles a propósito: es un gimnasio chico, donde el dueño o responsable atiende el mostrador y el entrenador solo trabaja con las rutinas.
+
+| Perfil | Quién es | Vinculación |
+|---|---|---|
+| Administrador | Dueño o responsable del gimnasio, que también atiende el mostrador | Ninguna |
+| Entrenador | Profesor que carga y valida rutinas | Se vincula con un registro de `entrenadores` (RN35) |
+
+Si el dueño también entrena, se le crean dos usuarios, uno por perfil.
+
+**Matriz de permisos** (✔ permitido, — no permitido):
+
+| Función | Administrador | Entrenador |
+|---|:---:|:---:|
+| Alta y edición de alumnos | ✔ | — |
+| **Baja lógica de alumnos** | ✔ | — |
+| **Regenerar el código de acceso de un alumno** | ✔ | — |
+| Cargar y editar la ficha de salud | ✔ | — |
+| Consultar la ficha de salud | ✔ | ✔ |
+| **Crear y editar planes y precios** | ✔ | — |
+| Inscribir alumnos y renovar | ✔ | — |
+| Registrar pagos | ✔ | — |
+| Registrar asistencia (check-in) | ✔ | — |
+| Listado de alumnos por estado | ✔ | — |
+| Configurar la meta semanal de un alumno | ✔ | — |
+| **Dashboard (facturación e ingresos)** | ✔ | — |
+| **Configuración general del sistema** | ✔ | — |
+| **Gestionar entrenadores** | ✔ | — |
+| **Gestionar usuarios** | ✔ | — |
+| Cargar y editar rutinas del banco | — | ✔ |
+| Aprobar o rechazar sugerencias del Asistente de IA | — | ✔ |
+| Consultar rutinas y sugerencias | ✔ (lectura) | ✔ |
+
+Las funciones en **negrita** son las acciones sensibles. Quedan a cargo del administrador, por lo que el entrenador no puede gestionar entrenadores, usuarios, configuración ni ver la facturación (RN36). La carga de rutinas y la aprobación de sugerencias son exclusivas del entrenador porque quedan registradas a su nombre (RN24, RN35).
