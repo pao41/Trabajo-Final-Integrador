@@ -72,3 +72,26 @@ Si el dueño también entrena, se le crean dos usuarios, uno por perfil.
 | Consultar rutinas y sugerencias | ✔ (lectura) | ✔ |
 
 Las funciones en **negrita** son las acciones sensibles. Quedan a cargo del administrador, por lo que el entrenador no puede gestionar entrenadores, usuarios, configuración ni ver la facturación (RN36). La carga de rutinas y la aprobación de sugerencias son exclusivas del entrenador porque quedan registradas a su nombre (RN24, RN35).
+
+## 5. Acciones sensibles y registro
+
+Las acciones sensibles se registran en el log del backend con usuario, acción, fecha y hora (RN40). El detalle del registro está en [`contingencia_auditoria_recuperacion.md`](./contingencia_auditoria_recuperacion.md).
+
+| Acción sensible | Perfil habilitado |
+|---|---|
+| Baja lógica de un alumno | Administrador |
+| Regeneración de código de acceso | Administrador |
+| Alta, edición o desactivación de entrenadores | Administrador |
+| Alta o desactivación de usuarios y restablecimiento de contraseñas | Administrador |
+| Cambios en configuración, planes y precios | Administrador |
+| Aprobación o rechazo de una sugerencia de rutina | Entrenador |
+
+## 6. Protección de datos personales y de salud
+
+Se toman como marco los principios de la Ley 25.326 de Protección de Datos Personales, que considera sensibles a los datos de salud:
+
+- **Finalidad:** la ficha de salud se usa solo para filtrar rutinas seguras, no para otros fines.
+- **Consentimiento:** el alumno declara los datos de forma voluntaria al inscribirse.
+- **Minimización:** se piden solo los datos necesarios (condición cardíaca, lesiones, observaciones).
+- **Confidencialidad:** acceso limitado por perfil y comunicación cifrada con HTTPS.
+- **Registros sin datos sensibles:** el log del backend no incluye contraseñas, códigos de acceso ni datos de salud.
