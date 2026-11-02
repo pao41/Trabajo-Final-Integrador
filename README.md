@@ -93,7 +93,7 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 ### Tecnologías utilizadas
 
 * **Frontend:** React
-* **Backend:** Node.js + Express
+* **Backend:** Python + FastAPI
 * **Base de datos:** PostgreSQL
 * **Control de versiones:** Git + GitHub
 

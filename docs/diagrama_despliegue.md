@@ -15,8 +15,8 @@ flowchart LR
         end
     end
     subgraph N3["«node» Servicio de hosting del backend"]
-        subgraph E3["«execution environment» Node.js"]
-            A3["«artifact» API REST con Express"]
+        subgraph E3["«execution environment» Python"]
+            A3["«artifact» API REST con FastAPI"]
         end
     end
     subgraph N4["«node» Servicio de base de datos gestionada"]
@@ -36,7 +36,7 @@ flowchart LR
 |---|---|---|---|---|
 | Equipo del usuario | `«device»` | Navegador web | Aplicación React (SPA) descargada del hosting del frontend | Cualquier navegador moderno |
 | Hosting del frontend | `«node»` | Servidor de archivos estáticos | Build de React (HTML, JS y CSS) | Vercel |
-| Hosting del backend | `«node»` | Node.js | API REST con Express | Render o Railway |
+| Hosting del backend | `«node»` | Python | API REST con FastAPI | Render o Railway |
 | Base de datos gestionada | `«node»` | PostgreSQL | Base de datos creada con `database/schema.sql` | Railway o Supabase |
 
 ## Caminos de comunicación

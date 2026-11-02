@@ -6,23 +6,24 @@ El sistema sigue una arquitectura **cliente-servidor de tres capas**, con separa
 
 ```mermaid
 flowchart LR
-    A[Frontend<br/>React] -->|HTTP / JSON<br/>API REST| B[Backend<br/>Node.js + Express]
+    A[Frontend<br/>React] -->|HTTP / JSON<br/>API REST| B[Backend<br/>Python + FastAPI]
     B -->|Consultas SQL| C[(Base de datos<br/>PostgreSQL)]
 ```
 
 - **Capa de presentación (Frontend):** React. Consume la API del backend mediante peticiones HTTP y renderiza el Panel Administrador y el Panel del Alumno.
-- **Capa de lógica de negocio (Backend):** Node.js + Express, expuesto como una API REST. Organizado internamente por capas:
-  - **Rutas** — definen los endpoints disponibles.
-  - **Controladores** — reciben la petición y coordinan la respuesta.
-  - **Middleware** — autenticación de sesiones, control de permisos según el perfil del usuario, límite de intentos fallidos y registro de acciones sensibles.
+- **Capa de lógica de negocio (Backend):** Python + FastAPI, expuesto como una API REST. Organizado internamente por capas:
+  - **Routers** — definen los endpoints disponibles.
+  - **Esquemas** — definen y validan los datos de entrada y de salida de cada endpoint.
+  - **Dependencias y middleware** — autenticación de sesiones, control de permisos según el perfil del usuario, límite de intentos fallidos y registro de acciones sensibles.
   - **Servicios** — contienen la lógica de negocio.
-  - **Modelos / acceso a datos** — comunicación con PostgreSQL.
+  - **Modelos / acceso a datos** — modelos SQLModel que reflejan las tablas y comunicación con PostgreSQL.
 - **Capa de persistencia (Base de datos):** PostgreSQL, con el esquema relacional definido en [`/database/schema.sql`](../database/schema.sql).
 
 ## Decisiones
 
 - **Separación de responsabilidades:** cada capa puede modificarse o reemplazarse sin afectar directamente a las demás (por ejemplo, cambiar el frontend sin tocar el backend).
-- **Mantenibilidad:** organizar el backend en capas (rutas/controladores/servicios) facilita ubicar y corregir código a medida que el sistema crezca.
+- **Mantenibilidad:** organizar el backend en capas (routers/esquemas/servicios) facilita ubicar y corregir código a medida que el sistema crezca.
+- **Organización por funcionalidad:** el backend tiene una carpeta por módulo (alumnos, planes, pagos, etc.), cada una con sus modelos, esquemas, servicios y rutas, en lugar de agrupar por tipo de archivo.
 - **Despliegue independiente:** cada capa se aloja en un servicio distinto en la nube, lo que permite escalar o actualizar una sin afectar a las otras.
 
 ## Tecnologías 
@@ -30,7 +31,7 @@ flowchart LR
 | Capa | Tecnología |
 |---|---|
 | Frontend | React |
-| Backend | Node.js + Express (API REST) |
+| Backend | Python + FastAPI (API REST) |
 | Base de datos | PostgreSQL |
 | Control de versiones | Git + GitHub |
 
