@@ -11,13 +11,13 @@ flowchart LR
 ```
 
 - **Capa de presentación (Frontend):** React. Consume la API del backend mediante peticiones HTTP y renderiza el Panel Administrador y el Panel del Alumno.
-- **Capa de lógica de negocio (Backend):** Python + FastAPI, expuesto como una API REST. Por dentro, cada petición recorre cuatro capas (router, servicio, Unit of Work y     repositorio), apoyadas en los modelos de las tablas y acompañadas por los esquemas y las dependencias:
+- **Capa de lógica de negocio (Backend):** Python + FastAPI, expuesto como una API REST. Por dentro, cada petición recorre cuatro capas (router, servicio, Unit of Work y repositorio), apoyadas en los modelos de las tablas y acompañadas por los esquemas y las dependencias:
   - **Routers** — definen los endpoints disponibles.
   - **Esquemas** — definen y validan los datos de entrada y de salida de cada endpoint.
   - **Dependencias y middleware** — autenticación de sesiones, control de permisos según el perfil del usuario, límite de intentos fallidos y registro de acciones sensibles.
-  - **Servicios** contienen la lógica de negocio y no escriben SQL ni confirman transacciones.
-      Unit of Work — controla la transacción de cada caso de uso: todo se confirma o nada persiste.
-      Repositorios — encapsulan el acceso a los datos de cada entidad y no confirman la transacción.
+  - **Servicios** — contienen la lógica de negocio y no escriben SQL ni confirman transacciones.
+  - **Unit of Work** — controla la transacción de cada caso de uso: todo se confirma o nada persiste.
+  - **Repositorios** — encapsulan el acceso a los datos de cada entidad y no confirman la transacción.
   - **Modelos** — modelos SQLModel que reflejan las tablas, sobre los que trabajan los repositorios para comunicarse con PostgreSQL.
 - **Capa de persistencia (Base de datos):** PostgreSQL, con el esquema relacional definido en [`/database/schema.sql`](../database/schema.sql).
 
