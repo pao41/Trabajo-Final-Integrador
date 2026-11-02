@@ -92,8 +92,11 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 
 ### Tecnologías utilizadas
 
-* **Frontend:** React
-* **Backend:** Python + FastAPI
+* **Frontend:** React con TypeScript, Vite y Tailwind CSS, con TanStack Query para los datos de la API 
+* **Backend:** Python + FastAPI, con SQLModel y PostgreSQL 
+* **Arquitectura del backend:** Router, Servicio, Unit of Work y Repositorio
+* **Seguridad:** hash con bcrypt y sesión con JWT en una cookie HttpOnly
+* **Pruebas y calidad:** pytest y ruff
 * **Base de datos:** PostgreSQL
 * **Control de versiones:** Git + GitHub
 
@@ -101,7 +104,7 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 
 ### Arquitectura
 
-La arquitectura del proyecto está documentada en detalle en [`docs/arquitectura.md`](./docs/arquitectura.md).
+La arquitectura del proyecto sigue un esquema cliente-servidor de tres capas (frontend React, backend FastAPI y base PostgreSQL). Dentro del backend, cada petición recorre cuatro capas: router, servicio, Unit of Work y repositorio. El detalle, el flujo de una petición, las herramientas y el estado de la implementación están en [`docs/arquitectura.md`](./docs/arquitectura.md).
 
 ---
 

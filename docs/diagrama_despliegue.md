@@ -50,5 +50,6 @@ flowchart LR
 ## Configuración por entorno
 
 - Las credenciales de la base de datos y la clave de firma de las sesiones se definen como variables de entorno en el hosting del backend, fuera del código y de GitHub.
+- La cookie de sesión viaja solo por HTTPS en producción (`COOKIE_SECURE`) y la duración de la sesión es configurable (`ACCESS_TOKEN_EXPIRE_MINUTES`).
 - La base de datos solo acepta conexiones del backend.
 - La plataforma definitiva de cada nodo se confirma en la etapa de despliegue (ver [`arquitectura.md`](./arquitectura.md)).
