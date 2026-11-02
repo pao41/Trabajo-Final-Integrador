@@ -11,20 +11,44 @@ flowchart LR
 ```
 
 - **Capa de presentación (Frontend):** React. Consume la API del backend mediante peticiones HTTP y renderiza el Panel Administrador y el Panel del Alumno.
-- **Capa de lógica de negocio (Backend):** Python + FastAPI, expuesto como una API REST. Organizado internamente por capas:
+- **Capa de lógica de negocio (Backend):** Python + FastAPI, expuesto como una API REST. Por dentro, cada petición recorre cuatro capas (router, servicio, Unit of Work y     repositorio), apoyadas en los modelos de las tablas y acompañadas por los esquemas y las dependencias:
   - **Routers** — definen los endpoints disponibles.
   - **Esquemas** — definen y validan los datos de entrada y de salida de cada endpoint.
   - **Dependencias y middleware** — autenticación de sesiones, control de permisos según el perfil del usuario, límite de intentos fallidos y registro de acciones sensibles.
-  - **Servicios** — contienen la lógica de negocio.
-  - **Modelos / acceso a datos** — modelos SQLModel que reflejan las tablas y comunicación con PostgreSQL.
+  - **Servicios** contienen la lógica de negocio y no escriben SQL ni confirman transacciones.
+      Unit of Work — controla la transacción de cada caso de uso: todo se confirma o nada persiste.
+      Repositorios — encapsulan el acceso a los datos de cada entidad y no confirman la transacción.
+  - **Modelos** — modelos SQLModel que reflejan las tablas, sobre los que trabajan los repositorios para comunicarse con PostgreSQL.
 - **Capa de persistencia (Base de datos):** PostgreSQL, con el esquema relacional definido en [`/database/schema.sql`](../database/schema.sql).
 
 ## Decisiones
 
 - **Separación de responsabilidades:** cada capa puede modificarse o reemplazarse sin afectar directamente a las demás (por ejemplo, cambiar el frontend sin tocar el backend).
-- **Mantenibilidad:** organizar el backend en capas (routers/esquemas/servicios) facilita ubicar y corregir código a medida que el sistema crezca.
-- **Organización por funcionalidad:** el backend tiene una carpeta por módulo (alumnos, planes, pagos, etc.), cada una con sus modelos, esquemas, servicios y rutas, en lugar de agrupar por tipo de archivo.
+- **Mantenibilidad:** organizar el backend en capas (routers/esquemas/servicios/repositorios) facilita ubicar y corregir código a medida que el sistema crezca.
+- **Organización por funcionalidad:** el backend tiene una carpeta por módulo (alumnos, planes, pagos, etc.), cada una con sus modelos, esquemas, repositorio, Unit of Work, servicio y rutas, en lugar de agrupar por tipo de archivo.
+- **Atomicidad de los casos de uso:** el pago, el check-in y la renovación escriben en varias tablas; el Unit of Work garantiza que todas esas escrituras se confirmen juntas o que ninguna persista.
 - **Despliegue independiente:** cada capa se aloja en un servicio distinto en la nube, lo que permite escalar o actualizar una sin afectar a las otras.
+
+## Flujo de una petición en el backend
+
+Cada petición recorre las capas en un único sentido:
+
+```mermaid
+flowchart LR
+    R["Router<br/>recibe y responde HTTP"] --> S["Servicio<br/>lógica de negocio"]
+    S --> U["Unit of Work<br/>commit o rollback"]
+    U --> P["Repositorio<br/>consultas de cada entidad"]
+    P --> M["Modelo SQLModel"]
+    M --> D[("PostgreSQL")]
+```
+
+Reglas que se respetan en todos los módulos:
+
+- El **router** solo traduce HTTP: recibe los datos, llama al servicio y devuelve la respuesta. No contiene lógica de negocio.
+- El **servicio** contiene las reglas de negocio y lanza errores de negocio; no escribe consultas SQL ni confirma transacciones.
+- El **repositorio** encapsula las consultas de una entidad. Hereda de un repositorio base genérico y nunca confirma la transacción.
+- Solo el **Unit of Work** confirma (`commit`) o descarta (`rollback`) la transacción: si algo falla a mitad de un caso de uso, no queda nada guardado a medias.
+- Los errores de negocio se traducen a códigos HTTP en un solo lugar (401, 403, 404, 409 y 422).
 
 ## Tecnologías 
 
