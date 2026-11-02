@@ -40,7 +40,7 @@ Estas reglas dependen de cálculos, del tiempo o de varias tablas a la vez, por 
 | Coherencia entre `planes.tipo` y `inscripciones.clases_restantes` | Compara dos tablas | La aplicación inicializa el saldo solo para planes por clases |
 | RN05 — el monto del pago es el precio completo del plan | Compara dos tablas | El backend toma el monto del plan |
 | RN20 — rutinas compatibles con la ficha de salud | Filtro de negocio | El backend filtra por contraindicaciones |
-| RN34, RN36 — permisos por perfil | Depende del usuario autenticado | Middleware de autorización en el backend |
+| RN34, RN36 — permisos por perfil | Depende del usuario autenticado | Dependencia de autorización en el backend |
 | RN38 — bloqueo por intentos fallidos | Depende del tiempo | Límite de intentos en el backend |
 
 ## 3. Operaciones atómicas

@@ -93,7 +93,7 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 ### Tecnologías utilizadas
 
 * **Frontend:** React
-* **Backend:** Node.js + Express
+* **Backend:** Python + FastAPI
 * **Base de datos:** PostgreSQL
 * **Control de versiones:** Git + GitHub
 
@@ -137,3 +137,41 @@ La arquitectura del proyecto está documentada en detalle en [`docs/arquitectura
 * [Seguridad y permisos](./docs/seguridad_y_permisos.md)
 * [Integridad de datos](./docs/integridad_datos.md)
 * [Auditoría, contingencia y recuperación](./docs/contingencia_auditoria_recuperacion.md)
+
+### Cómo ejecutar el proyecto en local
+
+**Requisitos:** Git, Python 3.11 o superior, Node.js 22 (o 20.19 o superior) y PostgreSQL 14 o superior.
+
+**1. Base de datos** (desde la raíz del repositorio)
+
+```bash
+psql -U postgres -c "CREATE DATABASE gimnasio;"
+psql -U postgres -d gimnasio -f database/schema.sql
+```
+
+**2. Backend** (desde la raíz del repositorio)
+
+```bash
+cd backend
+python -m venv .venv
+source .venv/Scripts/activate    # en Mac o Linux: source .venv/bin/activate
+pip install -r requirements-dev.txt
+cp .env.example .env             # completar DATABASE_URL con su usuario y contraseña
+uvicorn app.main:app --reload
+```
+
+La API queda en http://localhost:8000 y su documentación interactiva en http://localhost:8000/docs.
+Las pruebas y el control de estilo se ejecutan con `python -m pytest` y `ruff check .`.
+
+**3. Frontend** (desde la raíz del repositorio, en otra terminal)
+
+```bash
+cd frontend
+npm install
+cp .env.example .env
+npm run dev
+```
+
+La aplicación queda en http://localhost:5173.
+
+**Convenciones de código:** los nombres del dominio van en español y sin tildes (`alumno`, `inscripcion`, `pago`), y los términos técnicos en inglés (`router`, `service`, `schema`). En Python se usa `snake_case` y en TypeScript `camelCase`. Las rutas de la API van en español y en plural (`/alumnos`, `/inscripciones`).
