@@ -7,4 +7,3 @@ class EstadoSalud(BaseModel):
     estado: str
     base_de_datos: str
     hora_argentina: datetime
-
