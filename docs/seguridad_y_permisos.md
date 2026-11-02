@@ -25,7 +25,8 @@ El acceso por DNI solo no es seguro, porque el DNI no es un dato secreto. Por es
 | Panel de solo lectura que muestra únicamente datos del propio alumno | Que un alumno vea o modifique datos de otros | RN17 |
 | La ficha de salud no se muestra en el Panel del Alumno | Exposición de datos sensibles | RN39 |
 | Al regenerar el código, el anterior deja de ser válido | Uso de un código perdido o robado | RF15, RN37 |
-| La sesión es temporal (token con vencimiento) y todo viaja por HTTPS | Sesiones abiertas indefinidamente e interceptación | RNF09 |
+| La sesión es temporal (token con vencimiento) y todo viaja por HTTPS | Sesiones abiertas indefinidamente, interceptación y robo del token por scripts maliciosos | RNF09 |
+
 
 ## 3. Acceso del personal (Panel Administrador)
 
@@ -81,7 +82,7 @@ Las acciones sensibles se registran en el log del backend con usuario, acción, 
 |---|---|
 | Baja lógica de un alumno | Administrador |
 | Regeneración de código de acceso | Administrador |
-| Alta, edición o desactivación de entrenadores | Administrador |
+| Alta o edición de entrenadores (RF17); su acceso se corta desactivando su usuario | Administrador |
 | Alta o desactivación de usuarios y restablecimiento de contraseñas | Administrador |
 | Cambios en configuración, planes y precios | Administrador |
 | Aprobación o rechazo de una sugerencia de rutina | Entrenador |
