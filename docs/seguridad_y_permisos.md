@@ -25,8 +25,7 @@ El acceso por DNI solo no es seguro, porque el DNI no es un dato secreto. Por es
 | Panel de solo lectura que muestra únicamente datos del propio alumno | Que un alumno vea o modifique datos de otros | RN17 |
 | La ficha de salud no se muestra en el Panel del Alumno | Exposición de datos sensibles | RN39 |
 | Al regenerar el código, el anterior deja de ser válido | Uso de un código perdido o robado | RF15, RN37 |
-| La sesión es temporal (token con vencimiento) y todo viaja por HTTPS | Sesiones abiertas indefinidamente, interceptación y robo del token por scripts maliciosos | RNF09 |
-
+| La sesión es temporal (token con vencimiento) y todo viaja por HTTPS | Sesiones abiertas indefinidamente e interceptación | RNF09 |
 
 ## 3. Acceso del personal (Panel Administrador)
 
