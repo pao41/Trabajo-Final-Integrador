@@ -68,7 +68,7 @@ El frontend se comunica con el backend exclusivamente a través de una API REST.
 El detalle completo está en [`seguridad_y_permisos.md`](./seguridad_y_permisos.md). En resumen:
 
 - **Acceso del alumno:** requiere DNI y código de acceso. El código lo genera el sistema, se guarda como hash y, tras 5 intentos fallidos seguidos, el acceso se bloquea 15 minutos. El Panel del Alumno es de solo lectura y no muestra la ficha de salud.
-- **Acceso del personal:** requiere usuario y contraseña (guardada como hash). Cada usuario tiene un perfil (administrador o entrenador) y el backend valida los permisos en cada petición.
+- **Acceso del personal:** requiere usuario y contraseña (guardada como hash). La sesión se guarda en una cookie HttpOnly, que el código de la página no puede leer, con una duración configurable (8 horas por defecto). Cada usuario tiene un perfil (administrador o entrenador) y el backend valida los permisos y que la cuenta siga activa en cada petición.
 - **Datos personales y de salud:** el acceso se limita por perfil, la comunicación usa HTTPS y se toman como marco los principios de la Ley 25.326. No se almacenan datos de tarjetas.
 - **Integridad:** las reglas críticas se controlan también en la base de datos (ver [`integridad_datos.md`](./integridad_datos.md)).
 
@@ -85,10 +85,10 @@ El despliegue de la aplicación —previsto en Vercel (frontend), Render o Railw
 
 ## Lineamientos de despliegue
 
-- Variables de entorno (credenciales de base de datos, puertos) gestionadas fuera del código fuente, mediante archivos .env no versionados.
+- Variables de entorno (credenciales de base de datos, clave de firma de las sesiones, puertos) gestionadas fuera del código fuente, mediante archivos .env no versionados.
 - El backend se despliega como servicio independiente del frontend, permitiendo actualizar uno sin reconstruir el otro.
 - La base de datos mantiene backups automáticos provistos por el servicio de hosting elegido.
-- Toda la comunicación usa HTTPS, y el backend acepta solo el origen del frontend (CORS).
+- Toda la comunicación usa HTTPS, y el backend acepta solo el origen del frontend (CORS, con credenciales para la cookie de sesión).
 - Ver el diagrama de despliegue en [`diagrama_despliegue.md`](./diagrama_despliegue.md).
 
 ## Auditoría, contingencia y recuperación
