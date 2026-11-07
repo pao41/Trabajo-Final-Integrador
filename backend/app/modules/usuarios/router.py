@@ -73,3 +73,32 @@ def crear(
         return UsuarioService(uow).crear(datos)
 
 
+@router.patch("/{usuario_id}/desactivar", response_model=UsuarioPublic)
+def desactivar(
+    usuario_id: int,
+    admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with uow:
+        return UsuarioService(uow).cambiar_estado(usuario_id, False, admin.id)
+
+
+@router.patch("/{usuario_id}/activar", response_model=UsuarioPublic)
+def activar(
+    usuario_id: int,
+    admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with uow:
+        return UsuarioService(uow).cambiar_estado(usuario_id, True, admin.id)
+
+
+@router.put("/{usuario_id}/password", status_code=status.HTTP_204_NO_CONTENT)
+def restablecer_password(
+    usuario_id: int,
+    datos: CambioPassword,
+    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with uow:
+        UsuarioService(uow).restablecer_password(usuario_id, datos)
