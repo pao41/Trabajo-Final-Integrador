@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.modules.salud.router import router as salud_router
+
 app = FastAPI(
     title="Sistema de Gestión para Gimnasios",
     description="API del TFI (Grupo 105). Documentación interactiva en /docs.",
