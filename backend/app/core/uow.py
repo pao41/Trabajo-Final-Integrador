@@ -1,6 +1,7 @@
 from sqlmodel import Session
 
 from app.core.database import engine
+from app.modules.usuarios.repository import UsuarioRepository
 
 
 class UnitOfWork:
@@ -13,6 +14,7 @@ class UnitOfWork:
         # expire_on_commit=False deja los objetos legibles después del commit
         self.session = Session(engine, expire_on_commit=False)
         # Acá se crea el repositorio de cada módulo (una línea por módulo)
+        self.usuarios = UsuarioRepository(self.session)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
