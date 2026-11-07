@@ -53,3 +53,27 @@ class UsuarioService:
         usuario = self._buscar(usuario_id)
         usuario.activo = activo
         return UsuarioPublic.model_validate(self.uow.usuarios.update(usuario))
+
+    def restablecer_password(self, usuario_id: int, datos: CambioPassword) -> None:
+        """Reemplaza la contraseña de un usuario (la restablece el administrador)."""
+        self._validar_largo(datos.nueva_password)
+        usuario = self._buscar(usuario_id)
+        usuario.password_hash = hash_password(datos.nueva_password)
+        self.uow.usuarios.update(usuario)
+
+    def _buscar(self, usuario_id: int) -> Usuario:
+        usuario = self.uow.usuarios.get_by_id(usuario_id)
+        if not usuario:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Usuario no encontrado",
+            )
+        return usuario
+
+    def _validar_largo(self, password: str) -> None:
+        # bcrypt solo admite hasta 72 bytes (una letra con tilde ocupa 2)
+        if len(password.encode("utf-8")) > 72:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+                detail="La contraseña es demasiado larga",
+            )
