@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 
-from app.clock import now_ar
-from app.database import get_session
-from app.salud.schemas import EstadoSalud
+from app.core.clock import now_ar
+from app.core.database import get_session
+from app.modules.salud.schemas import EstadoSalud
 
 router = APIRouter(prefix="/salud", tags=["Salud"])
 

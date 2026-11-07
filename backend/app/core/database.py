@@ -1,6 +1,6 @@
 from sqlmodel import Session, create_engine
 
-from app.config import settings
+from app.core.config import settings
 
 
 def _con_driver(url: str) -> str:

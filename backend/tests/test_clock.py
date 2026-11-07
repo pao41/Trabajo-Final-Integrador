@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from app.clock import now_ar, today_ar
+from app.core.clock import now_ar, today_ar
 
 
 def test_la_hora_de_argentina_esta_tres_horas_detras_de_utc():
