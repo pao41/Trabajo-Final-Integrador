@@ -34,3 +34,42 @@ def login(
         max_age=settings.access_token_expire_minutes * 60,
     )
     return {"mensaje": "Sesión iniciada"}
+
+
+@auth_router.post("/logout")
+def logout(response: Response):
+    """Borra la cookie de sesión."""
+    response.delete_cookie(
+        key="access_token",
+        httponly=True,
+        samesite="lax",
+        secure=settings.cookie_secure,
+    )
+    return {"mensaje": "Sesión cerrada"}
+
+
+@auth_router.get("/me", response_model=UsuarioPublic)
+def me(usuario: Annotated[UsuarioPublic, Depends(get_current_user)]):
+    """Devuelve quién tiene la sesión iniciada."""
+    return usuario
+
+
+@router.get("", response_model=list[UsuarioPublic])
+def listar(
+    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with uow:
+        return UsuarioService(uow).listar()
+
+
+@router.post("", response_model=UsuarioPublic, status_code=status.HTTP_201_CREATED)
+def crear(
+    datos: UsuarioCreate,
+    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with uow:
+        return UsuarioService(uow).crear(datos)
+
+
