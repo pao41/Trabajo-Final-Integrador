@@ -25,7 +25,7 @@ flowchart LR
 
 - **Separación de responsabilidades:** cada capa puede modificarse o reemplazarse sin afectar directamente a las demás (por ejemplo, cambiar el frontend sin tocar el backend).
 - **Mantenibilidad:** organizar el backend en capas (routers/esquemas/servicios/repositorios) facilita ubicar y corregir código a medida que el sistema crezca.
-- **Organización por funcionalidad:** el backend tiene una carpeta por módulo (alumnos, planes, pagos, etc.), cada una con sus modelos, esquemas, repositorio, Unit of Work, servicio y rutas, en lugar de agrupar por tipo de archivo.
+- **Organización por funcionalidad:** el backend tiene una carpeta por módulo (alumnos, planes, pagos, etc.), cada una con su modelo (con sus esquemas), repositorio, servicio y router; el Unit of Work es común a todos los módulos, en lugar de agrupar por tipo de archivo.
 - **Atomicidad de los casos de uso:** el pago, el check-in y la renovación escriben en varias tablas; el Unit of Work garantiza que todas esas escrituras se confirmen juntas o que ninguna persista.
 - **Despliegue independiente:** cada capa se aloja en un servicio distinto en la nube, lo que permite escalar o actualizar una sin afectar a las otras.
 
@@ -48,7 +48,7 @@ Reglas que se respetan en todos los módulos:
 - El **servicio** contiene las reglas de negocio y lanza errores de negocio; no escribe consultas SQL ni confirma transacciones.
 - El **repositorio** encapsula las consultas de una entidad. Hereda de un repositorio base genérico y nunca confirma la transacción.
 - Solo el **Unit of Work** confirma (`commit`) o descarta (`rollback`) la transacción: si algo falla a mitad de un caso de uso, no queda nada guardado a medias.
-- Los errores de negocio se traducen a códigos HTTP en un solo lugar (401, 403, 404, 409 y 422).
+- Los servicios responden los errores con el código HTTP que corresponde (401, 403, 404, 409 y 422).
 
 ## Tecnologías 
 
