@@ -28,4 +28,28 @@ class UsuarioService:
         )
         return UsuarioPublic.model_validate(self.uow.usuarios.add(usuario))
 
-    
+    def autenticar(self, nombre_usuario: str, password: str) -> str:
+        """Valida usuario y contraseña y devuelve el token de sesión."""
+        usuario = self.uow.usuarios.get_by_nombre_usuario(nombre_usuario.strip().lower())
+        # El mismo mensaje si falla el usuario, la contraseña o la cuenta está desactivada
+        datos_validos = usuario is not None and verify_password(password, usuario.password_hash)
+        if not datos_validos or not usuario.activo:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Usuario o contraseña incorrectos",
+            )
+        return create_access_token(usuario.id, usuario.rol)
+
+    def listar(self) -> list[UsuarioPublic]:
+        return [UsuarioPublic.model_validate(u) for u in self.uow.usuarios.get_all()]
+
+    def cambiar_estado(self, usuario_id: int, activo: bool, quien_actua_id: int) -> UsuarioPublic:
+        """Activa o desactiva un usuario (no se eliminan); nadie puede desactivarse a sí mismo."""
+        if not activo and usuario_id == quien_actua_id:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+                detail="No podés desactivar tu propio usuario",
+            )
+        usuario = self._buscar(usuario_id)
+        usuario.activo = activo
+        return UsuarioPublic.model_validate(self.uow.usuarios.update(usuario))
