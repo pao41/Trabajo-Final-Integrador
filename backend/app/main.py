@@ -3,6 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.modules.salud.router import router as salud_router
+from app.modules.usuarios.router import auth_router
+from app.modules.usuarios.router import router as usuarios_router
+
 
 app = FastAPI(
     title="Sistema de Gestión para Gimnasios",
@@ -10,12 +13,16 @@ app = FastAPI(
     version="0.1.0",
 )
 
-# El navegador solo puede llamar a la API desde el origen del frontend
+# El navegador solo puede llamar a la API desde el origen del frontend, enviando cookies
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[settings.frontend_origin],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 app.include_router(salud_router)
+app.include_router(auth_router)
+app.include_router(usuarios_router)
+
