@@ -4,3 +4,6 @@ sqlmodel==0.0.48
 psycopg[binary]==3.3.6
 pydantic-settings==2.16.2
 tzdata==2026.6
+bcrypt==5.0.0
+PyJWT==2.15.1
+python-multipart==0.0.33
