@@ -18,3 +18,12 @@ A partir de las asistencias que el sistema ya registra, se podrían mostrar grá
 
 ## Mejoras del asistente de IA
 El banco de rutinas podría ampliarse con más ejercicios y los criterios de sugerencia podrían volverse más precisos, por ejemplo considerando más datos de la ficha de salud. Siempre se mantendría la aprobación del entrenador antes de que una rutina llegue al alumno, para ofrecer sugerencias más variadas sin perder seguridad.
+
+## Aplicación móvil
+El Panel del Alumno podría ofrecerse como una aplicación para el celular o como una web instalable, con avisos en el teléfono. El alumno podría consultar su estado de cuota, su asistencia y sus rutinas aprobadas desde cualquier lugar, sin depender de una computadora.
+
+## Varias sedes y varios gimnasios
+El sistema podría admitir un gimnasio con varias sucursales, con alumnos, asistencia y facturación separados por sede, o bien atender a distintos gimnasios dentro de un mismo sistema, con sus datos aislados entre sí. Esto permitiría acompañar el crecimiento del negocio y ofrecer el sistema a otros establecimientos sin instalar una versión distinta para cada uno.
+
+## Mayor volumen de datos y usuarios
+A medida que se acumulen alumnos, pagos y asistencias, se podrían paginar los listados, optimizar las consultas del dashboard y aumentar la capacidad del backend y de la base de datos, aprovechando que cada capa se despliega por separado. El objetivo sería mantener tiempos de respuesta cortos aunque aumente la cantidad de usuarios simultáneos.
