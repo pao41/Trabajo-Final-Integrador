@@ -35,6 +35,7 @@ def get_current_user(
             )
         return UsuarioPublic.model_validate(usuario)
 
+
 def require_role(roles: list[str]):
     """Crea una dependencia que solo deja pasar a los perfiles indicados."""
 

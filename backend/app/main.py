@@ -6,7 +6,6 @@ from app.modules.salud.router import router as salud_router
 from app.modules.usuarios.router import auth_router
 from app.modules.usuarios.router import router as usuarios_router
 
-
 app = FastAPI(
     title="Sistema de Gestión para Gimnasios",
     description="API del TFI (Grupo 105). Documentación interactiva en /docs.",
@@ -25,4 +24,3 @@ app.add_middleware(
 app.include_router(salud_router)
 app.include_router(auth_router)
 app.include_router(usuarios_router)
-
