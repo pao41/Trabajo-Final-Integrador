@@ -1,23 +1,11 @@
-# Escalabilidad y Funcionalidades Futuras — Sistema de Gestión para Gimnasios
+# Funcionalidades Futuras y Escalabilidad — Sistema de Gestión para Gimnasios
 
-Este documento describe cómo podría crecer el sistema más allá del MVP. Las funcionalidades listadas son posibles mejoras, no compromisos de desarrollo, ordenadas por tema. Las que ya figuran como "Nice to have" o "Fuera de alcance" en el README se retoman acá con más detalle.
+Posibles mejoras con las que el sistema podría crecer a medida que el gimnasio aumente su cantidad de alumnos y de servicios. Son ideas de evolución, no compromisos de desarrollo.
 
 ---
 
-## 1. Funcionalidades futuras
+## Notificaciones automáticas de cuota
+El sistema podría enviar avisos por email o por WhatsApp cuando la cuota de un alumno esté por vencer o ya haya vencido, aprovechando los días de anticipación que hoy se configuran para el estado "por vencer". De esta manera el personal ya no tendría que avisar uno por uno, se reduciría la morosidad y el alumno recibiría el recordatorio a tiempo.
 
-### 1.1 Comunicación con los alumnos
-- **Notificaciones por email:** avisos automáticos de cuota por vencer o vencida, usando los días de anticipación ya configurables (RN09).
-- **Notificaciones por WhatsApp:** envío de recordatorios y avisos mediante la integración con un servicio de mensajería.
-- **Avisos masivos y promociones:** envío de comunicados, eventos y promociones a grupos de alumnos.
-
-### 1.2 Acceso y asistencia
-- **Check-in por código QR:** cada alumno registra su ingreso escaneando un código, en lugar del registro manual en el mostrador.
-- **Control de acceso físico:** integración con molinetes o lectores, que habiliten el ingreso solo a quienes tienen la cuota al día.
-- **Reserva de turnos y clases grupales:** cupos, horarios y listas de espera para clases con entrenador.
-
-### 1.3 Pagos y finanzas
-- **Pasarelas de pago online:** cobro de cuotas desde la web, con registro automático del pago.
-- **Pagos parciales y señas:** hoy cada pago corresponde al valor completo del período (RN05).
-- **Cambio de plan con prorrateo y reembolsos:** hoy el cambio rige desde la próxima renovación (RN06) y no se gestionan devoluciones (RN07).
-- **Exportación de reportes:** descarga de facturación y asistencia en planilla o PDF.
+## Check-in por código QR
+Cada alumno podría registrar su ingreso escaneando un código personal, en lugar de que el personal lo busque y lo marque manualmente en el mostrador. Se agilizaría el ingreso en los horarios de mayor concurrencia, se evitarían errores de carga y el personal podría dedicar ese tiempo a atender a los alumnos.
