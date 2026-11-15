@@ -6,6 +6,7 @@ import CodigoAcceso from '../componentes/CodigoAcceso'
 import EtiquetaEstado from '../componentes/EtiquetaEstado'
 import FormularioAlumno from '../componentes/FormularioAlumno'
 import MensajeError from '../componentes/MensajeError'
+import SeccionFicha from '../componentes/SeccionFicha'
 import TarjetaSeccion from '../componentes/TarjetaSeccion'
 
 // Pantalla de un alumno: sus datos, su acceso y su ficha
@@ -65,6 +66,7 @@ export default function DetalleAlumno() {
         {nuevoCodigo.isError && <MensajeError texto={nuevoCodigo.error.message} />}
         {cambiarEstado.isError && <MensajeError texto={cambiarEstado.error.message} />}
       </TarjetaSeccion>
+      <SeccionFicha alumnoId={id} />
     </section>
   )
 }
