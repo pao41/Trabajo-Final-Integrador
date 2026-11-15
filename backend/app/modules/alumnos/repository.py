@@ -1,7 +1,7 @@
 from sqlmodel import Session, or_, select
 
 from app.core.base_repository import BaseRepository
-from app.modules.alumnos.model import Alumno, FichaSalud
+from app.modules.alumnos.model import Alumno, FichaSalud, MetaAlumno
 
 
 class AlumnoRepository(BaseRepository[Alumno]):
@@ -27,4 +27,13 @@ class FichaSaludRepository(BaseRepository[FichaSalud]):
 
     def get_by_alumno(self, alumno_id: int) -> FichaSalud | None:
         consulta = select(FichaSalud).where(FichaSalud.alumno_id == alumno_id)
+        return self.session.exec(consulta).first()
+
+
+class MetaAlumnoRepository(BaseRepository[MetaAlumno]):
+    def __init__(self, session: Session):
+        super().__init__(MetaAlumno, session)
+
+    def get_by_alumno(self, alumno_id: int) -> MetaAlumno | None:
+        consulta = select(MetaAlumno).where(MetaAlumno.alumno_id == alumno_id)
         return self.session.exec(consulta).first()

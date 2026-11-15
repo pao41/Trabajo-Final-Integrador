@@ -77,3 +77,8 @@ class MetaAlumno(SQLModel, table=True):
 # Meta semanal de asistencias (de 1 a 7 días)
 class MetaDatos(SQLModel):
     meta_asistencias_semanales: int = Field(default=3, ge=1, le=7)
+
+
+# Meta que se devuelve; sin fecha si todavía no se configuró
+class MetaPublic(MetaDatos):
+    fecha_actualizacion: date | None = None
