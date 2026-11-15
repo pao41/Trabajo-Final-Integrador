@@ -1,10 +1,10 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 
 from app.core.deps import require_role
 from app.core.uow import UnitOfWork, get_uow
-from app.modules.alumnos.model import AlumnoPublic
+from app.modules.alumnos.model import AlumnoConCodigo, AlumnoDatos, AlumnoPublic
 from app.modules.alumnos.service import AlumnoService
 from app.modules.usuarios.model import UsuarioPublic
 
@@ -23,3 +23,23 @@ def listar(
     """Lista los alumnos; con `buscar` filtra por nombre o DNI."""
     with uow:
         return AlumnoService(uow).listar(buscar)
+
+
+@router.post("", response_model=AlumnoConCodigo, status_code=status.HTTP_201_CREATED)
+def crear(
+    datos: AlumnoDatos,
+    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with uow:
+        return AlumnoService(uow).crear(datos)
+
+
+@router.get("/{alumno_id}", response_model=AlumnoPublic)
+def obtener(
+    alumno_id: int,
+    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with uow:
+        return AlumnoService(uow).obtener(alumno_id)
