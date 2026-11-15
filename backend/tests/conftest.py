@@ -77,3 +77,33 @@ def crear_usuario():
 
     return crear
 
+@pytest.fixture
+def crear_entrenador():
+    """Devuelve una función que crea un entrenador directo en la base y entrega su id."""
+
+    def crear(nombre="Laura Gómez"):
+        with psycopg.connect(URL_PRUEBAS, autocommit=True) as conexion:
+            fila = conexion.execute(
+                "INSERT INTO entrenadores (nombre) VALUES (%s) RETURNING id", (nombre,)
+            ).fetchone()
+            return fila[0]
+
+    return crear
+
+
+@pytest.fixture
+def iniciar_sesion():
+    """Devuelve una función que inicia sesión con un cliente."""
+
+    def iniciar(client, nombre, password="clave-segura-123"):
+        return client.post("/auth/token", data={"username": nombre, "password": password})
+
+    return iniciar
+
+
+@pytest.fixture
+def admin(client, crear_usuario, iniciar_sesion):
+    """Un administrador con la sesión ya iniciada en el cliente."""
+    crear_usuario("admin")
+    assert iniciar_sesion(client, "admin").status_code == 200
+    return client
