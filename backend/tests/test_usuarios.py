@@ -3,7 +3,6 @@ from fastapi.testclient import TestClient
 from app.core.uow import UnitOfWork
 from app.main import app
 
-
 NUEVO = {"nombre_usuario": "Marta", "password": "clave-marta-123"}
 
 
@@ -99,4 +98,3 @@ def test_restablecer_la_contrasena_reemplaza_la_anterior(admin, crear_usuario, i
     assert respuesta.status_code == 204
     assert iniciar_sesion(TestClient(app), "marta", "clave-marta-123").status_code == 401
     assert iniciar_sesion(TestClient(app), "marta", "clave-nueva-456").status_code == 200
-    
