@@ -74,3 +74,30 @@ def test_el_listado_no_muestra_el_codigo_ni_el_hash(admin):
     assert respuesta.status_code == 200
     assert len(respuesta.json()) == 1
     assert "codigo" not in respuesta.text
+
+
+def test_se_busca_por_nombre_o_por_dni(admin):
+    alta(admin)
+    alta(admin, nombre="Luis Díaz", dni="28999000")
+
+    assert len(admin.get("/alumnos", params={"buscar": "ana"}).json()) == 1
+    assert admin.get("/alumnos", params={"buscar": "2899"}).json()[0]["nombre"] == "Luis Díaz"
+    assert admin.get("/alumnos", params={"buscar": "zzz"}).json() == []
+
+
+def test_se_edita_un_alumno(admin):
+    alumno_id = alta(admin).json()["id"]
+
+    respuesta = admin.put(f"/alumnos/{alumno_id}", json={**NUEVO, "contacto": "ana@correo.com"})
+
+    assert respuesta.status_code == 200
+    assert admin.get(f"/alumnos/{alumno_id}").json()["contacto"] == "ana@correo.com"
+
+
+def test_editar_con_el_dni_de_otro_alumno_da_409(admin):
+    alta(admin)
+    otro_id = alta(admin, dni="28999000").json()["id"]
+
+    respuesta = admin.put(f"/alumnos/{otro_id}", json=NUEVO)
+
+    assert respuesta.status_code == 409

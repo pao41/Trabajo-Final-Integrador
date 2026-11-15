@@ -70,3 +70,32 @@ def test_el_entrenador_ve_la_ficha_pero_no_la_modifica(
 def test_la_ficha_de_un_alumno_inexistente_da_404(admin):
     assert admin.get("/alumnos/999/ficha-salud").status_code == 404
     assert admin.put("/alumnos/999/ficha-salud", json=FICHA).status_code == 404
+
+
+def test_un_alumno_sin_meta_tiene_la_meta_por_defecto(admin):
+    alumno_id = nuevo_alumno(admin)
+
+    respuesta = admin.get(f"/alumnos/{alumno_id}/meta")
+
+    assert respuesta.json()["meta_asistencias_semanales"] == 3
+
+
+def test_se_guarda_la_meta_semanal(admin):
+    alumno_id = nuevo_alumno(admin)
+
+    admin.put(f"/alumnos/{alumno_id}/meta", json={"meta_asistencias_semanales": 5})
+
+    assert admin.get(f"/alumnos/{alumno_id}/meta").json()["meta_asistencias_semanales"] == 5
+
+
+def test_una_meta_fuera_de_1_a_7_da_422(admin):
+    alumno_id = nuevo_alumno(admin)
+
+    assert (
+        admin.put(f"/alumnos/{alumno_id}/meta", json={"meta_asistencias_semanales": 0}).status_code
+        == 422
+    )
+    assert (
+        admin.put(f"/alumnos/{alumno_id}/meta", json={"meta_asistencias_semanales": 8}).status_code
+        == 422
+    )
