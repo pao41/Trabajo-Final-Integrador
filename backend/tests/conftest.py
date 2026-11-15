@@ -108,3 +108,5 @@ def admin(client, crear_usuario, iniciar_sesion):
     crear_usuario("admin")
     assert iniciar_sesion(client, "admin").status_code == 200
     return client
+
+
