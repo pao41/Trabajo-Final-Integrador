@@ -21,7 +21,7 @@ El ecosistema centraliza tres pilares fundamentales de la gestión operativa y c
 
 2. **Seguimiento Operativo y de Asistencia:** Incluye un panel interactivo con un módulo tipo *checklist* diario que agiliza el control de acceso de los socios, permitiendo detectar de forma inmediata a usuarios con cuotas vencidas o por vencer.
 
-3. **Módulo Técnico Deportivo e Inteligencia Artificial:** Incorpora una sección para la consulta de rutinas físicas personalizadas y un asistente basado en Inteligencia Artificial. Este módulo actúa como una guía de apoyo para la generación de rutinas básicas de calentamiento, movilidad articular y vuelta a la calma, diseñado estrictamente como una herramienta complementaria para el alumno que no sustituye el criterio, la supervisión ni la labor del entrenador presencial.
+3. **Módulo Técnico Deportivo e Inteligencia Artificial:** Incorpora una sección para la consulta de rutinas físicas personalizadas y un asistente basado en Inteligencia Artificial. Este módulo actúa como una guía de apoyo para la sugerencia de rutinas básicas de calentamiento, movilidad articular y vuelta a la calma, diseñado estrictamente como una herramienta complementaria para el alumno que no sustituye el criterio, la supervisión ni la labor del entrenador presencial.
 El asistente no genera ejercicios libremente: filtra un banco de rutinas pre-cargado y validado, considerando el estado de salud declarado por el alumno, y toda rutina requiere aprobación del entrenador antes de estar disponible.
 
 
@@ -77,7 +77,7 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 #### Nice to have (Futuras mejoras):
 * Notificaciones automáticas por email sobre vencimientos de cuota.
 * Check-in de asistencia por código QR.
-* Gráficos analíticos de horas pico y distribución semestral de concurrencia.
+* Gráficos analíticos de horas pico y distribución semanal de concurrencia.
 * Módulo de envío masivo de avisos, eventos y promociones.
 
 #### Fuera de alcance:
@@ -104,7 +104,7 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 
 ### Arquitectura
 
-La arquitectura del proyecto sigue un esquema cliente-servidor de tres capas (frontend React, backend FastAPI y base PostgreSQL). Dentro del backend, cada petición recorre cuatro capas: router, servicio, Unit of Work y repositorio. El detalle, el flujo de una petición, las herramientas y el estado de la implementación están en [`docs/arquitectura.md`](./docs/arquitectura.md).
+La arquitectura del proyecto sigue un esquema cliente-servidor de tres capas (frontend React, backend FastAPI y base PostgreSQL). Dentro del backend, cada petición recorre cuatro capas: router, servicio, Unit of Work y repositorio. El detalle , el flujo de una petición y las herramientas están en. [`docs/arquitectura.md`](./docs/arquitectura.md).
 
 ---
 
