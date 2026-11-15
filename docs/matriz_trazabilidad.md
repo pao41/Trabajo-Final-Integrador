@@ -34,7 +34,7 @@ Cada requerimiento se rastrea hasta su verificación: el caso de uso está en `c
 
 | RF | Caso de uso | Criterio de aceptación | Casos de prueba |
 |---|---|---|---|
-| RF01 | UC01 | CA-RF01 | CP01, CP02 |
+| RF01 | UC01 | CA-RF01 | CP01, CP02, CP33 |
 | RF02 | UC01 | CA-RF02 | CP13 |
 | RF03 | UC02 | CA-RF03 | CP14 |
 | RF04 | UC02 | CA-RF04 | CP03 |
@@ -54,7 +54,7 @@ Cada requerimiento se rastrea hasta su verificación: el caso de uso está en `c
 | RF18 | UC10, UC11 | CA-RF18 | CP12, CP32 |
 | RF19 | UC01, UC08 | CA-RF19 | CP20 |
 | RF20 | UC04 | CA-RF20 | CP21, CP22, CP23, CP24 |
-| RF21 | UC13 | CA-RF21 | CP25 |
+| RF21 | UC13 | CA-RF21 | CP25, CP34 |
 | RF22 | UC13 | CA-RF22 | CP26, CP27 |
 | RF23 | UC12 | CA-RF23 | CP28, CP29 |
 
@@ -71,6 +71,14 @@ Cada requerimiento se rastrea hasta su verificación: el caso de uso está en `c
 | RNF07 (Seguridad de acceso) | RN16, RN33, RN37, RN38 — ver seguridad_y_permisos.md |
 | RNF08 (Consistencia de datos) | Claves foráneas y restricciones CHECK en schema.sql — ver integridad_datos.md |
 | RNF09 (Protección de datos personales y de salud) | RN34, RN39 — ver seguridad_y_permisos.md |
-| RNF10 (Auditoría) | RN28, RN40 — ver contingencia_auditoria_recuperacion.md |
+| RNF10 (Auditoría) | RN28, RN40 — ver contingencia_auditoria_recuperacion.md; pruebas CP30 y CP33 |
 | RNF11 (Recuperación) | RN42 — ver contingencia_auditoria_recuperacion.md |
 | RNF12 (Continuidad operativa) | RN41 — ver contingencia_auditoria_recuperacion.md |
+
+## 4. Documentos complementarios
+
+| Documento | Se relaciona con |
+|---|---|
+| [`uso_de_ia.md`](./uso_de_ia.md) | RF11, RF12, RF13, RN18 a RN23, módulos 7 y 8 |
+| [`escalabilidad_y_funcionalidades_futuras.md`](./escalabilidad_y_funcionalidades_futuras.md) | RNF05, RNF06 y las mejoras futuras del README |
+| [`api_endpoints.md`](./api_endpoints.md) | Todos los RF, a través de los módulos 1 a 11 |
