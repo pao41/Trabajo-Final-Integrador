@@ -45,3 +45,32 @@ def test_la_base_guarda_el_hash_del_codigo_y_no_el_codigo(admin):
         assert guardado.codigo_acceso_hash.startswith("$2b$")
         assert datos["codigo_acceso"] not in guardado.codigo_acceso_hash
         assert verify_password(datos["codigo_acceso"], guardado.codigo_acceso_hash)
+
+
+def test_el_codigo_no_se_deriva_del_dni(admin):
+    primero = alta(admin).json()["codigo_acceso"]
+    segundo = alta(admin, dni="30111333").json()["codigo_acceso"]
+
+    assert primero != segundo
+    assert "30111222" not in primero
+
+
+def test_un_dni_repetido_da_409(admin):
+    alta(admin)
+
+    assert alta(admin, nombre="Otra Persona").status_code == 409
+
+
+def test_un_dni_con_letras_o_un_nombre_corto_da_422(admin):
+    assert alta(admin, dni="12AB5678").status_code == 422
+    assert alta(admin, nombre="A").status_code == 422
+
+
+def test_el_listado_no_muestra_el_codigo_ni_el_hash(admin):
+    alta(admin)
+
+    respuesta = admin.get("/alumnos")
+
+    assert respuesta.status_code == 200
+    assert len(respuesta.json()) == 1
+    assert "codigo" not in respuesta.text
