@@ -35,3 +35,45 @@ def base_de_pruebas():
     with conexion:
         conexion.execute("DROP SCHEMA public CASCADE; CREATE SCHEMA public;")
         conexion.execute(ESQUEMA.read_text(encoding="utf-8"))
+
+
+@pytest.fixture(autouse=True)
+def tablas_vacias(base_de_pruebas):
+    """Cada prueba empieza con todas las tablas vacías."""
+    consulta = "SELECT tablename FROM pg_tables WHERE schemaname = 'public'"
+    with psycopg.connect(URL_PRUEBAS, autocommit=True) as conexion:
+        tablas = [fila[0] for fila in conexion.execute(consulta)]
+        conexion.execute("TRUNCATE " + ", ".join(tablas) + " RESTART IDENTITY CASCADE")
+
+
+@pytest.fixture
+def client():
+    from fastapi.testclient import TestClient
+
+    from app.main import app
+
+    return TestClient(app)
+
+
+@pytest.fixture
+def crear_usuario():
+    """Devuelve una función que crea un usuario directo en la base y entrega su id."""
+
+    def crear(nombre, password="clave-segura-123", rol="administrador", entrenador_id=None):
+        from app.core.security import hash_password
+        from app.core.uow import UnitOfWork
+        from app.modules.usuarios.model import Usuario
+
+        uow = UnitOfWork()
+        with uow:
+            usuario = Usuario(
+                nombre_usuario=nombre,
+                password_hash=hash_password(password),
+                rol=rol,
+                entrenador_id=entrenador_id,
+            )
+            uow.usuarios.add(usuario)
+            return usuario.id
+
+    return crear
+
