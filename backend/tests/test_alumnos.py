@@ -129,3 +129,16 @@ def test_la_baja_es_logica_y_se_puede_reactivar(admin):
     assert admin.get(f"/alumnos/{alumno_id}").json()["activo"] is False
     assert len(admin.get("/alumnos").json()) == 1
     assert admin.patch(f"/alumnos/{alumno_id}/activar").json()["activo"] is True
+
+
+def test_regenerar_el_codigo_invalida_el_anterior(admin):
+    creado = alta(admin).json()
+
+    nuevo = admin.post(f"/alumnos/{creado['id']}/codigo-acceso").json()["codigo_acceso"]
+
+    assert nuevo != creado["codigo_acceso"]
+    uow = UnitOfWork()
+    with uow:
+        hash_guardado = uow.alumnos.get_by_id(creado["id"]).codigo_acceso_hash
+        assert verify_password(nuevo, hash_guardado)
+        assert not verify_password(creado["codigo_acceso"], hash_guardado)
