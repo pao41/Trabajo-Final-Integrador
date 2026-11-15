@@ -3,6 +3,7 @@ import RutaProtegida from './componentes/RutaProtegida'
 import Alumnos from './paginas/Alumnos'
 import Inicio from './paginas/Inicio'
 import Login from './paginas/Login'
+import NuevoAlumno from './paginas/NuevoAlumno'
 import Usuarios from './paginas/Usuarios'
 
 
@@ -13,6 +14,7 @@ function App() {
       <Route element={<RutaProtegida />}>
         <Route path="/" element={<Inicio />} />
         <Route path="/alumnos" element={<Alumnos />} />
+        <Route path="/alumnos/nuevo" element={<NuevoAlumno />} />
         <Route path="/usuarios" element={<Usuarios />} />
 
       </Route>
