@@ -23,3 +23,30 @@ class AlumnoDatos(SQLModel):
     nombre: str = Field(min_length=2, max_length=150)
     dni: str = Field(min_length=6, max_length=20)
     contacto: str | None = Field(default=None, max_length=150)
+
+
+# Datos que se devuelven al frontend (nunca incluyen el hash del código)
+class AlumnoPublic(SQLModel):
+    id: int
+    nombre: str
+    dni: str
+    contacto: str | None
+    activo: bool
+    fecha_alta: date
+
+
+# Respuesta del alta y de la regeneración: el código se muestra una única vez (RN37)
+class AlumnoConCodigo(AlumnoPublic):
+    codigo_acceso: str
+
+
+# Tabla ficha_salud
+class FichaSalud(SQLModel, table=True):
+    __tablename__ = "ficha_salud"
+
+    id: int | None = Field(default=None, primary_key=True)
+    alumno_id: int
+    problemas_cardiacos: bool = False
+    lesiones: str | None = None
+    observaciones: str | None = None
+    fecha_registro: date = Field(default_factory=today_ar)
