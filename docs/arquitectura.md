@@ -52,12 +52,14 @@ Reglas que se respetan en todos los módulos:
 
 ## Tecnologías 
 
-| Capa | Tecnología |
-|---|---|
-| Frontend | React |
-| Backend | Python + FastAPI (API REST) |
-| Base de datos | PostgreSQL |
-| Control de versiones | Git + GitHub |
+| Capa | Tecnología | Por qué |
+|---|---|---|
+| Frontend | React con TypeScript, Vite y Tailwind CSS; TanStack Query para los datos de la API | React fue utilizado en la cursada; TypeScript detecta errores durante la escritura del código y TanStack Query gestiona los datos provenientes del servidor |
+| Backend | Python + FastAPI (API REST) con SQLModel | Seleccionado y aprobado por el tutor; FastAPI valida los datos de entrada y genera la documentación de la API |
+| Base de datos | PostgreSQL | El dominio es fuertemente relacional (alumno, plan, inscripción, pago, asistencia) y requiere claves foráneas y restricciones de integridad |
+| Seguridad | bcrypt para las contraseñas; JWT dentro de una cookie HttpOnly | El hash protege las credenciales y la cookie HttpOnly no puede ser leída por el código de la página |
+| Pruebas y calidad | pytest y ruff | Pruebas automáticas y control de estilo del código |
+| Control de versiones | Git + GitHub | Historial de cambios y trabajo en equipo |
 
 ## Comunicación entre capas
 
