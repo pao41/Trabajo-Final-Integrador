@@ -2,7 +2,10 @@ import { NavLink, Outlet } from 'react-router-dom'
 import BloqueSesion from './BloqueSesion'
 import Logo from './Logo'
 
-const secciones = [{ ruta: '/', nombre: 'Inicio' }]
+const secciones = [
+  { ruta: '/', nombre: 'Inicio' },
+  { ruta: '/usuarios', nombre: 'Usuarios' },
+]
 
 // Estilo del enlace del menú: resaltado si es la pantalla actual
 const estiloEnlace = ({ isActive }: { isActive: boolean }) =>
