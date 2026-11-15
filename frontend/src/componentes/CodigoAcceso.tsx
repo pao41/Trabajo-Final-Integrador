@@ -1,18 +1,36 @@
 interface Props {
-  nombre: string
-  codigo: string
+  etiqueta: string
+  valor: string
+  codigo: string;
+  nombre?: string;
+  alCambiar: (valor: string) => void
+  tipo?: string
+  autoComplete?: string
+  obligatorio?: boolean
+  multilinea?: boolean
 }
 
-// Muestra el código de acceso una única vez, justo después de crearlo
-export default function CodigoAcceso({ nombre, codigo }: Props) {
+// Campo de formulario con su etiqueta visible arriba (una línea o texto largo)
+export default function Campo({ etiqueta, valor, alCambiar, tipo = 'text', autoComplete, obligatorio = true, multilinea = false }: Props) {
   return (
-    <div className="rounded-2xl border-2 border-terracota bg-white p-6">
-      <p className="font-bold">Código de acceso de {nombre}</p>
-      <p className="my-3 font-titulo text-5xl font-bold tracking-widest text-terracota">{codigo}</p>
-      <p className="text-gris-calido">
-        Anotalo y entregáselo al alumno ahora: por seguridad no se vuelve a mostrar. Si lo pierde,
-        se genera uno nuevo y el anterior deja de servir.
-      </p>
-    </div>
+    <label className="flex flex-col gap-2 font-bold">
+      {etiqueta}
+      {multilinea ? (
+        <textarea
+          className="campo h-auto min-h-24 py-3"
+          value={valor}
+          onChange={(e) => alCambiar(e.target.value)}
+        />
+      ) : (
+        <input
+          className="campo"
+          type={tipo}
+          value={valor}
+          autoComplete={autoComplete}
+          required={obligatorio}
+          onChange={(e) => alCambiar(e.target.value)}
+        />
+      )}
+    </label>
   )
 }
