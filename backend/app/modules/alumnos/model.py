@@ -50,3 +50,30 @@ class FichaSalud(SQLModel, table=True):
     lesiones: str | None = None
     observaciones: str | None = None
     fecha_registro: date = Field(default_factory=today_ar)
+
+
+# Datos de la ficha de salud que carga el administrador
+class FichaSaludDatos(SQLModel):
+    problemas_cardiacos: bool = False
+    lesiones: str | None = Field(default=None, max_length=500)
+    observaciones: str | None = Field(default=None, max_length=500)
+
+
+# Ficha que se devuelve; sin fecha si todavía no se cargó
+class FichaSaludPublic(FichaSaludDatos):
+    fecha_registro: date | None = None
+
+
+# Tabla metas_alumno
+class MetaAlumno(SQLModel, table=True):
+    __tablename__ = "metas_alumno"
+
+    id: int | None = Field(default=None, primary_key=True)
+    alumno_id: int
+    meta_asistencias_semanales: int = 3
+    fecha_actualizacion: date = Field(default_factory=today_ar)
+
+
+# Meta semanal de asistencias (de 1 a 7 días)
+class MetaDatos(SQLModel):
+    meta_asistencias_semanales: int = Field(default=3, ge=1, le=7)
