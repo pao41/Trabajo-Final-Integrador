@@ -1,6 +1,9 @@
 from app.core.uow import UnitOfWork
 from app.modules.alumnos.model import (
+    FichaSalud,
+    FichaSaludDatos,
     FichaSaludPublic,
+    MetaPublic,
 )
 
 
@@ -17,3 +20,22 @@ class FichaMetaService:
         if not ficha:
             return FichaSaludPublic()
         return FichaSaludPublic.model_validate(ficha)
+
+    def guardar_ficha(self, alumno_id: int, datos: FichaSaludDatos) -> FichaSaludPublic:
+        """Crea la ficha del alumno o, si ya existe, la modifica (una por alumno)."""
+        self._comprobar_alumno(alumno_id)
+        ficha = self.uow.fichas_salud.get_by_alumno(alumno_id)
+        if not ficha:
+            ficha = self.uow.fichas_salud.add(FichaSalud(alumno_id=alumno_id))
+        ficha.problemas_cardiacos = datos.problemas_cardiacos
+        ficha.lesiones = datos.lesiones
+        ficha.observaciones = datos.observaciones
+        return FichaSaludPublic.model_validate(self.uow.fichas_salud.update(ficha))
+
+    def obtener_meta(self, alumno_id: int) -> MetaPublic:
+        self._comprobar_alumno(alumno_id)
+        meta = self.uow.metas.get_by_alumno(alumno_id)
+        # Si todavía no se configuró, se informa la meta por defecto
+        if not meta:
+            return MetaPublic()
+        return MetaPublic.model_validate(meta)

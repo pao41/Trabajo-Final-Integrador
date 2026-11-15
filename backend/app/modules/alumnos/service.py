@@ -1,3 +1,5 @@
+from fastapi import HTTPException, status
+
 from app.core.security import generate_access_code, hash_password
 from app.core.uow import UnitOfWork
 from app.modules.alumnos.model import Alumno, AlumnoConCodigo, AlumnoDatos, AlumnoPublic
@@ -49,3 +51,29 @@ class AlumnoService:
         codigo = generate_access_code()
         alumno.codigo_acceso_hash = hash_password(codigo)
         return self._con_codigo(self.uow.alumnos.update(alumno), codigo)
+
+    def _buscar(self, alumno_id: int) -> Alumno:
+        alumno = self.uow.alumnos.get_by_id(alumno_id)
+        if not alumno:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Alumno no encontrado",
+            )
+        return alumno
+
+    def _validar_dni(self, dni: str) -> None:
+        """El DNI lleva solo números y no puede repetirse (RN13)."""
+        if not (dni.isascii() and dni.isdigit()):
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+                detail="El DNI debe tener solo números",
+            )
+        if self.uow.alumnos.get_by_dni(dni):
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Ya existe un alumno con ese DNI",
+            )
+
+    def _con_codigo(self, alumno: Alumno, codigo: str) -> AlumnoConCodigo:
+        datos = AlumnoPublic.model_validate(alumno).model_dump()
+        return AlumnoConCodigo(**datos, codigo_acceso=codigo)
