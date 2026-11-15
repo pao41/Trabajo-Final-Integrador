@@ -4,6 +4,7 @@ import Logo from './Logo'
 
 const secciones = [
   { ruta: '/', nombre: 'Inicio' },
+  { ruta: '/alumnos', nombre: 'Alumnos' },
   { ruta: '/usuarios', nombre: 'Usuarios' },
 ]
 
@@ -21,7 +22,7 @@ export default function Layout() {
         </div>
         <div className="flex flex-col gap-1">
           {secciones.map((seccion) => (
-            <NavLink key={seccion.ruta} to={seccion.ruta} end className={estiloEnlace}>
+            <NavLink key={seccion.ruta} to={seccion.ruta} end={seccion.ruta === '/'} className={estiloEnlace}>
               {seccion.nombre}
             </NavLink>
           ))}
