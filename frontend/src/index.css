@@ -1,1 +1,38 @@
 @import "tailwindcss";
+
+/* Colores y tipografías del sistema */
+@theme {
+  --color-crema: #faf5ee;
+  --color-cafe: #2b241e;
+  --color-terracota: #c2410c;
+  --color-terracota-oscuro: #9a3412;
+  --color-arena: #ece5db;
+  --color-borde: #d9ccbc;
+  --color-gris-calido: #6b6157;
+  --color-verde-suave: #ddefe3;
+  --color-verde-texto: #1f5138;
+  --color-ladrillo: #9a2b12;
+  --font-sans: "DM Sans", sans-serif;
+  --font-titulo: "Bricolage Grotesque", sans-serif;
+}
+
+body {
+  background-color: var(--color-crema);
+  color: var(--color-cafe);
+  font-size: 17px;
+}
+
+/* Estilos que se repiten en todas las pantallas */
+@layer components {
+  .campo {
+    @apply h-12 w-full rounded-xl border-2 border-borde bg-white px-4 font-normal;
+    @apply focus:border-terracota focus:outline-3 focus:outline-terracota/30;
+  }
+  .boton {
+    @apply h-12 rounded-xl bg-terracota px-6 font-bold text-white;
+    @apply hover:bg-terracota-oscuro disabled:opacity-60;
+  }
+  .boton-claro {
+    @apply h-11 rounded-xl border-2 border-borde bg-white px-4 font-bold text-cafe hover:bg-arena;
+  }
+}
