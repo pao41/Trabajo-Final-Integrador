@@ -1,3 +1,6 @@
+from datetime import datetime, timedelta, timezone
+
+import jwt
 from fastapi.testclient import TestClient
 
 from app.core.config import settings
@@ -90,3 +93,38 @@ def test_cp26_un_entrenador_no_puede_gestionar_usuarios(
 
     assert client.get("/usuarios").status_code == 403
     assert client.post("/usuarios", json=nuevo).status_code == 403
+
+
+def test_un_token_vencido_da_401(client):
+    ayer = datetime.now(timezone.utc) - timedelta(days=1)
+    vencido = jwt.encode({"sub": "1", "exp": ayer}, settings.secret_key, algorithm="HS256")
+    client.cookies.set("access_token", vencido)
+
+    assert client.get("/auth/me").status_code == 401
+
+
+def test_un_token_firmado_con_otra_clave_da_401(client):
+    manana = datetime.now(timezone.utc) + timedelta(days=1)
+    falso = jwt.encode({"sub": "1", "exp": manana}, "otra-clave-" * 5, algorithm="HS256")
+    client.cookies.set("access_token", falso)
+
+    assert client.get("/auth/me").status_code == 401
+
+
+def test_cp29_un_usuario_desactivado_no_puede_iniciar_sesion(admin, crear_usuario, iniciar_sesion):
+    marta_id = crear_usuario("marta")
+
+    admin.patch(f"/usuarios/{marta_id}/desactivar")
+
+    assert iniciar_sesion(TestClient(app), "marta").status_code == 401
+
+
+def test_cp29_desactivar_corta_tambien_la_sesion_ya_abierta(admin, crear_usuario, iniciar_sesion):
+    marta_id = crear_usuario("marta")
+    sesion_de_marta = TestClient(app)
+    iniciar_sesion(sesion_de_marta, "marta")
+    assert sesion_de_marta.get("/auth/me").status_code == 200
+
+    admin.patch(f"/usuarios/{marta_id}/desactivar")
+
+    assert sesion_de_marta.get("/auth/me").status_code == 401
