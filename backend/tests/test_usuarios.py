@@ -66,3 +66,37 @@ def test_el_listado_muestra_los_usuarios_sin_contrasena(admin):
     assert respuesta.status_code == 200
     assert len(respuesta.json()) == 2
     assert "password" not in respuesta.text
+
+
+def test_desactivar_y_volver_a_activar(admin, crear_usuario):
+    marta_id = crear_usuario("marta")
+
+    desactivado = admin.patch(f"/usuarios/{marta_id}/desactivar")
+    activado = admin.patch(f"/usuarios/{marta_id}/activar")
+
+    assert desactivado.json()["activo"] is False
+    assert activado.json()["activo"] is True
+
+
+def test_nadie_puede_desactivarse_a_si_mismo(admin):
+    respuesta = admin.patch("/usuarios/1/desactivar")
+
+    assert respuesta.status_code == 422
+    assert admin.get("/auth/me").status_code == 200
+
+
+def test_un_usuario_inexistente_da_404(admin):
+    assert admin.patch("/usuarios/999/desactivar").status_code == 404
+
+
+def test_restablecer_la_contrasena_reemplaza_la_anterior(admin, crear_usuario, iniciar_sesion):
+    marta_id = crear_usuario("marta", password="clave-marta-123")
+
+    respuesta = admin.put(
+        f"/usuarios/{marta_id}/password", json={"nueva_password": "clave-nueva-456"}
+    )
+
+    assert respuesta.status_code == 204
+    assert iniciar_sesion(TestClient(app), "marta", "clave-marta-123").status_code == 401
+    assert iniciar_sesion(TestClient(app), "marta", "clave-nueva-456").status_code == 200
+    
