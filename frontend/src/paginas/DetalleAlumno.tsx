@@ -1,8 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useParams } from 'react-router-dom'
-import { obtenerAlumno } from '../api/alumnos'
+import { editarAlumno, obtenerAlumno } from '../api/alumnos'
+import type { AlumnoDatos } from '../types/alumnos'
 import EtiquetaEstado from '../componentes/EtiquetaEstado'
+import FormularioAlumno from '../componentes/FormularioAlumno'
 import MensajeError from '../componentes/MensajeError'
+import TarjetaSeccion from '../componentes/TarjetaSeccion'
 
 // Pantalla de un alumno: sus datos, su acceso y su ficha
 export default function DetalleAlumno() {
@@ -10,6 +13,12 @@ export default function DetalleAlumno() {
   const { data: alumno, isPending, isError, error } = useQuery({
     queryKey: ['alumnos', 'detalle', id],
     queryFn: () => obtenerAlumno(id),
+  })
+
+  const queryClient = useQueryClient()
+  const guardar = useMutation({
+    mutationFn: (datos: AlumnoDatos) => editarAlumno(id, datos),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['alumnos'] }),
   })
 
   if (isPending) return <p>Cargando…</p>
@@ -24,6 +33,16 @@ export default function DetalleAlumno() {
         <h1 className="font-titulo text-4xl font-bold">{alumno.nombre}</h1>
         <EtiquetaEstado activo={alumno.activo} />
       </div>
+      <TarjetaSeccion titulo="Datos del alumno">
+        <FormularioAlumno
+          inicial={alumno}
+          textoBoton="Guardar cambios"
+          pendiente={guardar.isPending}
+          error={guardar.error?.message ?? null}
+          alEnviar={(datos) => guardar.mutate(datos)}
+        />
+        {guardar.isSuccess && <p className="text-verde-texto">Cambios guardados.</p>}
+      </TarjetaSeccion>
     </section>
   )
 }
