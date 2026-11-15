@@ -27,3 +27,36 @@ def test_cp25_el_usuario_se_escribe_sin_distinguir_mayusculas(
     respuesta = iniciar_sesion(client, "  ADMIN ")
 
     assert respuesta.status_code == 200
+
+
+def test_cp25_contrasena_incorrecta_da_401_con_mensaje_generico(
+    client, crear_usuario, iniciar_sesion
+):
+    crear_usuario("admin")
+
+    respuesta = iniciar_sesion(client, "admin", "otra-clave-incorrecta")
+
+    assert respuesta.status_code == 401
+    assert respuesta.json()["detail"] == MENSAJE_GENERICO
+    assert "set-cookie" not in respuesta.headers
+
+
+def test_cp25_usuario_inexistente_da_el_mismo_mensaje(client, iniciar_sesion):
+    respuesta = iniciar_sesion(client, "no-existe")
+
+    assert respuesta.status_code == 401
+    assert respuesta.json()["detail"] == MENSAJE_GENERICO
+
+
+def test_me_sin_sesion_da_401(client):
+    assert client.get("/auth/me").status_code == 401
+
+
+def test_me_con_sesion_devuelve_el_usuario_sin_contrasena(admin):
+    respuesta = admin.get("/auth/me")
+
+    assert respuesta.status_code == 200
+    assert respuesta.json()["nombre_usuario"] == "admin"
+    assert respuesta.json()["rol"] == "administrador"
+    assert "password" not in respuesta.text
+
