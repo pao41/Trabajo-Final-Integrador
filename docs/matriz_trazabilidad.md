@@ -79,6 +79,6 @@ Cada requerimiento se rastrea hasta su verificación: el caso de uso está en `c
 
 | Documento | Se relaciona con |
 |---|---|
-| [`uso_de_ia.md`](./uso_de_ia.md) | RF11, RF12, RF13, RN18 a RN23, módulos 7 y 8 |
+| [`uso_de_ia.md`](./uso_de_ia.md) | Declaración del uso de herramientas de IA durante el desarrollo del proyecto |
 | [`escalabilidad_y_funcionalidades_futuras.md`](./escalabilidad_y_funcionalidades_futuras.md) | RNF05, RNF06 y las mejoras futuras del README |
 | [`api_endpoints.md`](./api_endpoints.md) | Todos los RF, a través de los módulos 1 a 11 |
