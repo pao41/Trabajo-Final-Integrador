@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { listarAlumnos } from '../api/alumnos'
+import EtiquetaEstado from '../componentes/EtiquetaEstado'
 import MensajeError from '../componentes/MensajeError'
 
 // Listado de alumnos del gimnasio
@@ -24,6 +25,34 @@ export default function Alumnos() {
       {isPending && <p>Cargando…</p>}
       {isError && <MensajeError texto={error.message} />}
       {data?.length === 0 && <p className="text-gris-calido">No hay alumnos que coincidan.</p>}
+      {data && data.length > 0 && (
+        <div className="overflow-x-auto rounded-2xl border border-borde bg-white">
+          <table className="w-full min-w-[720px] text-left">
+            <thead className="text-[15px] text-gris-calido">
+              <tr>
+                <th className="p-4">Nombre</th>
+                <th className="p-4">DNI</th>
+                <th className="p-4">Contacto</th>
+                <th className="p-4">Estado</th>
+                <th className="p-4">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((alumno) => (
+                <tr key={alumno.id} className="border-t border-borde">
+                  <td className="p-4 font-bold">{alumno.nombre}</td>
+                  <td className="p-4">{alumno.dni}</td>
+                  <td className="p-4">{alumno.contacto ?? '—'}</td>
+                  <td className="p-4"><EtiquetaEstado activo={alumno.activo} /></td>
+                  <td className="p-4">
+                    <Link to={`/alumnos/${alumno.id}`} className="boton-claro inline-flex items-center">Ver y editar</Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </section>
   )
 }
