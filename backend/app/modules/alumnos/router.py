@@ -64,3 +64,24 @@ def desactivar(
 ):
     with uow:
         return AlumnoService(uow).cambiar_estado(alumno_id, False)
+
+
+@router.patch("/{alumno_id}/activar", response_model=AlumnoPublic)
+def activar(
+    alumno_id: int,
+    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with uow:
+        return AlumnoService(uow).cambiar_estado(alumno_id, True)
+
+
+@router.post("/{alumno_id}/codigo-acceso", response_model=AlumnoConCodigo)
+def regenerar_codigo(
+    alumno_id: int,
+    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    """Genera un código nuevo (el anterior deja de servir) y lo muestra una única vez."""
+    with uow:
+        return AlumnoService(uow).regenerar_codigo(alumno_id)

@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 from app.core.deps import require_role
 from app.core.uow import UnitOfWork, get_uow
 from app.modules.alumnos.ficha_service import FichaMetaService
-from app.modules.alumnos.model import FichaSaludDatos, FichaSaludPublic, MetaPublic
+from app.modules.alumnos.model import FichaSaludDatos, FichaSaludPublic, MetaDatos, MetaPublic
 from app.modules.alumnos.router import solo_admin
 from app.modules.usuarios.model import UsuarioPublic
 
@@ -44,3 +44,14 @@ def obtener_meta(
 ):
     with uow:
         return FichaMetaService(uow).obtener_meta(alumno_id)
+
+
+@router.put("/{alumno_id}/meta", response_model=MetaPublic)
+def guardar_meta(
+    alumno_id: int,
+    datos: MetaDatos,
+    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with uow:
+        return FichaMetaService(uow).guardar_meta(alumno_id, datos)
