@@ -77,6 +77,7 @@ def crear_usuario():
 
     return crear
 
+
 @pytest.fixture
 def crear_entrenador():
     """Devuelve una función que crea un entrenador directo en la base y entrega su id."""
