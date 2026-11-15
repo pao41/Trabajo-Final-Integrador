@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { listarAlumnos } from '../api/alumnos'
 import EtiquetaEstado from '../componentes/EtiquetaEstado'
@@ -6,9 +7,11 @@ import MensajeError from '../componentes/MensajeError'
 
 // Listado de alumnos del gimnasio
 export default function Alumnos() {
+  const [buscar, setBuscar] = useState('')
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ['alumnos', 'lista'],
-    queryFn: () => listarAlumnos(''),
+    queryKey: ['alumnos', 'lista', buscar],
+    queryFn: () => listarAlumnos(buscar),
+    placeholderData: keepPreviousData,
   })
 
   return (
@@ -22,6 +25,13 @@ export default function Alumnos() {
           Nuevo alumno
         </Link>
       </div>
+      <input
+        className="campo max-w-md"
+        placeholder="Buscar por nombre o DNI"
+        aria-label="Buscar por nombre o DNI"
+        value={buscar}
+        onChange={(e) => setBuscar(e.target.value)}
+      />
       {isPending && <p>Cargando…</p>}
       {isError && <MensajeError texto={error.message} />}
       {data?.length === 0 && <p className="text-gris-calido">No hay alumnos que coincidan.</p>}
