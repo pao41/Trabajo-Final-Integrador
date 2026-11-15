@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useParams } from 'react-router-dom'
-import { editarAlumno, obtenerAlumno } from '../api/alumnos'
+import { cambiarEstadoAlumno, editarAlumno, obtenerAlumno, regenerarCodigo } from '../api/alumnos'
 import type { AlumnoDatos } from '../types/alumnos'
+import CodigoAcceso from '../componentes/CodigoAcceso'
 import EtiquetaEstado from '../componentes/EtiquetaEstado'
 import FormularioAlumno from '../componentes/FormularioAlumno'
 import MensajeError from '../componentes/MensajeError'
@@ -20,6 +21,13 @@ export default function DetalleAlumno() {
     mutationFn: (datos: AlumnoDatos) => editarAlumno(id, datos),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['alumnos'] }),
   })
+  // Baja lógica: el alumno no se elimina, queda inactivo con su historial
+  const cambiarEstado = useMutation({
+    mutationFn: (activo: boolean) => cambiarEstadoAlumno(id, activo),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['alumnos'] }),
+  })
+  // El código anterior deja de servir
+  const nuevoCodigo = useMutation({ mutationFn: () => regenerarCodigo(id) })
 
   if (isPending) return <p>Cargando…</p>
   if (isError) return <MensajeError texto={error.message} />
@@ -42,6 +50,20 @@ export default function DetalleAlumno() {
           alEnviar={(datos) => guardar.mutate(datos)}
         />
         {guardar.isSuccess && <p className="text-verde-texto">Cambios guardados.</p>}
+      </TarjetaSeccion>
+      <TarjetaSeccion titulo="Acceso y estado">
+        <button onClick={() => nuevoCodigo.mutate()} className="boton-claro self-start" disabled={nuevoCodigo.isPending}>
+          Generar código nuevo
+        </button>
+        {nuevoCodigo.data && <CodigoAcceso nombre={alumno.nombre} codigo={nuevoCodigo.data.codigo_acceso} />}
+        <button
+          onClick={() => cambiarEstado.mutate(!alumno.activo)}
+          className={`boton-claro self-start ${alumno.activo ? 'border-ladrillo text-ladrillo' : ''}`}
+        >
+          {alumno.activo ? 'Dar de baja' : 'Volver a activar'}
+        </button>
+        {nuevoCodigo.isError && <MensajeError texto={nuevoCodigo.error.message} />}
+        {cambiarEstado.isError && <MensajeError texto={cambiarEstado.error.message} />}
       </TarjetaSeccion>
     </section>
   )
