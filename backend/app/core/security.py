@@ -1,3 +1,4 @@
+import secrets
 from datetime import datetime, timedelta, timezone
 
 import bcrypt
@@ -33,3 +34,12 @@ def decode_access_token(token: str) -> dict | None:
         return jwt.decode(token, settings.secret_key, algorithms=["HS256"])
     except jwt.PyJWTError:
         return None
+
+
+# Letras y números sin los que se confunden entre sí (0/O, 1/I/L)
+ALFABETO_CODIGO = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"
+
+
+def generate_access_code() -> str:
+    """Genera un código de acceso aleatorio de 8 caracteres; no se deriva del DNI."""
+    return "".join(secrets.choice(ALFABETO_CODIGO) for _ in range(8))
