@@ -1,6 +1,11 @@
 from sqlmodel import Session
 
 from app.core.database import engine
+from app.modules.alumnos.repository import (
+    AlumnoRepository,
+    FichaSaludRepository,
+    MetaAlumnoRepository,
+)
 from app.modules.usuarios.repository import UsuarioRepository
 
 
@@ -15,6 +20,9 @@ class UnitOfWork:
         self.session = Session(engine, expire_on_commit=False)
         # Acá se crea el repositorio de cada módulo (una línea por módulo)
         self.usuarios = UsuarioRepository(self.session)
+        self.alumnos = AlumnoRepository(self.session)
+        self.fichas_salud = FichaSaludRepository(self.session)
+        self.metas = MetaAlumnoRepository(self.session)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
