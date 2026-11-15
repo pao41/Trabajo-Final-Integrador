@@ -10,3 +10,11 @@ Los principales usos fueron:
 * Codificación: consultas puntuales sobre sintaxis, estructuras de programación y funcionamiento de determinadas herramientas utilizadas.
 * Depuración: apoyo para interpretar mensajes de error y analizar posibles soluciones durante el desarrollo.
 * Documentación técnica: asistencia en la revisión de la documentación elaborada por los integrantes del equipo y consultas puntuales sobre su contenido técnico.
+
+## Criterios de utilización
+
+Las respuestas y sugerencias proporcionadas por estas herramientas fueron consideradas como referencias de consulta. Cada propuesta fue revisada por los integrantes del equipo, contrastada con los conocimientos adquiridos durante la formación académica y adaptada a las necesidades del proyecto antes de su utilización.
+
+La selección de tecnologías, las decisiones de diseño, la implementación de las funcionalidades y la validación del funcionamiento del sistema estuvieron a cargo de los integrantes del equipo.
+
+La Inteligencia Artificial se utilizó, por lo tanto, como una herramienta de asistencia al aprendizaje y al desarrollo, manteniendo la responsabilidad sobre el código, las decisiones técnicas y los resultados obtenidos.
