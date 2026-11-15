@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import RutaProtegida from './componentes/RutaProtegida'
 import Alumnos from './paginas/Alumnos'
+import DetalleAlumno from './paginas/DetalleAlumno'
 import Inicio from './paginas/Inicio'
 import Login from './paginas/Login'
 import NuevoAlumno from './paginas/NuevoAlumno'
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Inicio />} />
         <Route path="/alumnos" element={<Alumnos />} />
         <Route path="/alumnos/nuevo" element={<NuevoAlumno />} />
+        <Route path="/alumnos/:id" element={<DetalleAlumno />} />
         <Route path="/usuarios" element={<Usuarios />} />
 
       </Route>
