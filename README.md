@@ -140,6 +140,9 @@ La arquitectura del proyecto sigue un esquema cliente-servidor de tres capas (fr
 * [Seguridad y permisos](./docs/seguridad_y_permisos.md)
 * [Integridad de datos](./docs/integridad_datos.md)
 * [Auditoría, contingencia y recuperación](./docs/contingencia_auditoria_recuperacion.md)
+* [Uso de la Inteligencia Artificial](./docs/uso_de_ia.md)
+* [Escalabilidad y funcionalidades futuras](./docs/escalabilidad_y_funcionalidades_futuras.md)
+* [Endpoints de la API](./docs/api_endpoints.md)
 
 ### Cómo ejecutar el proyecto en local
 
@@ -160,6 +163,7 @@ python -m venv .venv
 source .venv/Scripts/activate    # en Mac o Linux: source .venv/bin/activate
 pip install -r requirements-dev.txt
 cp .env.example .env             # completar DATABASE_URL con su usuario y contraseña
+python -m app.db.seed            # pide usuario y contraseña del primer administrador              
 uvicorn app.main:app --reload
 ```
 
