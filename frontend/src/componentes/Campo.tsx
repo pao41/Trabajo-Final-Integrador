@@ -4,10 +4,11 @@ interface Props {
   alCambiar: (valor: string) => void
   tipo?: string
   autoComplete?: string
+  obligatorio?: boolean
 }
 
 // Campo de formulario con su etiqueta visible arriba
-export default function Campo({ etiqueta, valor, alCambiar, tipo = 'text', autoComplete }: Props) {
+export default function Campo({ etiqueta, valor, alCambiar, tipo = 'text', autoComplete, obligatorio = true }: Props) {
   return (
     <label className="flex flex-col gap-2 font-bold">
       {etiqueta}
@@ -16,7 +17,7 @@ export default function Campo({ etiqueta, valor, alCambiar, tipo = 'text', autoC
         type={tipo}
         value={valor}
         autoComplete={autoComplete}
-        required
+        required={obligatorio}
         onChange={(e) => alCambiar(e.target.value)}
       />
     </label>
