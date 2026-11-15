@@ -5,7 +5,8 @@ from fastapi import APIRouter, Depends
 from app.core.deps import require_role
 from app.core.uow import UnitOfWork, get_uow
 from app.modules.alumnos.ficha_service import FichaMetaService
-from app.modules.alumnos.model import FichaSaludPublic
+from app.modules.alumnos.model import FichaSaludDatos, FichaSaludPublic, MetaPublic
+from app.modules.alumnos.router import solo_admin
 from app.modules.usuarios.model import UsuarioPublic
 
 router = APIRouter(prefix="/alumnos", tags=["Ficha de salud y meta"])
@@ -22,3 +23,24 @@ def obtener_ficha(
 ):
     with uow:
         return FichaMetaService(uow).obtener_ficha(alumno_id)
+
+
+@router.put("/{alumno_id}/ficha-salud", response_model=FichaSaludPublic)
+def guardar_ficha(
+    alumno_id: int,
+    datos: FichaSaludDatos,
+    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with uow:
+        return FichaMetaService(uow).guardar_ficha(alumno_id, datos)
+
+
+@router.get("/{alumno_id}/meta", response_model=MetaPublic)
+def obtener_meta(
+    alumno_id: int,
+    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with uow:
+        return FichaMetaService(uow).obtener_meta(alumno_id)

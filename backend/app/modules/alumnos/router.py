@@ -43,3 +43,24 @@ def obtener(
 ):
     with uow:
         return AlumnoService(uow).obtener(alumno_id)
+
+
+@router.put("/{alumno_id}", response_model=AlumnoPublic)
+def editar(
+    alumno_id: int,
+    datos: AlumnoDatos,
+    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with uow:
+        return AlumnoService(uow).editar(alumno_id, datos)
+
+
+@router.patch("/{alumno_id}/desactivar", response_model=AlumnoPublic)
+def desactivar(
+    alumno_id: int,
+    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with uow:
+        return AlumnoService(uow).cambiar_estado(alumno_id, False)
