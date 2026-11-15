@@ -1,4 +1,8 @@
+from fastapi.testclient import TestClient
+
 from app.core.config import settings
+from app.main import app
+
 
 MENSAJE_GENERICO = "Usuario o contraseña incorrectos"
 
@@ -60,3 +64,29 @@ def test_me_con_sesion_devuelve_el_usuario_sin_contrasena(admin):
     assert respuesta.json()["rol"] == "administrador"
     assert "password" not in respuesta.text
 
+
+def test_el_encabezado_authorization_no_se_acepta(admin):
+    token = admin.cookies.get("access_token")
+    otro_cliente = TestClient(app)
+
+    respuesta = otro_cliente.get("/auth/me", headers={"Authorization": f"Bearer {token}"})
+
+    assert respuesta.status_code == 401
+
+
+def test_logout_borra_la_cookie(admin):
+    admin.post("/auth/logout")
+
+    assert admin.get("/auth/me").status_code == 401
+
+
+def test_cp26_un_entrenador_no_puede_gestionar_usuarios(
+    client, crear_usuario, crear_entrenador, iniciar_sesion
+):
+    entrenador_id = crear_entrenador()
+    crear_usuario("laura", rol="entrenador", entrenador_id=entrenador_id)
+    iniciar_sesion(client, "laura")
+    nuevo = {"nombre_usuario": "marta", "password": "clave-marta-123"}
+
+    assert client.get("/usuarios").status_code == 403
+    assert client.post("/usuarios", json=nuevo).status_code == 403
