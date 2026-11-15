@@ -34,3 +34,5 @@
 | CP30 | RF14 | La base impide borrar historial | Alumno con inscripciones y pagos | Intentar eliminar físicamente al alumno | La base de datos rechaza la eliminación (`ON DELETE RESTRICT`, RN28) |
 | CP31 | RF06 | La base rechaza pagos inválidos | Inscripción existente | Intentar insertar un pago con monto 0 o con método inexistente | La base de datos rechaza el registro (`CHECK`, RN27) |
 | CP32 | RF13, RF18 | La base rechaza una aprobación sin entrenador | Sugerencia en estado `pendiente` | Intentar pasarla a `aprobada` sin entrenador ni fecha de validación | La base de datos rechaza el cambio (`chk_validacion_coherente`, RN21, RN24) |
+| CP33 | RF01 | Baja lógica registrada en el log | Sesión de administrador y un alumno registrado | Dar de baja al alumno | El log del backend registra fecha y hora, usuario, acción y resultado, sin datos de salud (RN40) |
+| CP34 | RF21 | Sesión requerida para consultar datos | Sin sesión iniciada | Consultar un recurso protegido, por ejemplo la lista de usuarios | El sistema rechaza la consulta con error 401 y no devuelve datos (RN33) |
