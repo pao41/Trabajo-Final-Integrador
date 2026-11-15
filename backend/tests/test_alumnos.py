@@ -101,3 +101,31 @@ def test_editar_con_el_dni_de_otro_alumno_da_409(admin):
     respuesta = admin.put(f"/alumnos/{otro_id}", json=NUEVO)
 
     assert respuesta.status_code == 409
+
+
+def test_editar_sin_cambiar_el_dni_no_da_error(admin):
+    alumno_id = alta(admin).json()["id"]
+
+    respuesta = admin.put(f"/alumnos/{alumno_id}", json={**NUEVO, "nombre": "Ana María Pérez"})
+
+    assert respuesta.status_code == 200
+
+
+def test_un_alumno_que_no_existe_da_404(admin):
+    assert admin.get("/alumnos/999").status_code == 404
+    assert admin.put("/alumnos/999", json=NUEVO).status_code == 404
+    assert admin.patch("/alumnos/999/desactivar").status_code == 404
+    assert admin.post("/alumnos/999/codigo-acceso").status_code == 404
+
+
+def test_la_baja_es_logica_y_se_puede_reactivar(admin):
+    alumno_id = alta(admin).json()["id"]
+
+    baja = admin.patch(f"/alumnos/{alumno_id}/desactivar")
+
+    assert baja.status_code == 200
+    assert baja.json()["activo"] is False
+    # El registro sigue existiendo y se puede consultar (RN14)
+    assert admin.get(f"/alumnos/{alumno_id}").json()["activo"] is False
+    assert len(admin.get("/alumnos").json()) == 1
+    assert admin.patch(f"/alumnos/{alumno_id}/activar").json()["activo"] is True

@@ -99,3 +99,10 @@ def test_una_meta_fuera_de_1_a_7_da_422(admin):
         admin.put(f"/alumnos/{alumno_id}/meta", json={"meta_asistencias_semanales": 8}).status_code
         == 422
     )
+
+
+def test_el_entrenador_no_accede_a_la_meta(admin, crear_usuario, crear_entrenador, iniciar_sesion):
+    alumno_id = nuevo_alumno(admin)
+    entrenador = sesion_de_entrenador(crear_usuario, crear_entrenador, iniciar_sesion)
+
+    assert entrenador.get(f"/alumnos/{alumno_id}/meta").status_code == 403
