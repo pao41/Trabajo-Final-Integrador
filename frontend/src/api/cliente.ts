@@ -36,3 +36,21 @@ export async function pedirJson<T>(ruta: string): Promise<T> {
   const respuesta = await pedir(ruta)
   return respuesta.json() as Promise<T>
 }
+
+// Envía datos en JSON (POST, PUT, PATCH). Las respuestas 204 no tienen cuerpo
+export async function enviarJson<T>(ruta: string, metodo: string, datos?: unknown): Promise<T> {
+  const respuesta = await pedir(ruta, {
+    method: metodo,
+    headers: datos === undefined ? undefined : { 'Content-Type': 'application/json' },
+    body: datos === undefined ? undefined : JSON.stringify(datos),
+  })
+  if (respuesta.status === 204) return undefined as T
+  return respuesta.json() as Promise<T>
+}
+
+// Envía un formulario clásico (lo pide el login de OAuth2)
+export async function enviarFormulario<T>(ruta: string, datos: Record<string, string>): Promise<T> {
+  const respuesta = await pedir(ruta, { method: 'POST', body: new URLSearchParams(datos) })
+  return respuesta.json() as Promise<T>
+}
+
