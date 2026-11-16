@@ -5,6 +5,7 @@ import Logo from './Logo'
 const secciones = [
   { ruta: '/', nombre: 'Inicio' },
   { ruta: '/alumnos', nombre: 'Alumnos' },
+  { ruta: '/planes', nombre: 'Planes' },
   { ruta: '/usuarios', nombre: 'Usuarios' },
 ]
 

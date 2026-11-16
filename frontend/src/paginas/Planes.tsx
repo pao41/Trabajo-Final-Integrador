@@ -22,6 +22,13 @@ export default function Planes() {
     },
   })
 
+  // Carga el plan en el formulario y sube a la parte de arriba para verlo
+  const editar = (plan: Plan) => {
+    guardar.reset()
+    setEditando(plan)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   return (
     <section className="flex flex-col gap-6">
       <div>
@@ -36,6 +43,11 @@ export default function Planes() {
           error={guardar.error?.message ?? null}
           alEnviar={(datos) => guardar.mutate(datos)}
         />
+        {editando && (
+          <button onClick={() => setEditando(null)} className="boton-claro self-start">
+            Cancelar edición
+          </button>
+        )}
       </TarjetaSeccion>
       {isPending && <p>Cargando…</p>}
       {isError && <MensajeError texto={error.message} />}
@@ -60,7 +72,7 @@ export default function Planes() {
                   <td className="p-4">{plan.duracion_dias} días</td>
                   <td className="p-4">$ {Number(plan.precio).toLocaleString('es-AR')}</td>
                   <td className="p-4">
-                    <button onClick={() => setEditando(plan)} className="boton-claro">Editar</button>
+                    <button onClick={() => editar(plan)} className="boton-claro">Editar</button>
                   </td>
                 </tr>
               ))}
