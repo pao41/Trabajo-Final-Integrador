@@ -3,8 +3,8 @@ import RutaProtegida from './componentes/RutaProtegida'
 import Alumnos from './paginas/Alumnos'
 import Asistencia from './paginas/Asistencia'
 import Configuracion from './paginas/Configuracion'
+import Dashboard from './paginas/Dashboard'
 import DetalleAlumno from './paginas/DetalleAlumno'
-import Inicio from './paginas/Inicio'
 import Login from './paginas/Login'
 import NuevoAlumno from './paginas/NuevoAlumno'
 import Planes from './paginas/Planes'
@@ -16,7 +16,7 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route element={<RutaProtegida />}>
-        <Route path="/" element={<Inicio />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/alumnos" element={<Alumnos />} />
         <Route path="/alumnos/nuevo" element={<NuevoAlumno />} />
         <Route path="/alumnos/:id" element={<DetalleAlumno />} />

@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import { obtenerDashboard } from '../api/dashboard'
+import BarrasSimples from '../componentes/BarrasSimples'
 import { EtiquetaInscripcion } from '../componentes/EtiquetaEstado'
 import MensajeError from '../componentes/MensajeError'
 import TarjetaIndicador from '../componentes/TarjetaIndicador'
 import TarjetaSeccion from '../componentes/TarjetaSeccion'
-import { pesos } from '../utilidades/formato'
+import { METODOS_PAGO } from '../types/pagos'
+import { fecha, pesos } from '../utilidades/formato'
 
 // Dashboard del administrador: facturación, estado de las cuotas y asistencia
 export default function Dashboard() {
@@ -45,6 +47,24 @@ export default function Dashboard() {
               <EtiquetaInscripcion estado="vencido" /><strong className="text-2xl">{data.alumnos_vencidos}</strong>
             </li>
           </ul>
+        </TarjetaSeccion>
+        <TarjetaSeccion titulo="Facturación por método">
+          <BarrasSimples
+            barras={data.facturacion_por_metodo.map((f) => ({
+              etiqueta: METODOS_PAGO.find((m) => m.valor === f.metodo_pago)?.texto ?? f.metodo_pago,
+              valor: Number(f.total),
+              texto: pesos(f.total),
+            }))}
+          />
+        </TarjetaSeccion>
+        <TarjetaSeccion titulo="Asistencias por semana">
+          <BarrasSimples
+            barras={data.asistencias_por_semana.map((s) => ({
+              etiqueta: `Semana del ${fecha(s.semana_desde).slice(0, 5)}`,
+              valor: s.total,
+              texto: String(s.total),
+            }))}
+          />
         </TarjetaSeccion>
       </div>
     </section>
