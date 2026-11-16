@@ -123,3 +123,22 @@ def test_renovar_con_el_saldo_agotado_y_la_vigencia_vigente(admin):
     assert inscripcion["clases_restantes"] == 10
     assert inscripcion["fecha_vencimiento"] == en_dias(120)
     assert inscripcion["estado"] == "activo"
+
+
+def test_inscripcion_inexistente(admin):
+    assert pagar(admin, 999).status_code == 404
+
+
+def test_alumno_dado_de_baja_no_paga(admin):
+    inscripcion_id = nueva_inscripcion(admin)
+    admin.patch("/alumnos/1/desactivar")
+
+    assert pagar(admin, inscripcion_id).status_code == 409
+
+
+def test_solo_se_paga_la_inscripcion_mas_reciente(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
+    vieja = inscribir(admin, alumno_id, plan_id, dias_atras=100).json()["id"]
+    inscribir(admin, alumno_id, plan_id)
+
+    assert pagar(admin, vieja).status_code == 409
