@@ -1,9 +1,12 @@
 from datetime import date, timedelta
 
+from fastapi import HTTPException, status
+
 from app.core.clock import today_ar
 from app.core.uow import UnitOfWork
+from app.modules.alumnos.model import Alumno
 from app.modules.configuracion.service import ConfiguracionService
-from app.modules.planes.model import Inscripcion, InscripcionDatos, InscripcionPublic
+from app.modules.planes.model import Inscripcion, InscripcionDatos, InscripcionPublic, Plan
 
 
 def calcular_estado(inscripcion: Inscripcion, hoy: date, dias_aviso: int) -> str:
@@ -49,3 +52,20 @@ class InscripcionService:
         return InscripcionPublic(
             **inscripcion.model_dump(), plan_nombre=plan.nombre, tipo=plan.tipo
         )
+
+    def _validar(self, datos: InscripcionDatos) -> tuple[Alumno, Plan]:
+        """Comprueba que el alumno y el plan existan y que el alumno pueda inscribirse."""
+        alumno = self.uow.alumnos.get_by_id(datos.alumno_id)
+        if not alumno:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Alumno no encontrado")
+        plan = self.uow.planes.get_by_id(datos.plan_id)
+        if not plan:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Plan no encontrado")
+        if not alumno.activo:
+            raise HTTPException(status.HTTP_409_CONFLICT, "El alumno está dado de baja")
+        # Mientras la inscripción vigente no venza, el plan nuevo espera a la renovación (RN06)
+        if self.uow.inscripciones.get_vigente(alumno.id, today_ar()):
+            raise HTTPException(
+                status.HTTP_409_CONFLICT, "El alumno ya tiene una inscripción vigente"
+            )
+        return alumno, plan
