@@ -81,7 +81,11 @@ def test_con_una_inscripcion_vigente_no_se_puede_crear_otra(admin):
     alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
     inscribir(admin, alumno_id, plan_id)
 
-    assert inscribir(admin, alumno_id, plan_id).status_code == 409
+    respuesta = inscribir(admin, alumno_id, plan_id)
+
+    assert respuesta.status_code == 409
+    assert "ya tiene una inscripción vigente: " in respuesta.json()["detail"]
+
 
 
 def test_vencida_la_inscripcion_se_puede_inscribir_de_nuevo(admin):

@@ -64,8 +64,12 @@ class InscripcionService:
         if not alumno.activo:
             raise HTTPException(status.HTTP_409_CONFLICT, "El alumno está dado de baja")
         # Mientras la inscripción vigente no venza, el plan nuevo espera a la renovación (RN06)
-        if self.uow.inscripciones.get_vigente(alumno.id, today_ar()):
+        vigente = self.uow.inscripciones.get_vigente(alumno.id, today_ar())
+        if vigente:
+            actual = self.uow.planes.get_by_id(vigente.plan_id)
+            hasta = vigente.fecha_vencimiento.strftime("%d/%m/%Y")
             raise HTTPException(
-                status.HTTP_409_CONFLICT, "El alumno ya tiene una inscripción vigente"
+                status.HTTP_409_CONFLICT,
+                f"El alumno ya tiene una inscripción vigente: {actual.nombre}, hasta el {hasta}",
             )
         return alumno, plan
