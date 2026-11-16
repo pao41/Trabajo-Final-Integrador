@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 
 from fastapi import HTTPException, status
 
@@ -67,3 +67,17 @@ class AsistenciaService:
         if not alumno.activo:
             raise HTTPException(status.HTTP_409_CONFLICT, "El alumno está dado de baja")
         return alumno
+
+    def _controlar_ventana(self, alumno: Alumno, ahora: datetime) -> None:
+        """Rechaza el ingreso si el anterior fue hace menos de 2 horas (RN12)."""
+        ultima = self.uow.asistencias.ultima_de_alumno(alumno.id)
+        if not ultima:
+            return
+        anterior = datetime.combine(ultima.fecha, ultima.hora)
+        if ahora - anterior < VENTANA:
+            proximo = anterior + VENTANA
+            raise HTTPException(
+                status.HTTP_409_CONFLICT,
+                f"{alumno.nombre} ya registró su ingreso a las {ultima.hora:%H:%M}. "
+                f"Puede volver a ingresar a las {proximo:%H:%M}",
+            )
