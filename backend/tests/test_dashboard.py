@@ -2,7 +2,8 @@ from datetime import timedelta
 from decimal import Decimal
 
 from app.core.clock import today_ar
-from tests.test_inscripciones import CLASES, inscribir, nuevo_alumno, nuevo_plan
+from tests.test_asistencias import alumno_inscripto, fijar_saldo
+from tests.test_inscripciones import CLASES, TIEMPO, inscribir, nuevo_alumno, nuevo_plan
 from tests.test_pagos import pagar
 from tests.test_planes import sesion_de_entrenador
 
@@ -93,3 +94,30 @@ def test_cuenta_a_los_alumnos_por_estado_de_su_cuota(admin):
     assert datos["alumnos_activos"] == 1
     assert datos["alumnos_por_vencer"] == 1
     assert datos["alumnos_vencidos"] == 1
+
+
+def test_solo_cuenta_la_inscripcion_mas_reciente_y_los_alumnos_activos(admin):
+    plan_id = nuevo_plan(admin)
+    alumno_id = nuevo_alumno(admin, "30111222")
+    inscribir(admin, alumno_id, plan_id, dias_atras=40)
+    inscribir(admin, alumno_id, plan_id)
+    baja = nuevo_alumno(admin, "30333444")
+    inscribir(admin, baja, plan_id, dias_atras=40)
+    admin.patch(f"/alumnos/{baja}/desactivar")
+
+    datos = obtener(admin)
+
+    # La vencida de hace 40 días no cuenta porque el alumno ya renovó; el alumno de baja tampoco
+    assert datos["alumnos_vencidos"] == 0
+    assert datos["alumnos_activos"] == 1
+
+
+def test_las_cuotas_vencidas_incluyen_las_clases_agotadas_y_suman_su_monto(admin):
+    _, inscripcion_id = alumno_inscripto(admin, CLASES)
+    fijar_saldo(inscripcion_id, 0)
+    inscripto(admin, "30333444", nuevo_plan(admin, TIEMPO), dias_atras=45)
+
+    datos = obtener(admin)
+
+    assert datos["cuotas_vencidas"] == 2
+    assert Decimal(datos["monto_cuotas_vencidas"]) == 27000
