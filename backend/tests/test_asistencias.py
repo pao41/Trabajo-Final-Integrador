@@ -87,3 +87,33 @@ def test_con_el_saldo_en_cero_se_rechaza_el_ingreso(admin):
 
     assert respuesta.status_code == 409
     assert "corresponde renovar" in respuesta.json()["detail"]
+
+
+def test_un_segundo_ingreso_dentro_de_las_2_horas_se_rechaza(admin):
+    alumno_id, _ = alumno_inscripto(admin, CLASES)
+    ingresar(admin, alumno_id)
+
+    respuesta = ingresar(admin, alumno_id)
+
+    assert respuesta.status_code == 409
+    assert "ya registró su ingreso" in respuesta.json()["detail"]
+    saldo = admin.get(f"/inscripciones?alumno_id={alumno_id}").json()[0]["clases_restantes"]
+    assert saldo == 9
+
+
+def test_pasadas_las_2_horas_se_puede_ingresar_de_nuevo(admin):
+    alumno_id, inscripcion_id = alumno_inscripto(admin)
+    ingreso_hace(alumno_id, inscripcion_id, horas=3)
+
+    assert ingresar(admin, alumno_id).status_code == 201
+
+
+def test_alumno_inexistente(admin):
+    assert ingresar(admin, 999).status_code == 404
+
+
+def test_alumno_dado_de_baja_no_ingresa(admin):
+    alumno_id, _ = alumno_inscripto(admin)
+    admin.patch(f"/alumnos/{alumno_id}/desactivar")
+
+    assert ingresar(admin, alumno_id).status_code == 409
