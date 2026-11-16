@@ -1,12 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { inscribirAlumno, listarInscripciones, listarPlanes } from '../api/planes'
+import { fecha } from '../utilidades/formato'
 import { EtiquetaInscripcion } from './EtiquetaEstado'
 import MensajeError from './MensajeError'
 import TarjetaSeccion from './TarjetaSeccion'
-
-// Pasa una fecha de la API (2026-12-31) a como se lee acá (31/12/2026)
-const fecha = (iso: string) => iso.split('-').reverse().join('/')
 
 // Inscripciones del alumno: su historial de planes con el estado de cada una
 export default function SeccionInscripcion({ alumnoId }: { alumnoId: number }) {
