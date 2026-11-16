@@ -9,6 +9,7 @@ import MensajeError from '../componentes/MensajeError'
 import SeccionFicha from '../componentes/SeccionFicha'
 import SeccionInscripcion from '../componentes/SeccionInscripcion'
 import SeccionMeta from '../componentes/SeccionMeta'
+import SeccionPagos from '../componentes/SeccionPagos'
 import TarjetaSeccion from '../componentes/TarjetaSeccion'
 
 // Pantalla de un alumno: sus datos, su acceso y su ficha
@@ -69,6 +70,7 @@ export default function DetalleAlumno() {
         {cambiarEstado.isError && <MensajeError texto={cambiarEstado.error.message} />}
       </TarjetaSeccion>
       <SeccionInscripcion alumnoId={id} />
+      <SeccionPagos alumnoId={id} />
       <SeccionFicha alumnoId={id} />
       <SeccionMeta alumnoId={id} />
     </section>
