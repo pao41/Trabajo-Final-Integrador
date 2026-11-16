@@ -81,3 +81,26 @@ def test_con_una_inscripcion_vigente_no_se_puede_crear_otra(admin):
     inscribir(admin, alumno_id, plan_id)
 
     assert inscribir(admin, alumno_id, plan_id).status_code == 409
+
+
+def test_vencida_la_inscripcion_se_puede_inscribir_de_nuevo(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
+    inscribir(admin, alumno_id, plan_id, dias_atras=40)
+
+    assert inscribir(admin, alumno_id, plan_id).status_code == 201
+
+
+def test_faltando_menos_de_7_dias_queda_por_vencer(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
+
+    datos = inscribir(admin, alumno_id, plan_id, dias_atras=25).json()
+
+    assert datos["estado"] == "por_vencer"
+
+
+def test_pasado_el_vencimiento_queda_vencida(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
+
+    datos = inscribir(admin, alumno_id, plan_id, dias_atras=40).json()
+
+    assert datos["estado"] == "vencido"
