@@ -104,3 +104,22 @@ def test_pasado_el_vencimiento_queda_vencida(admin):
     datos = inscribir(admin, alumno_id, plan_id, dias_atras=40).json()
 
     assert datos["estado"] == "vencido"
+
+
+def test_el_dia_del_vencimiento_ya_esta_vencida(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
+
+    datos = inscribir(admin, alumno_id, plan_id, dias_atras=30).json()
+
+    assert datos["estado"] == "vencido"
+
+
+def test_el_aviso_usa_los_dias_de_la_configuracion(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
+    config = admin.get("/configuracion").json()
+    admin.put("/configuracion", json={**config, "dias_aviso_vencimiento": 3})
+
+    # Faltan 5 días: con aviso de 3 todavía está activa (RN09)
+    datos = inscribir(admin, alumno_id, plan_id, dias_atras=25).json()
+
+    assert datos["estado"] == "activo"
