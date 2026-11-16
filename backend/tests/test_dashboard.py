@@ -1,5 +1,8 @@
+import calendar
 from datetime import timedelta
 from decimal import Decimal
+
+import pytest
 
 from app.core.clock import now_ar, today_ar
 from app.core.uow import UnitOfWork
@@ -7,7 +10,7 @@ from app.modules.asistencias.model import Asistencia
 from tests.test_asistencias import alumno_inscripto, fijar_saldo, ingresar
 from tests.test_inscripciones import CLASES, TIEMPO, inscribir, nuevo_alumno, nuevo_plan
 from tests.test_pagos import pagar
-from tests.test_auth import sesion_de_entrenador
+from tests.test_planes import sesion_de_entrenador
 
 
 def obtener(admin):
@@ -155,3 +158,19 @@ def test_las_asistencias_se_agrupan_por_semana(admin):
     assert [s["total"] for s in semanas] == [0, 1, 0, 1]
     lunes = today_ar() - timedelta(days=today_ar().weekday())
     assert semanas[-1]["semana_desde"] == lunes.isoformat()
+
+
+def test_los_ingresos_proyectados_suman_lo_cobrado_y_las_cuotas_por_renovar(admin):
+    hoy = today_ar()
+    fin_de_mes = hoy.replace(day=calendar.monthrange(hoy.year, hoy.month)[1])
+    if hoy == fin_de_mes:
+        pytest.skip("El último día del mes no queda tiempo para que venza otra cuota")
+    trimestral = nuevo_plan(admin, TIEMPO | {"nombre": "Trimestral", "duracion_dias": 90})
+    mensual = nuevo_plan(admin)
+    # Este alumno paga hoy y su cuota vence recién en 90 días: solo suma lo cobrado
+    pagar(admin, inscripto(admin, "30111222", trimestral)["id"])
+    # Este vence justo a fin de mes: se espera que renueve y pague otra vez
+    dias_atras = 30 - (fin_de_mes - hoy).days
+    assert inscripto(admin, "30222333", mensual, dias_atras)["fecha_vencimiento"] == str(fin_de_mes)
+
+    assert Decimal(obtener(admin)["ingresos_proyectados"]) == 30000
