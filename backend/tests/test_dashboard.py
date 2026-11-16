@@ -1,11 +1,13 @@
-from datetime import timedelta
 from decimal import Decimal
 
 from app.core.clock import today_ar
-from tests.test_inscripciones import inscribir, nuevo_alumno
+from tests.test_inscripciones import CLASES, inscribir, nuevo_alumno, nuevo_plan
+from tests.test_pagos import pagar
+from tests.test_planes import sesion_de_entrenador
 
 
 def obtener(admin):
+
     respuesta = admin.get("/dashboard")
     assert respuesta.status_code == 200
     return respuesta.json()
@@ -28,3 +30,23 @@ def mes_pasado():
 
 def test_sin_sesion_no_se_ve_el_dashboard(client):
     assert client.get("/dashboard").status_code == 401
+
+
+def test_la_facturacion_suma_los_pagos_del_mes_por_metodo(admin):
+    mensual, pack = nuevo_plan(admin), nuevo_plan(admin, CLASES)
+    for dni, plan_id, metodo in [
+        ("30111222", mensual, "efectivo"),
+        ("30222333", pack, "transferencia"),
+        ("30333444", mensual, "efectivo"),
+    ]:
+        pagar(admin, inscripto(admin, dni, plan_id)["id"], metodo)
+
+    datos = obtener(admin)
+
+    assert Decimal(datos["facturacion_total"]) == 42000
+    assert por_metodo(datos) == {
+        "efectivo": 30000,
+        "transferencia": 12000,
+        "debito": 0,
+        "credito": 0,
+    }
