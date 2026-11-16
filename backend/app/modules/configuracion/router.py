@@ -21,3 +21,13 @@ def obtener(
 ):
     with uow:
         return ConfiguracionService(uow).obtener()
+
+
+@router.put("", response_model=ConfiguracionDatos)
+def guardar(
+    datos: ConfiguracionDatos,
+    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with uow:
+        return ConfiguracionService(uow).guardar(datos)
