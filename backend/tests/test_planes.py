@@ -57,3 +57,25 @@ def test_un_plan_por_tiempo_no_lleva_cantidad_de_clases(admin):
     con_cantidad = {**TIEMPO, "cantidad_clases": 10}
 
     assert admin.post("/planes", json=con_cantidad).status_code == 422
+
+
+def test_el_precio_y_la_duracion_tienen_que_ser_positivos(admin):
+    assert admin.post("/planes", json={**TIEMPO, "precio": "0"}).status_code == 422
+    assert admin.post("/planes", json={**TIEMPO, "duracion_dias": 0}).status_code == 422
+
+
+def test_un_nombre_repetido_da_409(admin):
+    admin.post("/planes", json=TIEMPO)
+
+    respuesta = admin.post("/planes", json=TIEMPO)
+
+    assert respuesta.status_code == 409
+
+
+def test_se_listan_los_planes_por_nombre(admin):
+    admin.post("/planes", json=TIEMPO)
+    admin.post("/planes", json=CLASES)
+
+    nombres = [p["nombre"] for p in admin.get("/planes").json()]
+
+    assert nombres == ["Mensual libre", "Pack 10 clases"]
