@@ -168,3 +168,18 @@ def test_fecha_futura_o_anterior_al_inicio(admin):
     assert pagar(admin, inscripcion_id, fecha=today_ar() + timedelta(days=1)).status_code == 409
     assert pagar(admin, inscripcion_id, fecha=today_ar() - timedelta(days=1)).status_code == 409
 
+
+def test_historial_de_pagos_por_alumno(admin):
+    inscripcion_id = nueva_inscripcion(admin)
+    pagar(admin, inscripcion_id)
+    pagar(admin, inscripcion_id, "debito")
+    otra = nuevo_alumno(admin, dni="30999888")
+    inscripcion_ajena = inscribir(admin, otra, 1).json()["id"]
+    pagar(admin, inscripcion_ajena)
+
+    todos = admin.get("/pagos").json()
+    del_alumno = admin.get("/pagos?alumno_id=1").json()
+
+    assert len(todos) == 3
+    assert [p["metodo_pago"] for p in del_alumno] == ["debito", "efectivo"]
+    assert all(p["alumno_id"] == 1 for p in del_alumno)
