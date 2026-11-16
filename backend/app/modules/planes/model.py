@@ -1,3 +1,4 @@
+from datetime import date
 from decimal import Decimal
 from typing import Literal
 
@@ -38,3 +39,23 @@ class PlanDatos(SQLModel):
 # Plan que se devuelve al frontend
 class PlanPublic(PlanDatos):
     id: int
+
+
+# Tabla inscripciones (definida en database/schema.sql)
+class Inscripcion(SQLModel, table=True):
+    __tablename__ = "inscripciones"
+
+    id: int | None = Field(default=None, primary_key=True)
+    alumno_id: int
+    plan_id: int
+    fecha_inicio: date
+    fecha_vencimiento: date
+    clases_restantes: int | None = None
+    estado: str = "activo"
+
+
+# Datos que se piden para inscribir a un alumno; sin fecha de inicio se toma la de hoy
+class InscripcionDatos(SQLModel):
+    alumno_id: int
+    plan_id: int
+    fecha_inicio: date | None = None
