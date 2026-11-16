@@ -1,8 +1,12 @@
 from decimal import Decimal
 
 from app.core.clock import today_ar
+<<<<<<< HEAD
 from tests.test_inscripciones import CLASES, inscribir, nuevo_alumno, nuevo_plan
 from tests.test_pagos import pagar
+=======
+from tests.test_inscripciones import inscribir, nuevo_alumno
+>>>>>>> 4c00b20656c7157ec033641f359722b44fa7fe77
 from tests.test_planes import sesion_de_entrenador
 
 
@@ -32,6 +36,7 @@ def test_sin_sesion_no_se_ve_el_dashboard(client):
     assert client.get("/dashboard").status_code == 401
 
 
+<<<<<<< HEAD
 def test_la_facturacion_suma_los_pagos_del_mes_por_metodo(admin):
     mensual, pack = nuevo_plan(admin), nuevo_plan(admin, CLASES)
     for dni, plan_id, metodo in [
@@ -50,3 +55,22 @@ def test_la_facturacion_suma_los_pagos_del_mes_por_metodo(admin):
         "debito": 0,
         "credito": 0,
     }
+=======
+def test_el_entrenador_no_ve_el_dashboard(crear_usuario, crear_entrenador, iniciar_sesion):
+    entrenador = sesion_de_entrenador(crear_usuario, crear_entrenador, iniciar_sesion)
+
+    assert entrenador.get("/dashboard").status_code == 403
+
+
+def test_sin_datos_todo_vale_cero(admin):
+    datos = obtener(admin)
+
+    assert Decimal(datos["facturacion_total"]) == 0
+    assert list(por_metodo(datos).values()) == [0, 0, 0, 0]
+    assert datos["alumnos_activos"] == 0
+    assert datos["alumnos_por_vencer"] == 0
+    assert datos["alumnos_vencidos"] == 0
+    assert datos["alumnos_nuevos_mes"] == 0
+    assert [s["total"] for s in datos["asistencias_por_semana"]] == [0, 0, 0, 0]
+    assert Decimal(datos["ingresos_proyectados"]) == 0
+>>>>>>> 4c00b20656c7157ec033641f359722b44fa7fe77
