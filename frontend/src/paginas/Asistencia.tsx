@@ -1,15 +1,27 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { listarAlumnos } from '../api/alumnos'
+import { registrarIngreso } from '../api/asistencias'
+import MensajeError from '../componentes/MensajeError'
+import { hora } from '../utilidades/formato'
 
 // Mostrador: se busca al alumno, se registra su ingreso y se ven los ingresos de hoy
 export default function Asistencia() {
   const [buscar, setBuscar] = useState('')
+  const queryClient = useQueryClient()
   const alumnos = useQuery({
     queryKey: ['alumnos', 'lista', buscar],
     queryFn: () => listarAlumnos(buscar),
     enabled: buscar.trim() !== '',
   })
+  const ingresar = useMutation({
+    mutationFn: registrarIngreso,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['asistencias'] })
+      queryClient.invalidateQueries({ queryKey: ['inscripciones'] })
+    },
+  })
+  const coincidencias = buscar.trim() === '' ? [] : (alumnos.data ?? []).slice(0, 8)
 
   return (
     <section className="flex flex-col gap-6">
@@ -24,7 +36,35 @@ export default function Asistencia() {
         value={buscar}
         onChange={(e) => setBuscar(e.target.value)}
       />
+      {alumnos.isError && <MensajeError texto={alumnos.error.message} />}
       {alumnos.data?.length === 0 && <p className="text-gris-calido">No hay alumnos que coincidan.</p>}
+      {coincidencias.length > 0 && (
+        <ul className="flex flex-col rounded-2xl border border-borde bg-white">
+          {coincidencias.map((alumno) => (
+            <li key={alumno.id} className="flex flex-wrap items-center justify-between gap-3 border-t border-borde p-4 first:border-t-0">
+              <span>
+                <span className="font-bold">{alumno.nombre}</span>
+                <span className="ml-3 text-gris-calido">DNI {alumno.dni}</span>
+              </span>
+              <button
+                className="boton"
+                disabled={!alumno.activo || ingresar.isPending}
+                onClick={() => ingresar.mutate(alumno.id)}
+              >
+                {alumno.activo ? 'Registrar ingreso' : 'Dado de baja'}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      {ingresar.isError && <MensajeError texto={ingresar.error.message} />}
+      {ingresar.isSuccess && (
+        <p role="status" className="font-bold text-verde-texto">
+          Ingreso de {ingresar.data.asistencia.alumno_nombre} registrado a las {hora(ingresar.data.asistencia.hora)}.
+          {ingresar.data.inscripcion.clases_restantes !== null &&
+            ` Le quedan ${ingresar.data.inscripcion.clases_restantes} clases.`}
+        </p>
+      )}
     </section>
   )
 }
