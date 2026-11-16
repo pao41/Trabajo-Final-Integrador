@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 
+from app.core.bloqueo import control_de_intentos
 from app.core.security import create_access_token, hash_password, verify_password
 from app.core.uow import UnitOfWork
 from app.modules.usuarios.model import CambioPassword, Usuario, UsuarioCreate, UsuarioPublic
@@ -30,14 +31,19 @@ class UsuarioService:
 
     def autenticar(self, nombre_usuario: str, password: str) -> str:
         """Valida usuario y contraseña y devuelve el token de sesión."""
-        usuario = self.uow.usuarios.get_by_nombre_usuario(nombre_usuario.strip().lower())
+        nombre = nombre_usuario.strip().lower()
+        # Si el usuario está bloqueado por intentos fallidos, ni se comprueba la contraseña
+        control_de_intentos.verificar(nombre)
+        usuario = self.uow.usuarios.get_by_nombre_usuario(nombre)
         # El mismo mensaje si falla el usuario, la contraseña o la cuenta está desactivada
         datos_validos = usuario is not None and verify_password(password, usuario.password_hash)
         if not datos_validos or not usuario.activo:
+            control_de_intentos.registrar_fallo(nombre)
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Usuario o contraseña incorrectos",
             )
+        control_de_intentos.limpiar(nombre)
         return create_access_token(usuario.id, usuario.rol)
 
     def listar(self) -> list[UsuarioPublic]:
