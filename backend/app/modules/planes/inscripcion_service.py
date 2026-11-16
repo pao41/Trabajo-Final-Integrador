@@ -36,12 +36,12 @@ class InscripcionService:
             clases_restantes=plan.cantidad_clases if plan.tipo == "clases" else None,
         )
         self.uow.inscripciones.add(inscripcion)
-        return self._armar(inscripcion)
+        return self.armar(inscripcion)
 
     def listar(self, alumno_id: int | None = None) -> list[InscripcionPublic]:
-        return [self._armar(i) for i in self.uow.inscripciones.listar(alumno_id)]
+        return [self.armar(i) for i in self.uow.inscripciones.listar(alumno_id)]
 
-    def _armar(self, inscripcion: Inscripcion) -> InscripcionPublic:
+    def armar(self, inscripcion: Inscripcion) -> InscripcionPublic:
         """Actualiza el estado guardado (RF05) y arma la respuesta con los datos del plan."""
         dias_aviso = ConfiguracionService(self.uow).obtener().dias_aviso_vencimiento
         estado = calcular_estado(inscripcion, today_ar(), dias_aviso)
