@@ -7,6 +7,7 @@ from app.modules.alumnos.repository import (
     MetaAlumnoRepository,
 )
 from app.modules.configuracion.repository import ConfiguracionRepository
+from app.modules.pagos.repository import PagoRepository
 from app.modules.planes.repository import InscripcionRepository, PlanRepository
 from app.modules.usuarios.repository import UsuarioRepository
 
@@ -28,6 +29,7 @@ class UnitOfWork:
         self.configuracion = ConfiguracionRepository(self.session)
         self.planes = PlanRepository(self.session)
         self.inscripciones = InscripcionRepository(self.session)
+        self.pagos = PagoRepository(self.session)
 
         return self
 
