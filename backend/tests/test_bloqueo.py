@@ -1,3 +1,7 @@
+from fastapi.testclient import TestClient
+
+from app.main import app
+
 MENSAJE_GENERICO = "Usuario o contraseña incorrectos"
 
 
@@ -26,3 +30,28 @@ def test_despues_de_cinco_fallos_el_usuario_queda_bloqueado(client, crear_usuari
     assert respuesta.status_code == 429
     assert "Demasiados intentos fallidos" in respuesta.json()["detail"]
     assert "set-cookie" not in respuesta.headers
+
+
+def test_un_acierto_borra_los_fallos_anteriores(client, crear_usuario, iniciar_sesion):
+    crear_usuario("admin")
+    fallar(client, iniciar_sesion, 4)
+    assert iniciar_sesion(client, "admin").status_code == 200
+
+    fallar(client, iniciar_sesion, 4)
+
+    # Son 4 fallos seguidos, no 8: todavía puede entrar
+    assert iniciar_sesion(client, "admin").status_code == 200
+
+
+def test_el_bloqueo_de_un_usuario_no_afecta_a_otro(client, crear_usuario, iniciar_sesion):
+    crear_usuario("admin")
+    crear_usuario("marta")
+    fallar(client, iniciar_sesion, 5, "admin")
+
+    assert iniciar_sesion(TestClient(app), "marta").status_code == 200
+
+
+def test_un_usuario_que_no_existe_tambien_se_bloquea(client, iniciar_sesion):
+    fallar(client, iniciar_sesion, 5, "no-existe")
+
+    assert iniciar_sesion(client, "no-existe").status_code == 429
