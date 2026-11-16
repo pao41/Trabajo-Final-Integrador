@@ -7,6 +7,7 @@ import EtiquetaEstado from '../componentes/EtiquetaEstado'
 import FormularioAlumno from '../componentes/FormularioAlumno'
 import MensajeError from '../componentes/MensajeError'
 import SeccionFicha from '../componentes/SeccionFicha'
+import SeccionInscripcion from '../componentes/SeccionInscripcion'
 import SeccionMeta from '../componentes/SeccionMeta'
 import TarjetaSeccion from '../componentes/TarjetaSeccion'
 
@@ -67,6 +68,7 @@ export default function DetalleAlumno() {
         {nuevoCodigo.isError && <MensajeError texto={nuevoCodigo.error.message} />}
         {cambiarEstado.isError && <MensajeError texto={cambiarEstado.error.message} />}
       </TarjetaSeccion>
+      <SeccionInscripcion alumnoId={id} />
       <SeccionFicha alumnoId={id} />
       <SeccionMeta alumnoId={id} />
     </section>
