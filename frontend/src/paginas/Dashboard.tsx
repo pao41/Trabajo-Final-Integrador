@@ -1,7 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { obtenerDashboard } from '../api/dashboard'
+import { EtiquetaInscripcion } from '../componentes/EtiquetaEstado'
 import MensajeError from '../componentes/MensajeError'
 import TarjetaIndicador from '../componentes/TarjetaIndicador'
+import TarjetaSeccion from '../componentes/TarjetaSeccion'
 import { pesos } from '../utilidades/formato'
 
 // Dashboard del administrador: facturación, estado de las cuotas y asistencia
@@ -29,6 +31,21 @@ export default function Dashboard() {
         <TarjetaIndicador titulo="Alumnos nuevos del mes" valor={data.alumnos_nuevos_mes} />
         <TarjetaIndicador titulo="Cuotas vencidas" valor={data.cuotas_vencidas}
           detalle={`${pesos(data.monto_cuotas_vencidas)} pendientes de cobro`} />
+      </div>
+      <div className="grid gap-6 lg:grid-cols-3">
+        <TarjetaSeccion titulo="Alumnos por estado">
+          <ul className="flex flex-col gap-4">
+            <li className="flex items-center justify-between">
+              <EtiquetaInscripcion estado="activo" /><strong className="text-2xl">{data.alumnos_activos}</strong>
+            </li>
+            <li className="flex items-center justify-between">
+              <EtiquetaInscripcion estado="por_vencer" /><strong className="text-2xl">{data.alumnos_por_vencer}</strong>
+            </li>
+            <li className="flex items-center justify-between">
+              <EtiquetaInscripcion estado="vencido" /><strong className="text-2xl">{data.alumnos_vencidos}</strong>
+            </li>
+          </ul>
+        </TarjetaSeccion>
       </div>
     </section>
   )
