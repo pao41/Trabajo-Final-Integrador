@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 
+from app.core.auditoria import auditar
 from app.core.config import settings
 from app.core.deps import get_current_user, require_role
 from app.core.uow import UnitOfWork, get_uow
@@ -66,10 +67,10 @@ def listar(
 @router.post("", response_model=UsuarioPublic, status_code=status.HTTP_201_CREATED)
 def crear(
     datos: UsuarioCreate,
-    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    admin: Annotated[UsuarioPublic, Depends(solo_admin)],
     uow: Annotated[UnitOfWork, Depends(get_uow)],
 ):
-    with uow:
+    with auditar(admin.nombre_usuario, "crear usuario", f"usuario {datos.nombre_usuario}"), uow:
         return UsuarioService(uow).crear(datos)
 
 
@@ -79,7 +80,7 @@ def desactivar(
     admin: Annotated[UsuarioPublic, Depends(solo_admin)],
     uow: Annotated[UnitOfWork, Depends(get_uow)],
 ):
-    with uow:
+    with auditar(admin.nombre_usuario, "desactivar usuario", f"usuario {usuario_id}"), uow:
         return UsuarioService(uow).cambiar_estado(usuario_id, False, admin.id)
 
 
@@ -89,7 +90,7 @@ def activar(
     admin: Annotated[UsuarioPublic, Depends(solo_admin)],
     uow: Annotated[UnitOfWork, Depends(get_uow)],
 ):
-    with uow:
+    with auditar(admin.nombre_usuario, "activar usuario", f"usuario {usuario_id}"), uow:
         return UsuarioService(uow).cambiar_estado(usuario_id, True, admin.id)
 
 
@@ -97,8 +98,8 @@ def activar(
 def restablecer_password(
     usuario_id: int,
     datos: CambioPassword,
-    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    admin: Annotated[UsuarioPublic, Depends(solo_admin)],
     uow: Annotated[UnitOfWork, Depends(get_uow)],
 ):
-    with uow:
+    with auditar(admin.nombre_usuario, "restablecer contraseña", f"usuario {usuario_id}"), uow:
         UsuarioService(uow).restablecer_password(usuario_id, datos)

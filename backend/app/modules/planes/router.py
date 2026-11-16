@@ -2,6 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
+from app.core.auditoria import auditar
 from app.core.deps import require_role
 from app.core.uow import UnitOfWork, get_uow
 from app.modules.planes.model import PlanDatos, PlanPublic
@@ -26,10 +27,10 @@ def listar(
 @router.post("", response_model=PlanPublic, status_code=status.HTTP_201_CREATED)
 def crear(
     datos: PlanDatos,
-    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    admin: Annotated[UsuarioPublic, Depends(solo_admin)],
     uow: Annotated[UnitOfWork, Depends(get_uow)],
 ):
-    with uow:
+    with auditar(admin.nombre_usuario, "crear plan", f"plan {datos.nombre}"), uow:
         return PlanService(uow).crear(datos)
 
 
@@ -37,8 +38,8 @@ def crear(
 def editar(
     plan_id: int,
     datos: PlanDatos,
-    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    admin: Annotated[UsuarioPublic, Depends(solo_admin)],
     uow: Annotated[UnitOfWork, Depends(get_uow)],
 ):
-    with uow:
+    with auditar(admin.nombre_usuario, "editar plan", f"plan {plan_id}"), uow:
         return PlanService(uow).editar(plan_id, datos)
