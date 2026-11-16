@@ -1,12 +1,12 @@
 from sqlmodel import Session
 
 from app.core.database import engine
+from app.modules.configuracion.repository import ConfiguracionRepository
 from app.modules.alumnos.repository import (
     AlumnoRepository,
     FichaSaludRepository,
     MetaAlumnoRepository,
 )
-from app.modules.configuracion.repository import ConfiguracionRepository
 from app.modules.usuarios.repository import UsuarioRepository
 
 
@@ -25,7 +25,6 @@ class UnitOfWork:
         self.fichas_salud = FichaSaludRepository(self.session)
         self.metas = MetaAlumnoRepository(self.session)
         self.configuracion = ConfiguracionRepository(self.session)
-
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
