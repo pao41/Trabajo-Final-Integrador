@@ -13,6 +13,33 @@ export class ErrorApi extends Error {
   }
 }
 
+// Cómo se nombra cada dato de los formularios en los mensajes de error
+const CAMPOS: Record<string, string> = {
+  nombre: 'El nombre',
+  dni: 'El DNI',
+  contacto: 'El contacto',
+  duracion_dias: 'La duración',
+  precio: 'El precio',
+  cantidad_clases: 'La cantidad de clases',
+  nombre_usuario: 'El usuario',
+  password: 'La contraseña',
+}
+
+interface ProblemaApi {
+  type: string
+  loc: (string | number)[]
+  ctx?: Record<string, unknown>
+}
+
+// Arma un mensaje en castellano con el primer problema que informa la API (422)
+function mensajeDeValidacion(problemas: ProblemaApi[]): string {
+  const { type, loc, ctx } = problemas[0]
+  const campo = CAMPOS[String(loc[loc.length - 1])] ?? 'Un dato'
+  if (type === 'string_too_short') return `${campo} debe tener al menos ${ctx?.min_length} caracteres`
+  return 'Los datos enviados no son válidos'
+}
+
+
 // Hace la petición enviando la cookie de sesión y convierte los errores en ErrorApi
 async function pedir(ruta: string, opciones: RequestInit = {}): Promise<Response> {
   const respuesta = await fetch(`${URL_BASE}${ruta}`, { credentials: 'include', ...opciones })
@@ -26,7 +53,7 @@ async function pedir(ruta: string, opciones: RequestInit = {}): Promise<Response
     let mensaje = 'No se pudo completar la operación'
     if (typeof cuerpo?.detail === 'string') mensaje = cuerpo.detail
     // Los errores de validación (422) llegan como una lista de problemas
-    else if (Array.isArray(cuerpo?.detail)) mensaje = 'Los datos enviados no son válidos'
+    else if (Array.isArray(cuerpo?.detail)) mensaje = mensajeDeValidacion(cuerpo.detail)
     throw new ErrorApi(respuesta.status, mensaje)
   }
   return respuesta
