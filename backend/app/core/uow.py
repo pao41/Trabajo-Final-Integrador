@@ -8,6 +8,7 @@ from app.modules.alumnos.repository import (
 )
 from app.modules.asistencias.repository import AsistenciaRepository
 from app.modules.configuracion.repository import ConfiguracionRepository
+from app.modules.dashboard.repository import DashboardRepository
 from app.modules.pagos.repository import PagoRepository
 from app.modules.planes.repository import InscripcionRepository, PlanRepository
 from app.modules.usuarios.repository import UsuarioRepository
@@ -32,6 +33,7 @@ class UnitOfWork:
         self.inscripciones = InscripcionRepository(self.session)
         self.pagos = PagoRepository(self.session)
         self.asistencias = AsistenciaRepository(self.session)
+        self.dashboard = DashboardRepository(self.session)
 
         return self
 

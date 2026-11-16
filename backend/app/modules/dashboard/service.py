@@ -1,9 +1,12 @@
 import calendar
+from datetime import date
 from decimal import Decimal
 
 from app.core.clock import today_ar
 from app.core.uow import UnitOfWork
+from app.modules.configuracion.service import ConfiguracionService
 from app.modules.dashboard.model import DashboardPublic, FacturacionPorMetodo
+from app.modules.planes.inscripcion_service import calcular_estado
 
 SEMANAS = 4
 METODOS_PAGO = ["efectivo", "transferencia", "debito", "credito"]
@@ -39,3 +42,19 @@ class DashboardService:
             monto_cuotas_vencidas=estados["monto_vencido"],
             ingresos_proyectados=total + estados["a_renovar"],
         )
+
+    def _estados_de_cuotas(self, hoy: date, fin_de_mes: date) -> dict:
+        """Cuenta los alumnos por estado de su cuota y suma lo que falta cobrar."""
+        dias_aviso = ConfiguracionService(self.uow).obtener().dias_aviso_vencimiento
+        datos = {"activo": 0, "por_vencer": 0, "vencido": 0}
+        datos["monto_vencido"] = Decimal(0)
+        # Lo que se espera cobrar de las cuotas que vencen de acá a fin de mes
+        datos["a_renovar"] = Decimal(0)
+        for inscripcion, plan in self.uow.dashboard.ultimas_inscripciones():
+            estado = calcular_estado(inscripcion, hoy, dias_aviso)
+            datos[estado] += 1
+            if estado == "vencido":
+                datos["monto_vencido"] += plan.precio
+            elif inscripcion.fecha_vencimiento <= fin_de_mes:
+                datos["a_renovar"] += plan.precio
+        return datos
