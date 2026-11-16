@@ -69,3 +69,27 @@ def test_la_facturacion_suma_los_pagos_del_mes_por_metodo(admin):
         "debito": 0,
         "credito": 0,
     }
+
+
+def test_un_pago_del_mes_pasado_no_se_suma(admin):
+    plan_id = nuevo_plan(admin)
+    dias = (today_ar() - mes_pasado()).days + 1
+    inscripcion_id = inscripto(admin, "30111222", plan_id, dias_atras=dias)["id"]
+
+    pagar(admin, inscripcion_id, fecha=mes_pasado())
+
+    assert Decimal(obtener(admin)["facturacion_total"]) == 0
+
+
+def test_cuenta_a_los_alumnos_por_estado_de_su_cuota(admin):
+    mensual, pack = nuevo_plan(admin), nuevo_plan(admin, CLASES)
+    inscripto(admin, "30111222", mensual)
+    # El pack dura 60 días: con 57 días de uso le quedan 3 (menos que los 7 de aviso)
+    inscripto(admin, "30222333", pack, dias_atras=57)
+    inscripto(admin, "30333444", mensual, dias_atras=40)
+
+    datos = obtener(admin)
+
+    assert datos["alumnos_activos"] == 1
+    assert datos["alumnos_por_vencer"] == 1
+    assert datos["alumnos_vencidos"] == 1
