@@ -65,3 +65,24 @@ CONFIG = {
 }
 
 
+def test_los_cambios_de_planes_y_de_configuracion_se_registran(admin, lineas):
+    plan_id = admin.post("/planes", json=PLAN).json()["id"]
+    admin.put(f"/planes/{plan_id}", json={**PLAN, "precio": "16000.00"})
+    admin.put("/configuracion", json=CONFIG)
+
+    texto = "\n".join(lineas())
+    assert "| admin | crear plan | plan Mensual libre | éxito" in texto
+    assert f"| admin | editar plan | plan {plan_id} | éxito" in texto
+    assert "| admin | cambiar configuración | configuración | éxito" in texto
+
+
+def test_una_accion_sin_permiso_no_llega_a_registrarse(
+    client, crear_usuario, crear_entrenador, iniciar_sesion, lineas
+):
+    crear_usuario("laura", rol="entrenador", entrenador_id=crear_entrenador())
+    iniciar_sesion(client, "laura")
+
+    assert client.patch("/alumnos/1/desactivar").status_code == 403
+    assert lineas() == []
+
+
