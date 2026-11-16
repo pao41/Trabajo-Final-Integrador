@@ -1,11 +1,11 @@
 import calendar
-from datetime import date
+from datetime import date, timedelta
 from decimal import Decimal
 
 from app.core.clock import today_ar
 from app.core.uow import UnitOfWork
 from app.modules.configuracion.service import ConfiguracionService
-from app.modules.dashboard.model import DashboardPublic, FacturacionPorMetodo
+from app.modules.dashboard.model import AsistenciaSemanal, DashboardPublic, FacturacionPorMetodo
 from app.modules.planes.inscripcion_service import calcular_estado
 
 SEMANAS = 4
@@ -58,3 +58,15 @@ class DashboardService:
             elif inscripcion.fecha_vencimiento <= fin_de_mes:
                 datos["a_renovar"] += plan.precio
         return datos
+
+    def _asistencias_por_semana(self, hoy: date) -> list[AsistenciaSemanal]:
+        """Ingresos de las últimas semanas (de lunes a domingo), la más vieja primero."""
+        lunes_actual = hoy - timedelta(days=hoy.weekday())
+        primer_lunes = lunes_actual - timedelta(weeks=SEMANAS - 1)
+        por_dia = self.uow.dashboard.ingresos_por_dia(primer_lunes, hoy)
+        semanas = []
+        for n in range(SEMANAS):
+            lunes = primer_lunes + timedelta(weeks=n)
+            total = sum(por_dia.get(lunes + timedelta(days=d), 0) for d in range(7))
+            semanas.append(AsistenciaSemanal(semana_desde=lunes, total=total))
+        return semanas
