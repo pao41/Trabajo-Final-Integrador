@@ -84,5 +84,3 @@ def test_una_accion_sin_permiso_no_llega_a_registrarse(
 
     assert client.patch("/alumnos/1/desactivar").status_code == 403
     assert lineas() == []
-
-
