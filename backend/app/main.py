@@ -40,5 +40,3 @@ app.include_router(inscripciones_router)
 app.include_router(pagos_router)
 app.include_router(asistencias_router)
 app.include_router(dashboard_router)
-
-
