@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from app.core.clock import today_ar
-from tests.test_inscripciones import TIEMPO, inscribir, nuevo_alumno, nuevo_plan
+from tests.test_inscripciones import CLASES, TIEMPO, inscribir, nuevo_alumno, nuevo_plan
 from tests.test_planes import sesion_de_entrenador
 
 
@@ -74,3 +74,23 @@ def test_pagar_antes_de_vencer_suma_el_periodo(admin):
     inscripcion = pagar(admin, inscripcion_id).json()["inscripcion"]
 
     assert inscripcion["fecha_vencimiento"] == en_dias(60)
+
+
+def test_pagar_vencida_reactiva_desde_la_fecha_del_pago(admin):
+    inscripcion_id = nueva_inscripcion(admin, dias_atras=40)
+    pagar(admin, inscripcion_id, fecha=today_ar() - timedelta(days=40))
+
+    inscripcion = pagar(admin, inscripcion_id).json()["inscripcion"]
+
+    assert inscripcion["fecha_vencimiento"] == en_dias(30)
+    assert inscripcion["estado"] == "activo"
+
+
+def test_plan_por_clases_suma_el_saldo_al_renovar(admin):
+    inscripcion_id = nueva_inscripcion(admin, CLASES)
+    pagar(admin, inscripcion_id)
+
+    inscripcion = pagar(admin, inscripcion_id).json()["inscripcion"]
+
+    assert inscripcion["clases_restantes"] == 20
+    assert inscripcion["fecha_vencimiento"] == en_dias(120)
