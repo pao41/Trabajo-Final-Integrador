@@ -59,3 +59,16 @@ class InscripcionDatos(SQLModel):
     alumno_id: int
     plan_id: int
     fecha_inicio: date | None = None
+
+
+# Inscripción que se devuelve al frontend, con los datos del plan para mostrarla
+class InscripcionPublic(SQLModel):
+    id: int
+    alumno_id: int
+    plan_id: int
+    plan_nombre: str
+    tipo: str
+    fecha_inicio: date
+    fecha_vencimiento: date
+    clases_restantes: int | None
+    estado: str
