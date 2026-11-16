@@ -1,9 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { listarAlumnos } from '../api/alumnos'
-import { registrarIngreso } from '../api/asistencias'
+import { listarAsistencias, registrarIngreso } from '../api/asistencias'
 import MensajeError from '../componentes/MensajeError'
-import { hora } from '../utilidades/formato'
+import TarjetaSeccion from '../componentes/TarjetaSeccion'
+import { hoyIso, hora } from '../utilidades/formato'
 
 // Mostrador: se busca al alumno, se registra su ingreso y se ven los ingresos de hoy
 export default function Asistencia() {
@@ -13,6 +14,10 @@ export default function Asistencia() {
     queryKey: ['alumnos', 'lista', buscar],
     queryFn: () => listarAlumnos(buscar),
     enabled: buscar.trim() !== '',
+  })
+  const hoy = useQuery({
+    queryKey: ['asistencias', 'hoy'],
+    queryFn: () => listarAsistencias({ fecha: hoyIso() }),
   })
   const ingresar = useMutation({
     mutationFn: registrarIngreso,
@@ -65,6 +70,16 @@ export default function Asistencia() {
             ` Le quedan ${ingresar.data.inscripcion.clases_restantes} clases.`}
         </p>
       )}
+      <TarjetaSeccion titulo="Ingresos de hoy">
+        {hoy.isError && <MensajeError texto={hoy.error.message} />}
+        {hoy.data?.length === 0 && <p className="text-gris-calido">Todavía no hay ingresos hoy.</p>}
+        {hoy.data?.map((ingreso) => (
+          <div key={ingreso.id} className="flex flex-wrap justify-between gap-2 border-t border-borde py-2">
+            <span><span className="font-bold">{hora(ingreso.hora)}</span> · {ingreso.alumno_nombre}</span>
+            <span className="text-gris-calido">{ingreso.plan_nombre}</span>
+          </div>
+        ))}
+      </TarjetaSeccion>
     </section>
   )
 }
