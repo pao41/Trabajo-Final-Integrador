@@ -41,3 +41,27 @@ def test_regenerar_el_codigo_no_guarda_el_codigo_en_el_registro(admin, lineas):
     assert lineas()[-1].endswith(f"| admin | regenerar código | alumno {alumno_id} | éxito")
     assert codigo not in " ".join(lineas())
 
+
+def test_gestionar_usuarios_se_registra_sin_la_contrasena(admin, lineas):
+    nuevo = {"nombre_usuario": "marta", "password": "clave-marta-123"}
+
+    creado = admin.post("/usuarios", json=nuevo).json()
+    admin.put(f"/usuarios/{creado['id']}/password", json={"nueva_password": "otra-clave-456"})
+    admin.patch(f"/usuarios/{creado['id']}/desactivar")
+
+    texto = "\n".join(lineas())
+    assert "| admin | crear usuario | usuario marta | éxito" in texto
+    assert f"| admin | restablecer contraseña | usuario {creado['id']} | éxito" in texto
+    assert f"| admin | desactivar usuario | usuario {creado['id']} | éxito" in texto
+    assert "clave-marta-123" not in texto
+    assert "otra-clave-456" not in texto
+
+
+PLAN = {"nombre": "Mensual libre", "duracion_dias": 30, "precio": "15000.00", "tipo": "tiempo"}
+CONFIG = {
+    "nombre_gimnasio": "Gimnasio Central",
+    "dias_aviso_vencimiento": 5,
+    "metodos_pago_habilitados": ["efectivo"],
+}
+
+
