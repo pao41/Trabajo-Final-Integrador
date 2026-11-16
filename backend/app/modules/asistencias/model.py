@@ -16,7 +16,7 @@ class Asistencia(SQLModel, table=True):
     hora: time
 
 
-# Datos que se piden al registrar un ingreso: la fecha y la hora las pone el servidor 
+# Datos que se piden al registrar un ingreso: la fecha y la hora las pone el servidor
 class AsistenciaDatos(SQLModel):
     alumno_id: int
 
