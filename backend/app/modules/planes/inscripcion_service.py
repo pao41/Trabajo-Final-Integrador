@@ -2,6 +2,7 @@ from datetime import date, timedelta
 
 from app.core.clock import today_ar
 from app.core.uow import UnitOfWork
+from app.modules.configuracion.service import ConfiguracionService
 from app.modules.planes.model import Inscripcion, InscripcionDatos, InscripcionPublic
 
 
@@ -36,3 +37,15 @@ class InscripcionService:
 
     def listar(self, alumno_id: int | None = None) -> list[InscripcionPublic]:
         return [self._armar(i) for i in self.uow.inscripciones.listar(alumno_id)]
+
+    def _armar(self, inscripcion: Inscripcion) -> InscripcionPublic:
+        """Actualiza el estado guardado (RF05) y arma la respuesta con los datos del plan."""
+        dias_aviso = ConfiguracionService(self.uow).obtener().dias_aviso_vencimiento
+        estado = calcular_estado(inscripcion, today_ar(), dias_aviso)
+        if estado != inscripcion.estado:
+            inscripcion.estado = estado
+            self.uow.inscripciones.update(inscripcion)
+        plan = self.uow.planes.get_by_id(inscripcion.plan_id)
+        return InscripcionPublic(
+            **inscripcion.model_dump(), plan_nombre=plan.nombre, tipo=plan.tipo
+        )
