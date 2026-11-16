@@ -117,3 +117,21 @@ def test_alumno_dado_de_baja_no_ingresa(admin):
     admin.patch(f"/alumnos/{alumno_id}/desactivar")
 
     assert ingresar(admin, alumno_id).status_code == 409
+
+
+def test_sin_inscripcion_no_se_registra_el_ingreso(admin):
+    alumno_id = nuevo_alumno(admin)
+
+    respuesta = ingresar(admin, alumno_id)
+
+    assert respuesta.status_code == 409
+    assert "no tiene una inscripción" in respuesta.json()["detail"]
+
+
+def test_con_la_inscripcion_vencida_se_rechaza_el_ingreso(admin):
+    alumno_id, _ = alumno_inscripto(admin, dias_atras=40)
+
+    respuesta = ingresar(admin, alumno_id)
+
+    assert respuesta.status_code == 409
+    assert "venció" in respuesta.json()["detail"]
