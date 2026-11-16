@@ -8,9 +8,9 @@ export const crearPlan = (datos: PlanDatos) => enviarJson<Plan>('/planes', 'POST
 export const editarPlan = (id: number, datos: PlanDatos) =>
   enviarJson<Plan>(`/planes/${id}`, 'PUT', datos)
 
-// Las inscripciones de un alumno, la más nueva primero
-export const listarInscripciones = (alumnoId: number) =>
-  pedirJson<Inscripcion[]>(`/inscripciones?alumno_id=${alumnoId}`)
+// Las inscripciones, la más nueva primero
+export const listarInscripciones = (alumnoId?: number) =>
+  pedirJson<Inscripcion[]>(alumnoId ? `/inscripciones?alumno_id=${alumnoId}` : '/inscripciones')
 
 // Inscribe al alumno desde hoy: el servidor calcula el vencimiento y el saldo de clases
 export const inscribirAlumno = (alumnoId: number, planId: number) =>

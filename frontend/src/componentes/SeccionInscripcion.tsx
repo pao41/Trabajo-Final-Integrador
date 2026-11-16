@@ -13,7 +13,7 @@ export default function SeccionInscripcion({ alumnoId }: { alumnoId: number }) {
   const [planId, setPlanId] = useState('')
   const queryClient = useQueryClient()
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ['inscripciones', alumnoId],
+    queryKey: ['inscripciones', 'alumno', alumnoId],
     queryFn: () => listarInscripciones(alumnoId),
   })
   const planes = useQuery({ queryKey: ['planes'], queryFn: listarPlanes })
@@ -21,7 +21,7 @@ export default function SeccionInscripcion({ alumnoId }: { alumnoId: number }) {
     mutationFn: () => inscribirAlumno(alumnoId, Number(planId)),
     onSuccess: () => {
       setPlanId('')
-      queryClient.invalidateQueries({ queryKey: ['inscripciones', alumnoId] })
+      queryClient.invalidateQueries({ queryKey: ['inscripciones'] })
     },
   })
 
