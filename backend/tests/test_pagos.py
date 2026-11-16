@@ -48,3 +48,29 @@ def test_el_pago_toma_el_precio_del_plan(admin):
     assert pago["metodo_pago"] == "transferencia"
     assert pago["fecha_pago"] == today_ar().isoformat()
     assert pago["plan_nombre"] == "Mensual libre"
+
+
+def test_el_primer_pago_el_dia_de_inicio_vence_a_la_duracion_del_plan(admin):
+    inscripcion_id = nueva_inscripcion(admin)
+
+    inscripcion = pagar(admin, inscripcion_id).json()["inscripcion"]
+
+    assert inscripcion["fecha_vencimiento"] == en_dias(30)
+    assert inscripcion["estado"] == "activo"
+
+
+def test_el_primer_pago_cuenta_desde_la_fecha_del_pago(admin):
+    inscripcion_id = nueva_inscripcion(admin, dias_atras=5)
+
+    inscripcion = pagar(admin, inscripcion_id).json()["inscripcion"]
+
+    assert inscripcion["fecha_vencimiento"] == en_dias(30)
+
+
+def test_pagar_antes_de_vencer_suma_el_periodo(admin):
+    inscripcion_id = nueva_inscripcion(admin)
+    pagar(admin, inscripcion_id)
+
+    inscripcion = pagar(admin, inscripcion_id).json()["inscripcion"]
+
+    assert inscripcion["fecha_vencimiento"] == en_dias(60)
