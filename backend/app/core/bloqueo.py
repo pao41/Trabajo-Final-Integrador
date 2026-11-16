@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta
 
+from fastapi import HTTPException, status
+
 from app.core.clock import now_ar
 
 MAX_INTENTOS = 5
@@ -23,3 +25,27 @@ class ControlDeIntentos:
         """Borra los fallos y el bloqueo de la clave."""
         self.fallos.pop(clave, None)
         self.bloqueado_hasta.pop(clave, None)
+
+    def verificar(self, clave: str) -> None:
+        """Rechaza el intento si la clave sigue bloqueada."""
+        hasta = self.bloqueado_hasta.get(clave)
+        if hasta is None:
+            return
+        if now_ar() >= hasta:
+            # El bloqueo ya terminó: se empieza de cero
+            self.limpiar(clave)
+            return
+        minutos = int((hasta - now_ar()).total_seconds() // 60) + 1
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=f"Demasiados intentos fallidos. Probá de nuevo en {minutos} minutos",
+        )
+
+    def reiniciar(self) -> None:
+        """Olvida todo (lo usan las pruebas)."""
+        self.fallos.clear()
+        self.bloqueado_hasta.clear()
+
+
+# Un solo control para toda la aplicación (lo comparten el personal y el panel del alumno)
+control_de_intentos = ControlDeIntentos()

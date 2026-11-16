@@ -46,6 +46,14 @@ def tablas_vacias(base_de_pruebas):
         conexion.execute("TRUNCATE " + ", ".join(tablas) + " RESTART IDENTITY CASCADE")
 
 
+@pytest.fixture(autouse=True)
+def sin_bloqueos():
+    """Cada prueba empieza sin intentos fallidos ni bloqueos."""
+    from app.core.bloqueo import control_de_intentos
+
+    control_de_intentos.reiniciar()
+
+
 @pytest.fixture
 def client():
     from fastapi.testclient import TestClient
