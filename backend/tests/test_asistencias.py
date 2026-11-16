@@ -67,3 +67,23 @@ def test_el_ingreso_descuenta_una_clase(admin):
     respuesta = ingresar(admin, alumno_id)
 
     assert respuesta.json()["inscripcion"]["clases_restantes"] == 9
+
+
+def test_la_ultima_clase_deja_la_inscripcion_vencida(admin):
+    alumno_id, inscripcion_id = alumno_inscripto(admin, CLASES)
+    fijar_saldo(inscripcion_id, 1)
+
+    inscripcion = ingresar(admin, alumno_id).json()["inscripcion"]
+
+    assert inscripcion["clases_restantes"] == 0
+    assert inscripcion["estado"] == "vencido"
+
+
+def test_con_el_saldo_en_cero_se_rechaza_el_ingreso(admin):
+    alumno_id, inscripcion_id = alumno_inscripto(admin, CLASES)
+    fijar_saldo(inscripcion_id, 0)
+
+    respuesta = ingresar(admin, alumno_id)
+
+    assert respuesta.status_code == 409
+    assert "corresponde renovar" in respuesta.json()["detail"]
