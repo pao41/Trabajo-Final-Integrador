@@ -2,6 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
+from app.core.auditoria import auditar
 from app.core.deps import require_role
 from app.core.uow import UnitOfWork, get_uow
 from app.modules.configuracion.model import ConfiguracionDatos
@@ -26,8 +27,8 @@ def obtener(
 @router.put("", response_model=ConfiguracionDatos)
 def guardar(
     datos: ConfiguracionDatos,
-    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    admin: Annotated[UsuarioPublic, Depends(solo_admin)],
     uow: Annotated[UnitOfWork, Depends(get_uow)],
 ):
-    with uow:
+    with auditar(admin.nombre_usuario, "cambiar configuración", "configuración"), uow:
         return ConfiguracionService(uow).guardar(datos)
