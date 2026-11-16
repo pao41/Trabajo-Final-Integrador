@@ -139,3 +139,32 @@ def test_un_plan_por_clases_sin_saldo_esta_vencido(admin):
 
     # El saldo en cero vence la inscripción aunque la fecha siga vigente (RN31)
     assert lista[0]["estado"] == "vencido"
+
+
+def test_al_consultar_se_actualiza_el_estado_guardado(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
+    inscripcion_id = inscribir(admin, alumno_id, plan_id, dias_atras=40).json()["id"]
+    uow = UnitOfWork()
+    with uow:
+        inscripcion = uow.inscripciones.get_by_id(inscripcion_id)
+        inscripcion.estado = "activo"
+        uow.inscripciones.update(inscripcion)
+
+    admin.get("/inscripciones")
+
+    with uow:
+        assert uow.inscripciones.get_by_id(inscripcion_id).estado == "vencido"
+
+
+def test_se_listan_las_inscripciones_de_un_alumno_con_la_mas_nueva_primero(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
+    inscribir(admin, alumno_id, plan_id, dias_atras=60)
+    inscribir(admin, alumno_id, plan_id)
+    otro_id = nuevo_alumno(admin, dni="30111333")
+    inscribir(admin, otro_id, plan_id)
+
+    lista = admin.get("/inscripciones", params={"alumno_id": alumno_id}).json()
+
+    assert len(lista) == 2
+    assert lista[0]["fecha_inicio"] > lista[1]["fecha_inicio"]
+    assert len(admin.get("/inscripciones").json()) == 3
