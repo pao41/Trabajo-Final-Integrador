@@ -5,6 +5,7 @@ import DetalleAlumno from './paginas/DetalleAlumno'
 import Inicio from './paginas/Inicio'
 import Login from './paginas/Login'
 import NuevoAlumno from './paginas/NuevoAlumno'
+import Planes from './paginas/Planes'
 import Usuarios from './paginas/Usuarios'
 
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/alumnos" element={<Alumnos />} />
         <Route path="/alumnos/nuevo" element={<NuevoAlumno />} />
         <Route path="/alumnos/:id" element={<DetalleAlumno />} />
+        <Route path="/planes" element={<Planes />} />
         <Route path="/usuarios" element={<Usuarios />} />
 
       </Route>
