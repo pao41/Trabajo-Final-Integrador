@@ -135,3 +135,20 @@ def test_con_la_inscripcion_vencida_se_rechaza_el_ingreso(admin):
 
     assert respuesta.status_code == 409
     assert "venció" in respuesta.json()["detail"]
+
+
+def test_historial_por_alumno_y_por_dia(admin):
+    alumno_id, inscripcion_id = alumno_inscripto(admin)
+    otro_id = nuevo_alumno(admin, dni="30999888")
+    inscribir(admin, otro_id, 1)
+    ingreso_hace(alumno_id, inscripcion_id, horas=48)
+    ingresar(admin, alumno_id)
+    ingresar(admin, otro_id)
+
+    del_alumno = admin.get(f"/asistencias?alumno_id={alumno_id}").json()
+    de_hoy = admin.get(f"/asistencias?fecha={today_ar().isoformat()}").json()
+
+    assert len(del_alumno) == 2
+    assert del_alumno[0]["fecha"] == today_ar().isoformat()
+    assert {a["alumno_id"] for a in de_hoy} == {alumno_id, otro_id}
+    assert len(de_hoy) == 2
