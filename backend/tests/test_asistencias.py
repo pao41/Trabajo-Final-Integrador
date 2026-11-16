@@ -4,6 +4,7 @@ from app.core.clock import now_ar
 from app.core.uow import UnitOfWork
 from app.modules.asistencias.model import Asistencia
 from tests.test_inscripciones import TIEMPO, inscribir, nuevo_alumno, nuevo_plan
+from tests.test_planes import sesion_de_entrenador
 
 
 def alumno_inscripto(admin, plan=TIEMPO, dias_atras=0):
@@ -28,3 +29,20 @@ def ingreso_hace(alumno_id, inscripcion_id, horas):
                 hora=antes.time(),
             )
         )
+
+
+def fijar_saldo(inscripcion_id, saldo):
+    with UnitOfWork() as uow:
+        inscripcion = uow.inscripciones.get_by_id(inscripcion_id)
+        inscripcion.clases_restantes = saldo
+        uow.inscripciones.update(inscripcion)
+
+
+def test_sin_sesion_no_se_registran_ingresos(client):
+    assert client.post("/asistencias", json={"alumno_id": 1}).status_code == 401
+
+
+def test_el_entrenador_no_registra_ingresos(crear_usuario, crear_entrenador, iniciar_sesion):
+    entrenador = sesion_de_entrenador(crear_usuario, crear_entrenador, iniciar_sesion)
+
+    assert entrenador.post("/asistencias", json={"alumno_id": 1}).status_code == 403
