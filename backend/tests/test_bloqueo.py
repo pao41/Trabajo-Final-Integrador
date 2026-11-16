@@ -1,5 +1,9 @@
+from datetime import timedelta
+
 from fastapi.testclient import TestClient
 
+from app.core import bloqueo
+from app.core.clock import now_ar
 from app.main import app
 
 MENSAJE_GENERICO = "Usuario o contraseña incorrectos"
@@ -55,3 +59,17 @@ def test_un_usuario_que_no_existe_tambien_se_bloquea(client, iniciar_sesion):
     fallar(client, iniciar_sesion, 5, "no-existe")
 
     assert iniciar_sesion(client, "no-existe").status_code == 429
+
+
+def test_el_bloqueo_termina_a_los_quince_minutos(
+    client, crear_usuario, iniciar_sesion, monkeypatch
+):
+    crear_usuario("admin")
+    fallar(client, iniciar_sesion, 5)
+    assert iniciar_sesion(client, "admin").status_code == 429
+
+    # Se simula que pasaron 16 minutos
+    despues = now_ar() + timedelta(minutes=16)
+    monkeypatch.setattr(bloqueo, "now_ar", lambda: despues)
+
+    assert iniciar_sesion(client, "admin").status_code == 200
