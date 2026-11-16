@@ -16,17 +16,17 @@ def renovar(inscripcion: Inscripcion, plan: Plan, fecha_pago: date, primer_pago:
     clases = plan.cantidad_clases or 0
     vigente = fecha_pago < inscripcion.fecha_vencimiento
     if primer_pago:
-        # El primer pago confirma la inscripción: vence a la duración del plan desde el pago 
+        # El primer pago confirma la inscripción: vence a la duración del plan desde el pago
         inscripcion.fecha_vencimiento = fecha_pago + duracion
         if not vigente and plan.tipo == "clases":
             inscripcion.clases_restantes = clases
     elif vigente:
-        # Paga antes de vencer: se suma el período y las clases que sobraban 
+        # Paga antes de vencer: se suma el período y las clases que sobraban
         inscripcion.fecha_vencimiento += duracion
         if plan.tipo == "clases":
             inscripcion.clases_restantes += clases
     else:
-        # Paga vencida: arranca desde la fecha del pago y el saldo se reinicia 
+        # Paga vencida: arranca desde la fecha del pago y el saldo se reinicia
         inscripcion.fecha_vencimiento = fecha_pago + duracion
         if plan.tipo == "clases":
             inscripcion.clases_restantes = clases
@@ -34,7 +34,6 @@ def renovar(inscripcion: Inscripcion, plan: Plan, fecha_pago: date, primer_pago:
 
 class PagoService:
     """Registro de pagos y renovación de la inscripción."""
-
 
     def __init__(self, uow: UnitOfWork):
         self.uow = uow
