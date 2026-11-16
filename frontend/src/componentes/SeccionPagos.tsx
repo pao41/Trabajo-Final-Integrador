@@ -1,13 +1,16 @@
 import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 import { listarPagos } from '../api/pagos'
 import { listarInscripciones, listarPlanes } from '../api/planes'
-import { METODOS_PAGO } from '../types/pagos'
+import { METODOS_PAGO, type MetodoPago } from '../types/pagos'
 import { fecha, pesos } from '../utilidades/formato'
 import MensajeError from './MensajeError'
 import TarjetaSeccion from './TarjetaSeccion'
 
 // Pagos del alumno: se registra el de su inscripción más reciente y se ve el historial
 export default function SeccionPagos({ alumnoId }: { alumnoId: number }) {
+  const [metodo, setMetodo] = useState<MetodoPago>('efectivo')
+  const [fechaPago, setFechaPago] = useState('')
   const pagos = useQuery({ queryKey: ['pagos', alumnoId], queryFn: () => listarPagos(alumnoId) })
   const inscripciones = useQuery({
     queryKey: ['inscripciones', 'alumno', alumnoId],
@@ -21,12 +24,28 @@ export default function SeccionPagos({ alumnoId }: { alumnoId: number }) {
     <TarjetaSeccion titulo="Pagos">
       {!actual && <p className="text-gris-calido">Para registrar un pago, primero hay que inscribir al alumno en un plan.</p>}
       {actual && (
-        <p>
-          Se cobra el plan <strong>{actual.plan_nombre}</strong>
-          {plan && <> por <strong>{pesos(plan.precio)}</strong></>}. El monto es el precio completo del plan.
-        </p>
+        <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-4">
+          <p>
+            Se cobra el plan <strong>{actual.plan_nombre}</strong>
+            {plan && <> por <strong>{pesos(plan.precio)}</strong></>}. El monto es el precio completo del plan.
+          </p>
+          <div className="flex flex-wrap items-end gap-4">
+            <label className="flex min-w-48 flex-col gap-2 font-bold">
+              Método de pago
+              <select className="campo" value={metodo} onChange={(e) => setMetodo(e.target.value as MetodoPago)}>
+                {METODOS_PAGO.map((m) => (
+                  <option key={m.valor} value={m.valor}>{m.texto}</option>
+                ))}
+              </select>
+            </label>
+            <label className="flex min-w-48 flex-col gap-2 font-bold">
+              Fecha del pago (si no, hoy)
+              <input className="campo" type="date" value={fechaPago} onChange={(e) => setFechaPago(e.target.value)} />
+            </label>
+            <button className="boton">Registrar pago</button>
+          </div>
+        </form>
       )}
-      {pagos.isPending && <p>Cargando…</p>}
       {pagos.isError && <MensajeError texto={pagos.error.message} />}
       {pagos.data?.length === 0 && <p className="text-gris-calido">Todavía no tiene pagos registrados.</p>}
       {pagos.data && pagos.data.length > 0 && (
