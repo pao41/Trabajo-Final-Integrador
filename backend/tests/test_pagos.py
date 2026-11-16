@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from app.core.clock import today_ar
+from app.core.uow import UnitOfWork
 from tests.test_inscripciones import CLASES, TIEMPO, inscribir, nuevo_alumno, nuevo_plan
 from tests.test_planes import sesion_de_entrenador
 
@@ -94,3 +95,31 @@ def test_plan_por_clases_suma_el_saldo_al_renovar(admin):
 
     assert inscripcion["clases_restantes"] == 20
     assert inscripcion["fecha_vencimiento"] == en_dias(120)
+
+
+def test_plan_por_clases_vencido_reinicia_el_saldo(admin):
+    inscripcion_id = nueva_inscripcion(admin, CLASES, dias_atras=100)
+    with UnitOfWork() as uow:
+        inscripcion = uow.inscripciones.get_by_id(inscripcion_id)
+        inscripcion.clases_restantes = 3
+        uow.inscripciones.update(inscripcion)
+
+    inscripcion = pagar(admin, inscripcion_id).json()["inscripcion"]
+
+    assert inscripcion["clases_restantes"] == 10
+    assert inscripcion["fecha_vencimiento"] == en_dias(60)
+
+
+def test_renovar_con_el_saldo_agotado_y_la_vigencia_vigente(admin):
+    inscripcion_id = nueva_inscripcion(admin, CLASES)
+    pagar(admin, inscripcion_id)
+    with UnitOfWork() as uow:
+        inscripcion = uow.inscripciones.get_by_id(inscripcion_id)
+        inscripcion.clases_restantes = 0
+        uow.inscripciones.update(inscripcion)
+
+    inscripcion = pagar(admin, inscripcion_id).json()["inscripcion"]
+
+    assert inscripcion["clases_restantes"] == 10
+    assert inscripcion["fecha_vencimiento"] == en_dias(120)
+    assert inscripcion["estado"] == "activo"
