@@ -142,3 +142,29 @@ def test_solo_se_paga_la_inscripcion_mas_reciente(admin):
     inscribir(admin, alumno_id, plan_id)
 
     assert pagar(admin, vieja).status_code == 409
+
+
+def test_metodo_no_habilitado(admin):
+    inscripcion_id = nueva_inscripcion(admin)
+    config = {
+        "nombre_gimnasio": "Gym",
+        "dias_aviso_vencimiento": 7,
+        "metodos_pago_habilitados": ["efectivo"],
+    }
+    admin.put("/configuracion", json=config)
+
+    assert pagar(admin, inscripcion_id, "credito").status_code == 409
+
+
+def test_metodo_inexistente(admin):
+    inscripcion_id = nueva_inscripcion(admin)
+
+    assert pagar(admin, inscripcion_id, "bitcoin").status_code == 422
+
+
+def test_fecha_futura_o_anterior_al_inicio(admin):
+    inscripcion_id = nueva_inscripcion(admin)
+
+    assert pagar(admin, inscripcion_id, fecha=today_ar() + timedelta(days=1)).status_code == 409
+    assert pagar(admin, inscripcion_id, fecha=today_ar() - timedelta(days=1)).status_code == 409
+
