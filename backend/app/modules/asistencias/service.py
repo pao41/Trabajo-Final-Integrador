@@ -14,7 +14,7 @@ from app.modules.asistencias.model import (
 from app.modules.planes.inscripcion_service import InscripcionService
 from app.modules.planes.model import Inscripcion
 
-# Tiempo que debe pasar entre dos ingresos del mismo alumno 
+# Tiempo que debe pasar entre dos ingresos del mismo alumno
 VENTANA = timedelta(hours=2)
 
 
@@ -82,7 +82,7 @@ class AsistenciaService:
                 f"{alumno.nombre} ya registró su ingreso a las {ultima.hora:%H:%M}. "
                 f"Puede volver a ingresar a las {proximo:%H:%M}",
             )
-        
+
     def _inscripcion_para_ingresar(self, alumno: Alumno) -> Inscripcion:
         """Devuelve la inscripción del alumno si puede ingresar; si no, avisa que renueve."""
         inscripciones = self.uow.inscripciones.listar(alumno.id)
