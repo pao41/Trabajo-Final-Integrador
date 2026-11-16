@@ -1,12 +1,13 @@
 from datetime import timedelta
 from decimal import Decimal
 
-from app.core.clock import today_ar
+from app.core.clock import now_ar, today_ar
 from app.core.uow import UnitOfWork
-from tests.test_asistencias import alumno_inscripto, fijar_saldo
+from app.modules.asistencias.model import Asistencia
+from tests.test_asistencias import alumno_inscripto, fijar_saldo, ingresar
 from tests.test_inscripciones import CLASES, TIEMPO, inscribir, nuevo_alumno, nuevo_plan
 from tests.test_pagos import pagar
-from tests.test_planes import sesion_de_entrenador
+from tests.test_auth import sesion_de_entrenador
 
 
 def obtener(admin):
@@ -133,3 +134,24 @@ def test_cuenta_los_alumnos_nuevos_del_mes(admin):
         uow.alumnos.update(alumno)
 
     assert obtener(admin)["alumnos_nuevos_mes"] == 1
+
+
+def test_las_asistencias_se_agrupan_por_semana(admin):
+    alumno_id, inscripcion_id = alumno_inscripto(admin)
+    ingresar(admin, alumno_id)
+    hace_dos_semanas = now_ar().replace(tzinfo=None) - timedelta(weeks=2)
+    with UnitOfWork() as uow:
+        uow.asistencias.add(
+            Asistencia(
+                alumno_id=alumno_id,
+                inscripcion_id=inscripcion_id,
+                fecha=hace_dos_semanas.date(),
+                hora=hace_dos_semanas.time(),
+            )
+        )
+
+    semanas = obtener(admin)["asistencias_por_semana"]
+
+    assert [s["total"] for s in semanas] == [0, 1, 0, 1]
+    lunes = today_ar() - timedelta(days=today_ar().weekday())
+    assert semanas[-1]["semana_desde"] == lunes.isoformat()
