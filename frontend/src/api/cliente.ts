@@ -28,14 +28,18 @@ const CAMPOS: Record<string, string> = {
 interface ProblemaApi {
   type: string
   loc: (string | number)[]
+  msg: string
   ctx?: Record<string, unknown>
 }
 
 // Arma un mensaje en castellano con el primer problema que informa la API (422)
 function mensajeDeValidacion(problemas: ProblemaApi[]): string {
-  const { type, loc, ctx } = problemas[0]
+  const { type, loc, msg, ctx } = problemas[0]
   const campo = CAMPOS[String(loc[loc.length - 1])] ?? 'Un dato'
   if (type === 'string_too_short') return `${campo} debe tener al menos ${ctx?.min_length} caracteres`
+  if (type === 'string_too_long') return `${campo} puede tener hasta ${ctx?.max_length} caracteres`
+  if (type === 'greater_than') return `${campo} debe ser mayor que ${ctx?.gt}`
+  if (type === 'value_error') return msg.replace('Value error, ', '')
   return 'Los datos enviados no son válidos'
 }
 

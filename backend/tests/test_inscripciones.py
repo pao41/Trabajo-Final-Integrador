@@ -87,7 +87,6 @@ def test_con_una_inscripcion_vigente_no_se_puede_crear_otra(admin):
     assert "ya tiene una inscripción vigente: " in respuesta.json()["detail"]
 
 
-
 def test_vencida_la_inscripcion_se_puede_inscribir_de_nuevo(admin):
     alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
     inscribir(admin, alumno_id, plan_id, dias_atras=40)
