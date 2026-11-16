@@ -1,5 +1,7 @@
 from decimal import Decimal
+from typing import Literal
 
+from pydantic import model_validator
 from sqlmodel import Field, SQLModel
 
 
@@ -13,3 +15,26 @@ class Plan(SQLModel, table=True):
     precio: Decimal
     tipo: str
     cantidad_clases: int | None = None
+
+
+# Datos que se piden para crear o editar un plan
+class PlanDatos(SQLModel):
+    nombre: str = Field(min_length=2, max_length=100)
+    duracion_dias: int = Field(gt=0)
+    precio: Decimal = Field(gt=0, max_digits=10, decimal_places=2)
+    tipo: Literal["tiempo", "clases"]
+    cantidad_clases: int | None = Field(default=None, gt=0)
+
+    @model_validator(mode="after")
+    def comprobar_cantidad_de_clases(self):
+        """Un plan por clases indica cuántas clases tiene; uno por tiempo no (RN29)."""
+        if self.tipo == "clases" and self.cantidad_clases is None:
+            raise ValueError("Un plan por clases debe indicar su cantidad de clases")
+        if self.tipo == "tiempo" and self.cantidad_clases is not None:
+            raise ValueError("Un plan por tiempo no lleva cantidad de clases")
+        return self
+
+
+# Plan que se devuelve al frontend
+class PlanPublic(PlanDatos):
+    id: int
