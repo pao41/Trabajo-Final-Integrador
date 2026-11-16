@@ -51,3 +51,33 @@ def test_sin_fecha_de_inicio_se_toma_la_de_hoy(admin):
     respuesta = admin.post("/inscripciones", json=datos)
 
     assert respuesta.json()["fecha_inicio"] == today_ar().isoformat()
+
+
+def test_un_plan_por_clases_arranca_con_su_saldo(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin, CLASES)
+
+    datos = inscribir(admin, alumno_id, plan_id).json()
+
+    assert datos["clases_restantes"] == 10
+    assert datos["fecha_vencimiento"] == (today_ar() + timedelta(days=60)).isoformat()
+
+
+def test_el_alumno_y_el_plan_tienen_que_existir(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
+
+    assert inscribir(admin, 999, plan_id).status_code == 404
+    assert inscribir(admin, alumno_id, 999).status_code == 404
+
+
+def test_no_se_inscribe_a_un_alumno_dado_de_baja(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
+    admin.patch(f"/alumnos/{alumno_id}/desactivar")
+
+    assert inscribir(admin, alumno_id, plan_id).status_code == 409
+
+
+def test_con_una_inscripcion_vigente_no_se_puede_crear_otra(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
+    inscribir(admin, alumno_id, plan_id)
+
+    assert inscribir(admin, alumno_id, plan_id).status_code == 409
