@@ -168,3 +168,33 @@ def test_se_listan_las_inscripciones_de_un_alumno_con_la_mas_nueva_primero(admin
     assert len(lista) == 2
     assert lista[0]["fecha_inicio"] > lista[1]["fecha_inicio"]
     assert len(admin.get("/inscripciones").json()) == 3
+
+
+def test_el_historial_se_conserva_al_dar_de_baja_al_alumno(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
+    inscribir(admin, alumno_id, plan_id)
+    admin.patch(f"/alumnos/{alumno_id}/desactivar")
+
+    lista = admin.get("/inscripciones", params={"alumno_id": alumno_id}).json()
+
+    assert len(lista) == 1
+
+
+def test_no_se_cambia_el_tipo_de_un_plan_con_inscripciones(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
+    inscribir(admin, alumno_id, plan_id)
+    como_clases = {**CLASES, "nombre": TIEMPO["nombre"]}
+
+    respuesta = admin.put(f"/planes/{plan_id}", json=como_clases)
+
+    assert respuesta.status_code == 409
+
+
+def test_editar_el_precio_no_cambia_las_inscripciones_hechas(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
+    antes = inscribir(admin, alumno_id, plan_id).json()
+    admin.put(f"/planes/{plan_id}", json={**TIEMPO, "duracion_dias": 90})
+
+    despues = admin.get("/inscripciones", params={"alumno_id": alumno_id}).json()[0]
+
+    assert despues["fecha_vencimiento"] == antes["fecha_vencimiento"]
