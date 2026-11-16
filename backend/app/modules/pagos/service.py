@@ -1,5 +1,9 @@
 from datetime import date, timedelta
 
+from app.core.clock import today_ar
+from app.core.uow import UnitOfWork
+from app.modules.pagos.model import Pago, PagoDatos, PagoRegistrado
+from app.modules.planes.inscripcion_service import InscripcionService
 from app.modules.planes.model import Inscripcion, Plan
 
 
@@ -27,3 +31,29 @@ def renovar(inscripcion: Inscripcion, plan: Plan, fecha_pago: date, primer_pago:
 
 class PagoService:
     """Registro de pagos y renovación de la inscripción."""
+
+
+    def __init__(self, uow: UnitOfWork):
+        self.uow = uow
+
+    def registrar(self, datos: PagoDatos) -> PagoRegistrado:
+        """Guarda el pago y renueva la inscripción en la misma operación (RF06)."""
+        inscripcion = self._validar(datos)
+        plan = self.uow.planes.get_by_id(inscripcion.plan_id)
+        fecha = datos.fecha_pago or today_ar()
+        ultimo = self.uow.pagos.ultimo_de_inscripcion(inscripcion.id)
+        self._validar_fecha(inscripcion, ultimo, fecha)
+        # El monto es siempre el precio completo del plan (RN05)
+        pago = Pago(
+            inscripcion_id=inscripcion.id,
+            fecha_pago=fecha,
+            monto=plan.precio,
+            metodo_pago=datos.metodo_pago,
+        )
+        self.uow.pagos.add(pago)
+        renovar(inscripcion, plan, fecha, primer_pago=ultimo is None)
+        self.uow.inscripciones.update(inscripcion)
+        return PagoRegistrado(
+            pago=self._armar(pago, inscripcion, plan),
+            inscripcion=InscripcionService(self.uow).armar(inscripcion),
+        )
