@@ -7,6 +7,7 @@ from app.modules.alumnos.repository import (
     FichaSaludRepository,
     MetaAlumnoRepository,
 )
+from app.modules.planes.repository import InscripcionRepository, PlanRepository
 from app.modules.usuarios.repository import UsuarioRepository
 
 
@@ -25,6 +26,9 @@ class UnitOfWork:
         self.fichas_salud = FichaSaludRepository(self.session)
         self.metas = MetaAlumnoRepository(self.session)
         self.configuracion = ConfiguracionRepository(self.session)
+        self.planes = PlanRepository(self.session)
+        self.inscripciones = InscripcionRepository(self.session)
+      
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
