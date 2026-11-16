@@ -40,6 +40,34 @@ export default function Planes() {
       {isPending && <p>Cargando…</p>}
       {isError && <MensajeError texto={error.message} />}
       {data?.length === 0 && <p className="text-gris-calido">Todavía no hay planes.</p>}
+      {data && data.length > 0 && (
+        <div className="overflow-x-auto rounded-2xl border border-borde bg-white">
+          <table className="w-full min-w-[640px] text-left">
+            <thead className="text-[15px] text-gris-calido">
+              <tr>
+                <th className="p-4">Plan</th>
+                <th className="p-4">Tipo</th>
+                <th className="p-4">Duración</th>
+                <th className="p-4">Precio</th>
+                <th className="p-4">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((plan) => (
+                <tr key={plan.id} className="border-t border-borde">
+                  <td className="p-4 font-bold">{plan.nombre}</td>
+                  <td className="p-4">{plan.tipo === 'clases' ? `${plan.cantidad_clases} clases` : 'Por tiempo'}</td>
+                  <td className="p-4">{plan.duracion_dias} días</td>
+                  <td className="p-4">$ {Number(plan.precio).toLocaleString('es-AR')}</td>
+                  <td className="p-4">
+                    <button onClick={() => setEditando(plan)} className="boton-claro">Editar</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </section>
   )
 }
