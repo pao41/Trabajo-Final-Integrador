@@ -28,3 +28,31 @@ def test_la_primera_vez_devuelve_valores_por_defecto(admin):
 
     assert datos["dias_aviso_vencimiento"] == 7
     assert datos["metodos_pago_habilitados"] == ["efectivo", "transferencia", "debito", "credito"]
+
+
+def test_se_guarda_y_se_consulta_la_configuracion(admin):
+    guardada = admin.put("/configuracion", json=NUEVA)
+
+    assert guardada.status_code == 200
+    assert admin.get("/configuracion").json() == NUEVA
+
+
+def test_hay_una_sola_configuracion(admin):
+    admin.put("/configuracion", json=NUEVA)
+    admin.put("/configuracion", json={**NUEVA, "nombre_gimnasio": "Otro nombre"})
+
+    assert admin.get("/configuracion").json()["nombre_gimnasio"] == "Otro nombre"
+
+
+def test_los_dias_de_aviso_tienen_que_ser_positivos(admin):
+    assert (
+        admin.put("/configuracion", json={**NUEVA, "dias_aviso_vencimiento": 0}).status_code == 422
+    )
+
+
+def test_hace_falta_al_menos_un_metodo_de_pago_valido(admin):
+    sin_metodos = {**NUEVA, "metodos_pago_habilitados": []}
+    invalido = {**NUEVA, "metodos_pago_habilitados": ["bitcoin"]}
+
+    assert admin.put("/configuracion", json=sin_metodos).status_code == 422
+    assert admin.put("/configuracion", json=invalido).status_code == 422
