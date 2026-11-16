@@ -1,9 +1,9 @@
 from datetime import timedelta
 
-from app.core.clock import now_ar
+from app.core.clock import now_ar, today_ar
 from app.core.uow import UnitOfWork
 from app.modules.asistencias.model import Asistencia
-from tests.test_inscripciones import TIEMPO, inscribir, nuevo_alumno, nuevo_plan
+from tests.test_inscripciones import CLASES, TIEMPO, inscribir, nuevo_alumno, nuevo_plan
 from tests.test_planes import sesion_de_entrenador
 
 
@@ -46,3 +46,24 @@ def test_el_entrenador_no_registra_ingresos(crear_usuario, crear_entrenador, ini
     entrenador = sesion_de_entrenador(crear_usuario, crear_entrenador, iniciar_sesion)
 
     assert entrenador.post("/asistencias", json={"alumno_id": 1}).status_code == 403
+
+
+def test_el_ingreso_queda_asociado_a_la_inscripcion(admin):
+    alumno_id, inscripcion_id = alumno_inscripto(admin)
+
+    respuesta = ingresar(admin, alumno_id)
+
+    assert respuesta.status_code == 201
+    ingreso = respuesta.json()["asistencia"]
+    assert ingreso["inscripcion_id"] == inscripcion_id
+    assert ingreso["fecha"] == today_ar().isoformat()
+    assert ingreso["plan_nombre"] == "Mensual libre"
+    assert respuesta.json()["inscripcion"]["clases_restantes"] is None
+
+
+def test_el_ingreso_descuenta_una_clase(admin):
+    alumno_id, _ = alumno_inscripto(admin, CLASES)
+
+    respuesta = ingresar(admin, alumno_id)
+
+    assert respuesta.json()["inscripcion"]["clases_restantes"] == 9
