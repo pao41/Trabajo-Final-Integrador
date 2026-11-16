@@ -2,6 +2,7 @@ from datetime import timedelta
 from decimal import Decimal
 
 from app.core.clock import today_ar
+from app.core.uow import UnitOfWork
 from tests.test_asistencias import alumno_inscripto, fijar_saldo
 from tests.test_inscripciones import CLASES, TIEMPO, inscribir, nuevo_alumno, nuevo_plan
 from tests.test_pagos import pagar
@@ -121,3 +122,14 @@ def test_las_cuotas_vencidas_incluyen_las_clases_agotadas_y_suman_su_monto(admin
 
     assert datos["cuotas_vencidas"] == 2
     assert Decimal(datos["monto_cuotas_vencidas"]) == 27000
+
+
+def test_cuenta_los_alumnos_nuevos_del_mes(admin):
+    nuevo_alumno(admin, "30111222")
+    viejo = nuevo_alumno(admin, "30333444")
+    with UnitOfWork() as uow:
+        alumno = uow.alumnos.get_by_id(viejo)
+        alumno.fecha_alta = mes_pasado()
+        uow.alumnos.update(alumno)
+
+    assert obtener(admin)["alumnos_nuevos_mes"] == 1
