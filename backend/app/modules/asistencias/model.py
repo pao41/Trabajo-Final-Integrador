@@ -2,6 +2,8 @@ from datetime import date, time
 
 from sqlmodel import Field, SQLModel
 
+from app.modules.planes.model import InscripcionPublic
+
 
 # Tabla asistencias (definida en database/schema.sql)
 class Asistencia(SQLModel, table=True):
@@ -28,3 +30,9 @@ class AsistenciaPublic(SQLModel):
     plan_nombre: str | None
     fecha: date
     hora: time
+
+
+# Respuesta de registrar un ingreso: el ingreso y cómo quedó la inscripción
+class AsistenciaRegistrada(SQLModel):
+    asistencia: AsistenciaPublic
+    inscripcion: InscripcionPublic
