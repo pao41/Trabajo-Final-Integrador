@@ -2,6 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
+from app.core.auditoria import auditar
 from app.core.deps import require_role
 from app.core.uow import UnitOfWork, get_uow
 from app.modules.alumnos.model import AlumnoConCodigo, AlumnoDatos, AlumnoPublic
@@ -59,29 +60,29 @@ def editar(
 @router.patch("/{alumno_id}/desactivar", response_model=AlumnoPublic)
 def desactivar(
     alumno_id: int,
-    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    admin: Annotated[UsuarioPublic, Depends(solo_admin)],
     uow: Annotated[UnitOfWork, Depends(get_uow)],
 ):
-    with uow:
+    with auditar(admin.nombre_usuario, "dar de baja", f"alumno {alumno_id}"), uow:
         return AlumnoService(uow).cambiar_estado(alumno_id, False)
 
 
 @router.patch("/{alumno_id}/activar", response_model=AlumnoPublic)
 def activar(
     alumno_id: int,
-    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    admin: Annotated[UsuarioPublic, Depends(solo_admin)],
     uow: Annotated[UnitOfWork, Depends(get_uow)],
 ):
-    with uow:
+    with auditar(admin.nombre_usuario, "reactivar", f"alumno {alumno_id}"), uow:
         return AlumnoService(uow).cambiar_estado(alumno_id, True)
 
 
 @router.post("/{alumno_id}/codigo-acceso", response_model=AlumnoConCodigo)
 def regenerar_codigo(
     alumno_id: int,
-    _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    admin: Annotated[UsuarioPublic, Depends(solo_admin)],
     uow: Annotated[UnitOfWork, Depends(get_uow)],
 ):
     """Genera un código nuevo (el anterior deja de servir) y lo muestra una única vez."""
-    with uow:
+    with auditar(admin.nombre_usuario, "regenerar código", f"alumno {alumno_id}"), uow:
         return AlumnoService(uow).regenerar_codigo(alumno_id)
