@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
+import { obtenerConfiguracion } from '../api/configuracion'
 import { listarPagos, registrarPago } from '../api/pagos'
 import { listarInscripciones, listarPlanes } from '../api/planes'
 import { METODOS_PAGO, type MetodoPago } from '../types/pagos'
@@ -9,7 +10,7 @@ import TarjetaSeccion from './TarjetaSeccion'
 
 // Pagos del alumno: se registra el de su inscripción más reciente y se ve el historial
 export default function SeccionPagos({ alumnoId }: { alumnoId: number }) {
-  const [metodo, setMetodo] = useState<MetodoPago>('efectivo')
+  const [elegido, setElegido] = useState<MetodoPago | null>(null)
   const [fechaPago, setFechaPago] = useState('')
   const queryClient = useQueryClient()
   const pagos = useQuery({ queryKey: ['pagos', alumnoId], queryFn: () => listarPagos(alumnoId) })
@@ -18,13 +19,17 @@ export default function SeccionPagos({ alumnoId }: { alumnoId: number }) {
     queryFn: () => listarInscripciones(alumnoId),
   })
   const planes = useQuery({ queryKey: ['planes'], queryFn: listarPlanes })
+  const configuracion = useQuery({ queryKey: ['configuracion'], queryFn: obtenerConfiguracion })
+  // Solo se ofrecen los métodos de pago que el gimnasio tiene habilitados
+  const habilitados = METODOS_PAGO.filter((m) => configuracion.data?.metodos_pago_habilitados.includes(m.valor))
+  const metodo = elegido ?? habilitados[0]?.valor
   const actual = inscripciones.data?.[0]
   const plan = planes.data?.find((p) => p.id === actual?.plan_id)
   const registrar = useMutation({
     mutationFn: () =>
       registrarPago({
         inscripcion_id: actual!.id,
-        metodo_pago: metodo,
+        metodo_pago: metodo!,
         ...(fechaPago && { fecha_pago: fechaPago }),
       }),
     onSuccess: () => {
@@ -46,17 +51,17 @@ export default function SeccionPagos({ alumnoId }: { alumnoId: number }) {
           <div className="flex flex-wrap items-end gap-4">
             <label className="flex min-w-48 flex-col gap-2 font-bold">
               Método de pago
-              <select className="campo" value={metodo} onChange={(e) => setMetodo(e.target.value as MetodoPago)}>
-                {METODOS_PAGO.map((m) => (
+              <select className="campo" value={metodo} onChange={(e) => setElegido(e.target.value as MetodoPago)}>
+                {habilitados.map((m) => (
                   <option key={m.valor} value={m.valor}>{m.texto}</option>
                 ))}
               </select>
             </label>
             <label className="flex min-w-48 flex-col gap-2 font-bold">
               Fecha del pago (si no, hoy)
-              <input className="campo" type="date" value={fechaPago} onChange={(e) => setFechaPago(e.target.value)} />
+                <input className="campo" type="date" value={fechaPago} onChange={(e) => setFechaPago(e.target.value)} />
             </label>
-            <button className="boton" disabled={registrar.isPending}>Registrar pago</button>
+            <button className="boton" disabled={registrar.isPending || !metodo}>Registrar pago</button>
           </div>
           {registrar.isError && <MensajeError texto={registrar.error.message} />}
           {registrar.isSuccess && (

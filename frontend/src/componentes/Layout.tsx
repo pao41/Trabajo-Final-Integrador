@@ -8,6 +8,7 @@ const secciones = [
   { ruta: '/asistencia', nombre: 'Asistencia' },
   { ruta: '/planes', nombre: 'Planes' },
   { ruta: '/usuarios', nombre: 'Usuarios' },
+  { ruta: '/configuracion', nombre: 'Configuración' },
 ]
 
 // Estilo del enlace del menú: resaltado si es la pantalla actual
