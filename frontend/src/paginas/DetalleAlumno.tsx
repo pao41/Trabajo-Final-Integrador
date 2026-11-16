@@ -6,6 +6,7 @@ import CodigoAcceso from '../componentes/CodigoAcceso'
 import EtiquetaEstado from '../componentes/EtiquetaEstado'
 import FormularioAlumno from '../componentes/FormularioAlumno'
 import MensajeError from '../componentes/MensajeError'
+import SeccionAsistencia from '../componentes/SeccionAsistencia'
 import SeccionFicha from '../componentes/SeccionFicha'
 import SeccionInscripcion from '../componentes/SeccionInscripcion'
 import SeccionMeta from '../componentes/SeccionMeta'
@@ -71,6 +72,7 @@ export default function DetalleAlumno() {
       </TarjetaSeccion>
       <SeccionInscripcion alumnoId={id} />
       <SeccionPagos alumnoId={id} />
+      <SeccionAsistencia alumnoId={id} />
       <SeccionFicha alumnoId={id} />
       <SeccionMeta alumnoId={id} />
     </section>
