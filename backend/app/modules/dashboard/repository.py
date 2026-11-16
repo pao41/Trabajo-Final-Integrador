@@ -1,0 +1,28 @@
+from datetime import date
+from decimal import Decimal
+
+from sqlmodel import Session, func, select
+
+from app.modules.alumnos.model import Alumno
+from app.modules.pagos.model import Pago
+
+
+class DashboardRepository:
+    """Consultas de suma y conteo para los indicadores del dashboard."""
+
+    def __init__(self, session: Session):
+        self.session = session
+
+    def facturacion_por_metodo(self, desde: date, hasta: date) -> dict[str, Decimal]:
+        """Total cobrado en el período, agrupado por método de pago."""
+        consulta = (
+            select(Pago.metodo_pago, func.sum(Pago.monto))
+            .where(Pago.fecha_pago >= desde, Pago.fecha_pago <= hasta)
+            .group_by(Pago.metodo_pago)
+        )
+        return {metodo: total for metodo, total in self.session.exec(consulta).all()}
+
+    def contar_alumnos_nuevos(self, desde: date, hasta: date) -> int:
+        consulta = select(func.count()).select_from(Alumno)
+        consulta = consulta.where(Alumno.fecha_alta >= desde, Alumno.fecha_alta <= hasta)
+        return self.session.exec(consulta).one()
