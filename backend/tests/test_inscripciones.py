@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from app.core.clock import today_ar
+from app.core.uow import UnitOfWork
 
 TIEMPO = {"nombre": "Mensual libre", "duracion_dias": 30, "precio": "15000", "tipo": "tiempo"}
 CLASES = {
@@ -123,3 +124,18 @@ def test_el_aviso_usa_los_dias_de_la_configuracion(admin):
     datos = inscribir(admin, alumno_id, plan_id, dias_atras=25).json()
 
     assert datos["estado"] == "activo"
+
+
+def test_un_plan_por_clases_sin_saldo_esta_vencido(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin, CLASES)
+    inscripcion_id = inscribir(admin, alumno_id, plan_id).json()["id"]
+    uow = UnitOfWork()
+    with uow:
+        inscripcion = uow.inscripciones.get_by_id(inscripcion_id)
+        inscripcion.clases_restantes = 0
+        uow.inscripciones.update(inscripcion)
+
+    lista = admin.get("/inscripciones", params={"alumno_id": alumno_id}).json()
+
+    # El saldo en cero vence la inscripción aunque la fecha siga vigente (RN31)
+    assert lista[0]["estado"] == "vencido"
