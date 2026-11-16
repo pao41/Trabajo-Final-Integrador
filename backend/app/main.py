@@ -5,6 +5,7 @@ from app.core.config import settings
 from app.modules.alumnos.ficha_router import router as ficha_router
 from app.modules.alumnos.router import router as alumnos_router
 from app.modules.configuracion.router import router as configuracion_router
+from app.modules.planes.router import router as planes_router
 from app.modules.salud.router import router as salud_router
 from app.modules.usuarios.router import auth_router
 from app.modules.usuarios.router import router as usuarios_router
@@ -30,4 +31,6 @@ app.include_router(usuarios_router)
 app.include_router(alumnos_router)
 app.include_router(ficha_router)
 app.include_router(configuracion_router)
+app.include_router(planes_router)
+
 
