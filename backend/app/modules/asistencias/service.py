@@ -1,10 +1,14 @@
-from datetime import timedelta
+from datetime import date, timedelta
+
+from fastapi import HTTPException, status
 
 from app.core.clock import now_ar
 from app.core.uow import UnitOfWork
+from app.modules.alumnos.model import Alumno
 from app.modules.asistencias.model import (
     Asistencia,
     AsistenciaDatos,
+    AsistenciaPublic,
     AsistenciaRegistrada,
 )
 from app.modules.planes.inscripcion_service import InscripcionService
@@ -39,3 +43,27 @@ class AsistenciaService:
             asistencia=self._armar(asistencia),
             inscripcion=InscripcionService(self.uow).armar(inscripcion),
         )
+
+    def listar(
+        self, alumno_id: int | None = None, fecha: date | None = None
+    ) -> list[AsistenciaPublic]:
+        return [self._armar(a) for a in self.uow.asistencias.listar(alumno_id, fecha)]
+
+    def _armar(self, asistencia: Asistencia) -> AsistenciaPublic:
+        """Arma la respuesta con el nombre del alumno y el del plan."""
+        alumno = self.uow.alumnos.get_by_id(asistencia.alumno_id)
+        inscripcion = self.uow.inscripciones.get_by_id(asistencia.inscripcion_id)
+        plan = self.uow.planes.get_by_id(inscripcion.plan_id) if inscripcion else None
+        return AsistenciaPublic(
+            **asistencia.model_dump(),
+            alumno_nombre=alumno.nombre,
+            plan_nombre=plan.nombre if plan else None,
+        )
+
+    def _alumno_activo(self, alumno_id: int) -> Alumno:
+        alumno = self.uow.alumnos.get_by_id(alumno_id)
+        if not alumno:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Alumno no encontrado")
+        if not alumno.activo:
+            raise HTTPException(status.HTTP_409_CONFLICT, "El alumno está dado de baja")
+        return alumno
