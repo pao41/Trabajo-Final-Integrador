@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { obtenerDashboard } from '../api/dashboard'
 import MensajeError from '../componentes/MensajeError'
+import TarjetaIndicador from '../componentes/TarjetaIndicador'
+import { pesos } from '../utilidades/formato'
 
 // Dashboard del administrador: facturación, estado de las cuotas y asistencia
 export default function Dashboard() {
@@ -19,6 +21,14 @@ export default function Dashboard() {
       <div>
         <h1 className="font-titulo text-4xl font-bold">Dashboard</h1>
         <p className="mt-1 text-gris-calido">Indicadores de {mes}.</p>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <TarjetaIndicador titulo="Facturación del mes" valor={pesos(data.facturacion_total)} />
+        <TarjetaIndicador titulo="Ingresos proyectados" valor={pesos(data.ingresos_proyectados)}
+          detalle="Lo cobrado más las cuotas que vencen este mes" />
+        <TarjetaIndicador titulo="Alumnos nuevos del mes" valor={data.alumnos_nuevos_mes} />
+        <TarjetaIndicador titulo="Cuotas vencidas" valor={data.cuotas_vencidas}
+          detalle={`${pesos(data.monto_cuotas_vencidas)} pendientes de cobro`} />
       </div>
     </section>
   )
