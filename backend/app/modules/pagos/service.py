@@ -2,7 +2,7 @@ from datetime import date, timedelta
 
 from app.core.clock import today_ar
 from app.core.uow import UnitOfWork
-from app.modules.pagos.model import Pago, PagoDatos, PagoRegistrado
+from app.modules.pagos.model import Pago, PagoDatos, PagoPublic, PagoRegistrado
 from app.modules.planes.inscripcion_service import InscripcionService
 from app.modules.planes.model import Inscripcion, Plan
 
@@ -56,4 +56,17 @@ class PagoService:
         return PagoRegistrado(
             pago=self._armar(pago, inscripcion, plan),
             inscripcion=InscripcionService(self.uow).armar(inscripcion),
+        )
+
+    def listar(self, alumno_id: int | None = None) -> list[PagoPublic]:
+        historial = []
+        for pago in self.uow.pagos.listar(alumno_id):
+            inscripcion = self.uow.inscripciones.get_by_id(pago.inscripcion_id)
+            plan = self.uow.planes.get_by_id(inscripcion.plan_id)
+            historial.append(self._armar(pago, inscripcion, plan))
+        return historial
+
+    def _armar(self, pago: Pago, inscripcion: Inscripcion, plan: Plan) -> PagoPublic:
+        return PagoPublic(
+            **pago.model_dump(), alumno_id=inscripcion.alumno_id, plan_nombre=plan.nombre
         )
