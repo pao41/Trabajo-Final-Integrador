@@ -2,7 +2,7 @@ from datetime import date, datetime, timedelta
 
 from fastapi import HTTPException, status
 
-from app.core.clock import now_ar
+from app.core.clock import now_ar, today_ar
 from app.core.uow import UnitOfWork
 from app.modules.alumnos.model import Alumno
 from app.modules.asistencias.model import (
@@ -12,6 +12,7 @@ from app.modules.asistencias.model import (
     AsistenciaRegistrada,
 )
 from app.modules.planes.inscripcion_service import InscripcionService
+from app.modules.planes.model import Inscripcion
 
 # Tiempo que debe pasar entre dos ingresos del mismo alumno 
 VENTANA = timedelta(hours=2)
@@ -24,7 +25,7 @@ class AsistenciaService:
         self.uow = uow
 
     def registrar(self, datos: AsistenciaDatos) -> AsistenciaRegistrada:
-        """Guarda el ingreso y, si el plan es por clases, descuenta una clase (RN30)."""
+        """Guarda el ingreso y, si el plan es por clases, descuenta una clase."""
         alumno = self._alumno_activo(datos.alumno_id)
         ahora = now_ar().replace(tzinfo=None, microsecond=0)
         self._controlar_ventana(alumno, ahora)
@@ -81,3 +82,23 @@ class AsistenciaService:
                 f"{alumno.nombre} ya registró su ingreso a las {ultima.hora:%H:%M}. "
                 f"Puede volver a ingresar a las {proximo:%H:%M}",
             )
+        
+    def _inscripcion_para_ingresar(self, alumno: Alumno) -> Inscripcion:
+        """Devuelve la inscripción del alumno si puede ingresar; si no, avisa que renueve."""
+        inscripciones = self.uow.inscripciones.listar(alumno.id)
+        if not inscripciones:
+            raise HTTPException(
+                status.HTTP_409_CONFLICT, "El alumno no tiene una inscripción: hay que inscribirlo"
+            )
+        inscripcion = inscripciones[0]
+        if inscripcion.fecha_vencimiento <= today_ar():
+            vencio = inscripcion.fecha_vencimiento.strftime("%d/%m/%Y")
+            raise HTTPException(
+                status.HTTP_409_CONFLICT,
+                f"La inscripción venció el {vencio}: corresponde renovar",
+            )
+        if inscripcion.clases_restantes == 0:
+            raise HTTPException(
+                status.HTTP_409_CONFLICT, "No le quedan clases: corresponde renovar"
+            )
+        return inscripcion
