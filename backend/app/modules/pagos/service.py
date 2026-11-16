@@ -1,7 +1,10 @@
 from datetime import date, timedelta
 
+from fastapi import HTTPException, status
+
 from app.core.clock import today_ar
 from app.core.uow import UnitOfWork
+from app.modules.configuracion.service import ConfiguracionService
 from app.modules.pagos.model import Pago, PagoDatos, PagoPublic, PagoRegistrado
 from app.modules.planes.inscripcion_service import InscripcionService
 from app.modules.planes.model import Inscripcion, Plan
@@ -70,3 +73,23 @@ class PagoService:
         return PagoPublic(
             **pago.model_dump(), alumno_id=inscripcion.alumno_id, plan_nombre=plan.nombre
         )
+
+    def _validar(self, datos: PagoDatos) -> Inscripcion:
+        """Comprueba que se pueda pagar esa inscripción con ese método."""
+        inscripcion = self.uow.inscripciones.get_by_id(datos.inscripcion_id)
+        if not inscripcion:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Inscripción no encontrada")
+        if not self.uow.alumnos.get_by_id(inscripcion.alumno_id).activo:
+            raise HTTPException(status.HTTP_409_CONFLICT, "El alumno está dado de baja")
+        # Pagar renueva la última inscripción; para otro plan se inscribe de nuevo (RN06)
+        ultima = self.uow.inscripciones.listar(inscripcion.alumno_id)[0]
+        if ultima.id != inscripcion.id:
+            raise HTTPException(
+                status.HTTP_409_CONFLICT, "Solo se puede pagar la inscripción más reciente"
+            )
+        habilitados = ConfiguracionService(self.uow).obtener().metodos_pago_habilitados
+        if datos.metodo_pago not in habilitados:
+            raise HTTPException(
+                status.HTTP_409_CONFLICT, f"El método {datos.metodo_pago} no está habilitado"
+            )
+        return inscripcion
