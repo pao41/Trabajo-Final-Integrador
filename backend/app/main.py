@@ -34,6 +34,3 @@ app.include_router(ficha_router)
 app.include_router(configuracion_router)
 app.include_router(planes_router)
 app.include_router(inscripciones_router)
-
-
-
