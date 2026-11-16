@@ -3,7 +3,7 @@ import BloqueSesion from './BloqueSesion'
 import Logo from './Logo'
 
 const secciones = [
-  { ruta: '/', nombre: 'Inicio' },
+  { ruta: '/', nombre: 'Dashboard' },
   { ruta: '/alumnos', nombre: 'Alumnos' },
   { ruta: '/asistencia', nombre: 'Asistencia' },
   { ruta: '/planes', nombre: 'Planes' },
