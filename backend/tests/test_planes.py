@@ -79,3 +79,31 @@ def test_se_listan_los_planes_por_nombre(admin):
     nombres = [p["nombre"] for p in admin.get("/planes").json()]
 
     assert nombres == ["Mensual libre", "Pack 10 clases"]
+
+
+def test_se_edita_un_plan(admin):
+    plan_id = admin.post("/planes", json=TIEMPO).json()["id"]
+
+    respuesta = admin.put(f"/planes/{plan_id}", json={**TIEMPO, "precio": "18000"})
+
+    assert respuesta.status_code == 200
+    assert respuesta.json()["precio"] == "18000.00"
+
+
+def test_editar_un_plan_inexistente_da_404(admin):
+    assert admin.put("/planes/999", json=TIEMPO).status_code == 404
+
+
+def test_al_editar_no_se_puede_repetir_el_nombre_de_otro_plan(admin):
+    admin.post("/planes", json=TIEMPO)
+    otro_id = admin.post("/planes", json=CLASES).json()["id"]
+
+    respuesta = admin.put(f"/planes/{otro_id}", json={**CLASES, "nombre": TIEMPO["nombre"]})
+
+    assert respuesta.status_code == 409
+
+
+def test_se_puede_guardar_un_plan_con_su_mismo_nombre(admin):
+    plan_id = admin.post("/planes", json=TIEMPO).json()["id"]
+
+    assert admin.put(f"/planes/{plan_id}", json=TIEMPO).status_code == 200
