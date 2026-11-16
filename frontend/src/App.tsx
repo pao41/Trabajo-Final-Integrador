@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import RutaProtegida from './componentes/RutaProtegida'
 import Alumnos from './paginas/Alumnos'
 import Asistencia from './paginas/Asistencia'
+import Configuracion from './paginas/Configuracion'
 import DetalleAlumno from './paginas/DetalleAlumno'
 import Inicio from './paginas/Inicio'
 import Login from './paginas/Login'
@@ -22,6 +23,7 @@ function App() {
          <Route path="/asistencia" element={<Asistencia />} />
         <Route path="/planes" element={<Planes />} />
         <Route path="/usuarios" element={<Usuarios />} />
+        <Route path="/configuracion" element={<Configuracion />} />
 
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
