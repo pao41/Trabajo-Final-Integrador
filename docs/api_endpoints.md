@@ -25,6 +25,17 @@ La columna "Estado" indica si el endpoint ya se encuentra disponible o si se inc
 | `PATCH /usuarios/{id}/activar` | Reactiva un usuario | Administrador | Disponible |
 | `PUT /usuarios/{id}/password` | Restablece la contraseña | Administrador | Disponible |
 
+## Panel del Alumno (módulo 6)
+
+El alumno entra con su DNI y su código de acceso, sin contraseña. Su sesión usa una cookie HttpOnly propia, distinta de la del personal, y dura 60 minutos. Las rutinas aprobadas por el entrenador se incorporan junto con los módulos de Rutinas y Asistente de IA.
+
+| Método y ruta | Descripción | Acceso | Estado |
+|---|---|---|---|
+| `POST /panel-alumno/acceso` | Valida DNI y código y deja la cookie de sesión del alumno; tras 5 intentos fallidos seguidos bloquea el acceso 15 minutos | Público | Disponible |
+| `POST /panel-alumno/salir` | Cierra la sesión del alumno | Público | Disponible |
+| `GET /panel-alumno/resumen` | Estado de la cuota, clases restantes y checklist de la semana | Alumno | Disponible |
+| `GET /panel-alumno/asistencias` | Historial de ingresos del propio alumno | Alumno | Disponible |
+
 ## Demás módulos
 
 | Módulo | Endpoints | Acceso | Estado |
@@ -34,7 +45,6 @@ La columna "Estado" indica si el endpoint ya se encuentra disponible o si se inc
 | 3. Pagos | `POST /pagos`, `GET /pagos` (historial por alumno) | Administrador | Próximamente |
 | 4. Asistencia | `POST /asistencias` (check-in), `GET /asistencias` | Administrador | Próximamente |
 | 5. Dashboard | `GET /dashboard` | Administrador | Próximamente |
-| 6. Panel del Alumno | `POST /panel-alumno/acceso` y consultas de solo lectura | Alumno (DNI y código) | Próximamente |
 | 7. Rutinas | `GET/POST/PUT /rutinas` | Entrenador (lectura: administrador) | Próximamente |
 | 8. Asistente de IA | `POST /sugerencias`, `PATCH /sugerencias/{id}/aprobar` y `/rechazar` | Alumno solicita; entrenador aprueba | Próximamente |
 | 9. Configuración | `GET/PUT /configuracion` | Administrador | Próximamente |
