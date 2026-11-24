@@ -1,11 +1,20 @@
+from datetime import timedelta
+
+from fastapi import HTTPException, status
+
+from app.core.bloqueo import control_de_intentos
+from app.core.clock import today_ar
 from app.core.security import create_alumno_token, verify_password
 from app.core.uow import UnitOfWork
+from app.modules.alumnos.ficha_service import FichaMetaService
 from app.modules.alumnos.model import AlumnoPublic
 from app.modules.asistencias.service import AsistenciaService
 from app.modules.panel_alumno.model import (
     AccesoDatos,
+    ChecklistSemana,
     IngresoPropio,
     ResumenAlumno,
+
 )
 from app.modules.planes.inscripcion_service import InscripcionService
 
@@ -49,3 +58,11 @@ class PanelAlumnoService:
         """Ingresos del propio alumno, el más nuevo primero."""
         ingresos = AsistenciaService(self.uow).listar(alumno_id=alumno.id)
         return [IngresoPropio.model_validate(i, from_attributes=True) for i in ingresos]
+
+    def _checklist(self, alumno_id: int) -> ChecklistSemana:
+        """Compara los ingresos de la semana en curso (lunes a domingo) con la meta."""
+        hoy = today_ar()
+        lunes = hoy - timedelta(days=hoy.weekday())
+        hechas = self.uow.asistencias.contar_entre(alumno_id, lunes, lunes + timedelta(days=6))
+        meta = FichaMetaService(self.uow).obtener_meta(alumno_id).meta_asistencias_semanales
+        return ChecklistSemana(meta=meta, asistencias=hechas, cumplida=hechas >= meta)
