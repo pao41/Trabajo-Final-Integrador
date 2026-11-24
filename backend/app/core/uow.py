@@ -12,6 +12,7 @@ from app.modules.dashboard.repository import DashboardRepository
 from app.modules.entrenadores.repository import EntrenadorRepository
 from app.modules.pagos.repository import PagoRepository
 from app.modules.planes.repository import InscripcionRepository, PlanRepository
+from app.modules.rutinas.repository import RutinaRepository
 from app.modules.usuarios.repository import UsuarioRepository
 
 
@@ -36,6 +37,7 @@ class UnitOfWork:
         self.asistencias = AsistenciaRepository(self.session)
         self.dashboard = DashboardRepository(self.session)
         self.entrenadores = EntrenadorRepository(self.session)
+        self.rutinas = RutinaRepository(self.session)
 
         return self
 
