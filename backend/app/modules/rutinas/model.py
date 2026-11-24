@@ -25,3 +25,8 @@ class RutinaDatos(SQLModel):
     # Condiciones de salud que excluyen la rutina (RN19)
     contraindicaciones: str | None = Field(default=None, max_length=500)
     descripcion: str | None = Field(default=None, max_length=1000)
+
+# Datos que se devuelven al frontend
+class RutinaPublic(RutinaDatos):
+    id: int
+    entrenador_id: int | None
