@@ -15,4 +15,7 @@ export interface Usuario {
 export interface UsuarioNuevo {
   nombre_usuario: string
   password: string
+  rol: Rol
+  // Solo para el perfil entrenador: el entrenador al que pertenece el usuario
+  entrenador_id: number | null
 }

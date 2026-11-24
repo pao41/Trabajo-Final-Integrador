@@ -9,7 +9,8 @@ export default function FormularioUsuario() {
   const [password, setPassword] = useState('')
   const queryClient = useQueryClient()
   const crear = useMutation({
-    mutationFn: () => crearUsuario({ nombre_usuario: nombreUsuario, password }),
+    mutationFn: () =>
+      crearUsuario({ nombre_usuario: nombreUsuario, password, rol: 'administrador', entrenador_id: null }),
     onSuccess: () => {
       setNombreUsuario('')
       setPassword('')
