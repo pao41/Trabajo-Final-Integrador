@@ -46,3 +46,29 @@ def test_un_alumno_dado_de_baja_no_puede_entrar(admin):
     _, acceso = entrar(alumno["dni"], alumno["codigo_acceso"])
 
     assert acceso.status_code == 401
+
+
+def test_tras_5_intentos_fallidos_se_bloquea_aunque_el_codigo_sea_correcto(admin):
+    alumno = alta(admin).json()
+    for _ in range(5):
+        entrar(alumno["dni"], "XXXXXXXX")
+
+    _, acceso = entrar(alumno["dni"], alumno["codigo_acceso"])
+
+    assert acceso.status_code == 429
+
+
+def test_sin_sesion_el_panel_no_responde(client):
+    assert client.get("/panel-alumno/resumen").status_code == 401
+    assert client.get("/panel-alumno/asistencias").status_code == 401
+
+
+def test_la_sesion_del_alumno_y_la_del_personal_no_se_mezclan(admin):
+    alumno = alta(admin).json()
+    cliente, _ = entrar(alumno["dni"], alumno["codigo_acceso"])
+
+    # El token del alumno no sirve como sesión del personal
+    cliente.cookies.set("access_token", cliente.cookies["alumno_token"])
+    assert cliente.get("/auth/me").status_code == 401
+    # Y la sesión del administrador no abre el panel del alumno
+    assert admin.get("/panel-alumno/resumen").status_code == 401
