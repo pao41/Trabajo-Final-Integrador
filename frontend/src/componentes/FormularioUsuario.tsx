@@ -2,14 +2,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { crearUsuario } from '../api/usuarios'
 import type { Rol } from '../types/auth'
+import type { Entrenador } from '../types/entrenadores'
 import Campo from './Campo'
 import MensajeError from './MensajeError'
 
-
-export default function FormularioUsuario() {
+// Recibe los entrenadores que todavía no tienen usuario (cada entrenador tiene uno solo)
+export default function FormularioUsuario({ entrenadoresLibres }: { entrenadoresLibres: Entrenador[] }) {
   const [nombreUsuario, setNombreUsuario] = useState('')
   const [password, setPassword] = useState('')
   const [rol, setRol] = useState<Rol>('administrador')
+  const [entrenadorId, setEntrenadorId] = useState('')
   const queryClient = useQueryClient()
   const crear = useMutation({
     mutationFn: () =>
@@ -17,13 +19,15 @@ export default function FormularioUsuario() {
         nombre_usuario: nombreUsuario,
         password,
         rol,
-        entrenador_id: null,
+        entrenador_id: rol === 'entrenador' && entrenadorId ? Number(entrenadorId) : null,
       }),
     onSuccess: () => {
       setNombreUsuario('')
       setPassword('')
+      setEntrenadorId('')
       queryClient.invalidateQueries({ queryKey: ['usuarios'] })
     },
+
   })
 
   return (
@@ -42,8 +46,22 @@ export default function FormularioUsuario() {
             <option value="entrenador">Entrenador</option>
           </select>
         </label>
+        {rol === 'entrenador' && (
+          <label className="flex min-w-56 flex-1 flex-col gap-2 font-bold">
+            Entrenador
+            <select className="campo" value={entrenadorId} onChange={(e) => setEntrenadorId(e.target.value)}>
+              <option value="">Elegí un entrenador</option>
+              {entrenadoresLibres.map((e) => (
+                <option key={e.id} value={e.id}>{e.nombre}</option>
+              ))}
+            </select>
+          </label>
+        )}
         <button className="boton" disabled={crear.isPending}>Crear usuario</button>
       </div>
+      {rol === 'entrenador' && entrenadoresLibres.length === 0 && (
+        <p className="text-gris-calido">Todos los entrenadores ya tienen usuario: primero dá de alta uno en Entrenadores.</p>
+      )}
       {crear.isError && <MensajeError texto={crear.error.message} />}
     </form>
   )
