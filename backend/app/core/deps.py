@@ -2,9 +2,13 @@ from typing import Annotated
 
 from fastapi import Depends, HTTPException, Request, status
 
-from app.core.security import decode_access_token
+from app.core.security import decode_access_token, decode_alumno_token
 from app.core.uow import UnitOfWork, get_uow
+from app.modules.alumnos.model import AlumnoPublic
 from app.modules.usuarios.model import UsuarioPublic
+
+# Cookie de la sesión del alumno (distinta de la del personal)
+COOKIE_ALUMNO = "alumno_token"
 
 
 def get_current_user(
@@ -50,3 +54,20 @@ def require_role(roles: list[str]):
         return usuario
 
     return comprobar
+
+
+def get_alumno_actual(
+    request: Request,
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+) -> AlumnoPublic:
+    """Identifica al alumno que hace la petición a partir de su cookie de sesión."""
+    token = request.cookies.get(COOKIE_ALUMNO)
+    datos = decode_alumno_token(token) if token else None
+    if datos is None:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "No hay una sesión iniciada")
+    with uow:
+        alumno = uow.alumnos.get_by_id(int(datos["sub"]))
+        # Si lo dieron de baja después de entrar, pierde el acceso enseguida
+        if not alumno or not alumno.activo:
+            raise HTTPException(status.HTTP_401_UNAUTHORIZED, "La sesión es inválida o venció")
+        return AlumnoPublic.model_validate(alumno)

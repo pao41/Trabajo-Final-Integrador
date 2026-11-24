@@ -36,6 +36,25 @@ def decode_access_token(token: str) -> dict | None:
         return None
 
 
+# Minutos que dura la sesión del alumno (más corta que la del personal)
+MINUTOS_SESION_ALUMNO = 60
+
+
+def create_alumno_token(alumno_id: int) -> str:
+    """Crea el token de sesión del alumno; la marca "aud" lo distingue del token del personal."""
+    vence = datetime.now(timezone.utc) + timedelta(minutes=MINUTOS_SESION_ALUMNO)
+    datos = {"sub": str(alumno_id), "aud": "alumno", "exp": vence}
+    return jwt.encode(datos, settings.secret_key, algorithm="HS256")
+
+
+def decode_alumno_token(token: str) -> dict | None:
+    """Devuelve los datos del token del alumno, o None si es inválido, venció o no es de alumno."""
+    try:
+        return jwt.decode(token, settings.secret_key, algorithms=["HS256"], audience="alumno")
+    except jwt.PyJWTError:
+        return None
+
+
 # Letras y números sin los que se confunden entre sí (0/O, 1/I/L)
 ALFABETO_CODIGO = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"
 
