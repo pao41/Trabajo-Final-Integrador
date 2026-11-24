@@ -15,17 +15,18 @@ class UsuarioService:
     def crear(self, datos: UsuarioCreate) -> UsuarioPublic:
         """Crea un usuario; el nombre de usuario no se puede repetir."""
         self._validar_largo(datos.password)
+        self._validar_perfil(datos)
         nombre = datos.nombre_usuario.strip().lower()
         if self.uow.usuarios.get_by_nombre_usuario(nombre):
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="Ya existe un usuario con ese nombre",
             )
-        # Por ahora todos son administradores; el perfil entrenador llega con su módulo
         usuario = Usuario(
             nombre_usuario=nombre,
             password_hash=hash_password(datos.password),
-            rol="administrador",
+            rol=datos.rol,
+            entrenador_id=datos.entrenador_id,
         )
         return UsuarioPublic.model_validate(self.uow.usuarios.add(usuario))
 
@@ -75,6 +76,25 @@ class UsuarioService:
                 detail="Usuario no encontrado",
             )
         return usuario
+
+    def _validar_perfil(self, datos: UsuarioCreate) -> None:
+        """El perfil entrenador va vinculado a un entrenador que todavía no tenga usuario."""
+        if datos.rol == "administrador":
+            if datos.entrenador_id is not None:
+                raise HTTPException(
+                    status.HTTP_422_UNPROCESSABLE_CONTENT,
+                    "Un administrador no se vincula a un entrenador",
+                )
+            return
+        if datos.entrenador_id is None:
+            raise HTTPException(
+                status.HTTP_422_UNPROCESSABLE_CONTENT,
+                "Elegí el entrenador al que pertenece el usuario",
+            )
+        if not self.uow.entrenadores.get_by_id(datos.entrenador_id):
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Entrenador no encontrado")
+        if self.uow.usuarios.get_by_entrenador_id(datos.entrenador_id):
+            raise HTTPException(status.HTTP_409_CONFLICT, "Ese entrenador ya tiene un usuario")
 
     def _validar_largo(self, password: str) -> None:
         # bcrypt solo admite hasta 72 bytes (una letra con tilde ocupa 2)
