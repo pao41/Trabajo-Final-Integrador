@@ -5,6 +5,7 @@ import Asistencia from './paginas/Asistencia'
 import Configuracion from './paginas/Configuracion'
 import Dashboard from './paginas/Dashboard'
 import DetalleAlumno from './paginas/DetalleAlumno'
+import Entrenadores from './paginas/Entrenadores'
 import Login from './paginas/Login'
 import NuevoAlumno from './paginas/NuevoAlumno'
 import PanelAlumno from './paginas/PanelAlumno'
@@ -23,6 +24,7 @@ function App() {
         <Route path="/alumnos/:id" element={<DetalleAlumno />} />
          <Route path="/asistencia" element={<Asistencia />} />
         <Route path="/planes" element={<Planes />} />
+        <Route path="/entrenadores" element={<Entrenadores />} />
         <Route path="/usuarios" element={<Usuarios />} />
         <Route path="/configuracion" element={<Configuracion />} />
 
