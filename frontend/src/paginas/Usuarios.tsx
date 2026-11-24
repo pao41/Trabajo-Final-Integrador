@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { listarEntrenadores } from '../api/entrenadores'
 import { listarUsuarios } from '../api/usuarios'
 import FormularioUsuario from '../componentes/FormularioUsuario'
 import MensajeError from '../componentes/MensajeError'
@@ -9,6 +10,11 @@ export default function Usuarios() {
     queryKey: ['usuarios'],
     queryFn: listarUsuarios,
   })
+  const { data: entrenadores = [] } = useQuery({
+    queryKey: ['entrenadores'],
+    queryFn: listarEntrenadores,
+  })
+  const nombres = Object.fromEntries(entrenadores.map((e) => [e.id, e.nombre]))
 
   return (
     <section className="flex flex-col gap-6">
@@ -19,7 +25,7 @@ export default function Usuarios() {
       <FormularioUsuario />
       {isPending && <p>Cargando…</p>}
       {isError && <MensajeError texto={error.message} />}
-      {data && <TablaUsuarios usuarios={data} />}
+      {data && <TablaUsuarios usuarios={data} nombresEntrenadores={nombres} />}
     </section>
   )
 }

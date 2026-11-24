@@ -1,8 +1,13 @@
-import type { Usuario } from '../types/auth'
 import FilaUsuario from './FilaUsuario'
 
 // Tabla con scroll horizontal cuando la pantalla es angosta
-export default function TablaUsuarios({ usuarios }: { usuarios: Usuario[] }) {
+interface Props {
+  usuarios: Usuario[]
+  // Nombre de cada entrenador, para mostrarlo junto al perfil
+  nombresEntrenadores: Record<number, string>
+}
+
+export default function TablaUsuarios({ usuarios, nombresEntrenadores }: Props) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-borde bg-white">
       <table className="w-full min-w-[640px] text-left">
@@ -14,9 +19,13 @@ export default function TablaUsuarios({ usuarios }: { usuarios: Usuario[] }) {
             <th className="p-4">Acciones</th>
           </tr>
         </thead>
-        <tbody>
+          <tbody>
           {usuarios.map((usuario) => (
-            <FilaUsuario key={usuario.id} usuario={usuario} />
+            <FilaUsuario
+              key={usuario.id}
+              usuario={usuario}
+              entrenador={usuario.entrenador_id ? nombresEntrenadores[usuario.entrenador_id] : undefined}
+            />
           ))}
         </tbody>
       </table>
