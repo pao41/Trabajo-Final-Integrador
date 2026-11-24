@@ -7,14 +7,15 @@ import Dashboard from './paginas/Dashboard'
 import DetalleAlumno from './paginas/DetalleAlumno'
 import Login from './paginas/Login'
 import NuevoAlumno from './paginas/NuevoAlumno'
+import PanelAlumno from './paginas/PanelAlumno'
 import Planes from './paginas/Planes'
 import Usuarios from './paginas/Usuarios'
-
 
 function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/panel-alumno" element={<PanelAlumno />} />
       <Route element={<RutaProtegida />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/alumnos" element={<Alumnos />} />
