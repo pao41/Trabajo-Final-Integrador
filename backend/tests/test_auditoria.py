@@ -84,3 +84,15 @@ def test_una_accion_sin_permiso_no_llega_a_registrarse(
 
     assert client.patch("/alumnos/1/desactivar").status_code == 403
     assert lineas() == []
+
+
+def test_gestionar_entrenadores_se_registra(admin, lineas):
+    entrenador_id = admin.post("/entrenadores", json={"nombre": "Laura Gómez"}).json()["id"]
+
+    admin.put(f"/entrenadores/{entrenador_id}", json={"nombre": "Laura Gómez Díaz"})
+
+    acciones = [linea.split(" | ")[2:] for linea in lineas()]
+    assert acciones == [
+        ["crear entrenador", "entrenador Laura Gómez", "éxito"],
+        ["editar entrenador", f"entrenador {entrenador_id}", "éxito"],
+    ]
