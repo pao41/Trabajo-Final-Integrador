@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, Response
 
 from app.core.config import settings
@@ -5,7 +7,7 @@ from app.core.deps import COOKIE_ALUMNO, get_alumno_actual
 from app.core.security import MINUTOS_SESION_ALUMNO
 from app.core.uow import UnitOfWork, get_uow
 from app.modules.alumnos.model import AlumnoPublic
-from app.modules.panel_alumno.model import AccesoDatos, ResumenAlumno
+from app.modules.panel_alumno.model import AccesoDatos, IngresoPropio, ResumenAlumno
 from app.modules.panel_alumno.service import PanelAlumnoService
 
 router = APIRouter(prefix="/panel-alumno", tags=["Panel del Alumno"])
@@ -50,3 +52,12 @@ def resumen(
 ):
     with uow:
         return PanelAlumnoService(uow).resumen(alumno)
+
+
+@router.get("/asistencias", response_model=list[IngresoPropio])
+def asistencias(
+    alumno: Annotated[AlumnoPublic, Depends(get_alumno_actual)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with uow:
+        return PanelAlumnoService(uow).historial(alumno)
