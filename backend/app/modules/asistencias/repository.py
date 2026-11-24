@@ -1,6 +1,6 @@
 from datetime import date
 
-from sqlmodel import Session, select
+from sqlmodel import Session, func, select
 
 from app.core.base_repository import BaseRepository
 from app.modules.asistencias.model import Asistencia
@@ -24,3 +24,13 @@ class AsistenciaRepository(BaseRepository[Asistencia]):
         if fecha is not None:
             consulta = consulta.where(Asistencia.fecha == fecha)
         return list(self.session.exec(consulta.limit(200)).all())
+
+    def contar_entre(self, alumno_id: int, desde: date, hasta: date) -> int:
+        """Cantidad de ingresos del alumno entre dos fechas, ambas incluidas."""
+        consulta = select(func.count()).select_from(Asistencia)
+        consulta = consulta.where(
+            Asistencia.alumno_id == alumno_id,
+            Asistencia.fecha >= desde,
+            Asistencia.fecha <= hasta,
+        )
+        return self.session.exec(consulta).one()
