@@ -1,3 +1,5 @@
+from datetime import date, time
+
 from sqlmodel import Field, SQLModel
 
 from app.modules.planes.model import InscripcionPublic
@@ -21,3 +23,11 @@ class ResumenAlumno(SQLModel):
     nombre: str
     inscripcion: InscripcionPublic | None
     checklist: ChecklistSemana
+
+
+# Un ingreso propio del alumno, para su historial de asistencia
+class IngresoPropio(SQLModel):
+    id: int
+    fecha: date
+    hora: time
+    plan_nombre: str | None
