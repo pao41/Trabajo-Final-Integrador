@@ -20,10 +20,20 @@ La columna "Estado" indica si el endpoint ya se encuentra disponible o si se inc
 | Método y ruta | Descripción | Acceso | Estado |
 |---|---|---|---|
 | `GET /usuarios` | Lista los usuarios del personal | Administrador | Disponible |
-| `POST /usuarios` | Crea un usuario con su perfil | Administrador | Disponible |
+| `POST /usuarios` | Crea un usuario con su perfil (administrador o entrenador); el perfil entrenador se vincula a un entrenador que todavía no tenga usuario | Administrador | Disponible |
 | `PATCH /usuarios/{id}/desactivar` | Desactiva un usuario | Administrador | Disponible |
 | `PATCH /usuarios/{id}/activar` | Reactiva un usuario | Administrador | Disponible |
 | `PUT /usuarios/{id}/password` | Restablece la contraseña | Administrador | Disponible |
+
+## Entrenadores (módulo 10)
+
+Cada entrenador se da de alta con su nombre y un contacto opcional. Para que pueda entrar al sistema, el administrador le crea un usuario con perfil entrenador desde Usuarios. Cada entrenador tiene un solo usuario.
+
+| Método y ruta | Descripción | Acceso | Estado |
+|---|---|---|---|
+| `GET /entrenadores` | Lista los entrenadores ordenados por nombre | Administrador | Disponible |
+| `POST /entrenadores` | Da de alta un entrenador | Administrador | Disponible |
+| `PUT /entrenadores/{id}` | Edita el nombre y el contacto de un entrenador | Administrador | Disponible |
 
 ## Panel del Alumno (módulo 6)
 
@@ -48,6 +58,6 @@ El alumno entra con su DNI y su código de acceso, sin contraseña. Su sesión u
 | 7. Rutinas | `GET/POST/PUT /rutinas` | Entrenador (lectura: administrador) | Próximamente |
 | 8. Asistente de IA | `POST /sugerencias`, `PATCH /sugerencias/{id}/aprobar` y `/rechazar` | Alumno solicita; entrenador aprueba | Próximamente |
 | 9. Configuración | `GET/PUT /configuracion` | Administrador | Próximamente |
-| 10. Entrenadores | `GET/POST/PUT /entrenadores` | Administrador | Próximamente |
 
 Las rutas de los módulos próximos son el diseño inicial y pueden ajustarse durante la implementación.
+
