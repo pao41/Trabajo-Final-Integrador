@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import FormularioLogin from '../componentes/FormularioLogin'
 import PanelMarca from '../componentes/PanelMarca'
 
@@ -12,6 +13,10 @@ export default function Login() {
           <FormularioLogin />
           <p className="text-[15px] text-gris-calido">
             ¿Olvidaste tu contraseña? Pedile a un administrador que la restablezca.
+          </p>
+          <p className="text-[15px] text-gris-calido">
+            ¿Sos alumno/a?{' '}
+            <Link to="/panel-alumno" className="font-bold text-terracota-oscuro underline">Consultá tu cuota</Link>.
           </p>
         </div>
       </section>
