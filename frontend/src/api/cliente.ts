@@ -49,7 +49,8 @@ async function pedir(ruta: string, opciones: RequestInit = {}): Promise<Response
   const respuesta = await fetch(`${URL_BASE}${ruta}`, { credentials: 'include', ...opciones })
   if (!respuesta.ok) {
     // Un 401 fuera del login significa que la sesión venció: se cierra la sesión y se limpia el caché
-    if (respuesta.status === 401 && !ruta.startsWith('/auth/')) {
+    // (el panel del alumno tiene su propia sesión: su pantalla vuelve a pedir el acceso)
+    if (respuesta.status === 401 && !ruta.startsWith('/auth/') && !ruta.startsWith('/panel-alumno/')) {
       useAuthStore.getState().cerrarSesion()
       queryClient.clear()
     }
