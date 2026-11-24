@@ -7,6 +7,7 @@ from app.modules.alumnos.router import router as alumnos_router
 from app.modules.asistencias.router import router as asistencias_router
 from app.modules.configuracion.router import router as configuracion_router
 from app.modules.dashboard.router import router as dashboard_router
+from app.modules.entrenadores.router import router as entrenadores_router
 from app.modules.pagos.router import router as pagos_router
 from app.modules.panel_alumno.router import router as panel_alumno_router
 from app.modules.planes.inscripcion_router import router as inscripciones_router
@@ -42,3 +43,4 @@ app.include_router(pagos_router)
 app.include_router(asistencias_router)
 app.include_router(dashboard_router)
 app.include_router(panel_alumno_router)
+app.include_router(entrenadores_router)
