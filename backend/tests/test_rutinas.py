@@ -44,3 +44,26 @@ def test_el_administrador_consulta_pero_no_carga_ni_edita(
 
 def test_sin_sesion_no_se_ven_las_rutinas(client):
     assert client.get("/rutinas").status_code == 401
+
+
+def test_el_entrenador_edita_y_la_rutina_conserva_a_quien_la_cargo(
+    crear_usuario, crear_entrenador, iniciar_sesion
+):
+    autora, autora_id = entrenador_con_sesion(crear_usuario, crear_entrenador, iniciar_sesion)
+    otro, _ = entrenador_con_sesion(crear_usuario, crear_entrenador, iniciar_sesion, "pedro")
+    rutina_id = autora.post("/rutinas", json=NUEVA).json()["id"]
+
+    editada = otro.put(f"/rutinas/{rutina_id}", json={**NUEVA, "nombre": "Movilidad de cuello"})
+
+    assert editada.status_code == 200
+    assert editada.json()["nombre"] == "Movilidad de cuello"
+    assert editada.json()["entrenador_id"] == autora_id
+    assert otro.put("/rutinas/999", json=NUEVA).status_code == 404
+
+
+def test_solo_se_permiten_los_tres_tipos_de_rutina(crear_usuario, crear_entrenador, iniciar_sesion):
+    sesion, _ = entrenador_con_sesion(crear_usuario, crear_entrenador, iniciar_sesion)
+
+    fuerza = sesion.post("/rutinas", json={**NUEVA, "tipo": "fuerza"})
+
+    assert fuerza.status_code == 422
