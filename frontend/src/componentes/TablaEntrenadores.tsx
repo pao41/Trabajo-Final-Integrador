@@ -10,6 +10,17 @@ def alta(admin, **cambios):
     return admin.post("/entrenadores", json={**NUEVO, **cambios})
 
 
+def usuario_entrenador(admin, entrenador_id, nombre="laura"):
+    """Crea el usuario de un entrenador por la API y devuelve la respuesta."""
+    datos = {
+        "nombre_usuario": nombre,
+        "password": "clave-laura-123",
+        "rol": "entrenador",
+        "entrenador_id": entrenador_id,
+    }
+    return admin.post("/usuarios", json=datos)
+
+
 def test_solo_el_administrador_gestiona_entrenadores(
     client, crear_usuario, crear_entrenador, iniciar_sesion
 ):
@@ -34,3 +45,17 @@ def test_el_administrador_da_de_alta_edita_y_lista_entrenadores(admin):
     assert editado.json()["contacto"] is None
     assert [e["nombre"] for e in admin.get("/entrenadores").json()] == ["Laura Gómez Díaz"]
     assert admin.put("/entrenadores/999", json=NUEVO).status_code == 404
+
+
+def test_un_entrenador_con_su_usuario_entra_pero_no_gestiona(admin, iniciar_sesion):
+    entrenador_id = alta(admin).json()["id"]
+
+    creado = usuario_entrenador(admin, entrenador_id)
+    sesion = TestClient(app)
+
+    assert creado.status_code == 201
+    assert creado.json()["rol"] == "entrenador"
+    assert creado.json()["entrenador_id"] == entrenador_id
+    assert iniciar_sesion(sesion, "laura", "clave-laura-123").status_code == 200
+    assert sesion.get("/auth/me").json()["rol"] == "entrenador"
+    assert sesion.get("/alumnos").status_code == 403
