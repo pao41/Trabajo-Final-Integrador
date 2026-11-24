@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Literal
 
 from sqlmodel import Field, SQLModel
 
@@ -22,6 +23,9 @@ class Usuario(SQLModel, table=True):
 class UsuarioCreate(SQLModel):
     nombre_usuario: str = Field(min_length=3, max_length=50)
     password: str = Field(min_length=8, max_length=72)
+    rol: Literal["administrador", "entrenador"] = "administrador"
+    # Solo para el perfil entrenador: el entrenador al que pertenece el usuario
+    entrenador_id: int | None = None
 
 
 # Datos que se devuelven al frontend (nunca incluyen el hash de la contraseña)

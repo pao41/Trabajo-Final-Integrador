@@ -11,3 +11,7 @@ class UsuarioRepository(BaseRepository[Usuario]):
     def get_by_nombre_usuario(self, nombre_usuario: str) -> Usuario | None:
         consulta = select(Usuario).where(Usuario.nombre_usuario == nombre_usuario)
         return self.session.exec(consulta).first()
+
+    def get_by_entrenador_id(self, entrenador_id: int) -> Usuario | None:
+        consulta = select(Usuario).where(Usuario.entrenador_id == entrenador_id)
+        return self.session.exec(consulta).first()
