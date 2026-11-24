@@ -1,3 +1,5 @@
+from fastapi.testclient import TestClient
+
 from app.main import app
 from tests.test_alumnos import alta
 from tests.test_inscripciones import inscribir, nuevo_plan
@@ -72,3 +74,21 @@ def test_la_sesion_del_alumno_y_la_del_personal_no_se_mezclan(admin):
     assert cliente.get("/auth/me").status_code == 401
     # Y la sesión del administrador no abre el panel del alumno
     assert admin.get("/panel-alumno/resumen").status_code == 401
+
+
+def test_el_checklist_cuenta_los_ingresos_y_el_historial_es_propio(admin):
+    ana = alta(admin).json()
+    luis = alta(admin, nombre="Luis Gómez", dni="30111333").json()
+    plan_id = nuevo_plan(admin)
+    for alumno in (ana, luis):
+        inscribir(admin, alumno["id"], plan_id)
+        admin.post("/asistencias", json={"alumno_id": alumno["id"]})
+    admin.put(f"/alumnos/{ana['id']}/meta", json={"meta_asistencias_semanales": 1})
+
+    cliente, _ = entrar(ana["dni"], ana["codigo_acceso"])
+    resumen = cliente.get("/panel-alumno/resumen").json()
+    historial = cliente.get("/panel-alumno/asistencias").json()
+
+    assert resumen["checklist"] == {"meta": 1, "asistencias": 1, "cumplida": True}
+    # Solo aparece el ingreso de Ana, no el de Luis
+    assert len(historial) == 1
