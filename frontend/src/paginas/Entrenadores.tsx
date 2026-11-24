@@ -1,21 +1,36 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { crearEntrenador, listarEntrenadores } from '../api/entrenadores'
+import { useState } from 'react'
+import { crearEntrenador, editarEntrenador, listarEntrenadores } from '../api/entrenadores'
 import FormularioEntrenador from '../componentes/FormularioEntrenador'
 import MensajeError from '../componentes/MensajeError'
 import TablaEntrenadores from '../componentes/TablaEntrenadores'
 import TarjetaSeccion from '../componentes/TarjetaSeccion'
+import type { Entrenador, EntrenadorDatos } from '../types/entrenadores'
 
-// Entrenadores del gimnasio: se dan de alta desde esta pantalla
+// Entrenadores del gimnasio: se dan de alta y se editan desde esta pantalla
 export default function Entrenadores() {
+  const [editando, setEditando] = useState<Entrenador | null>(null)
   const queryClient = useQueryClient()
   const { data, isPending, isError, error } = useQuery({
     queryKey: ['entrenadores'],
     queryFn: listarEntrenadores,
   })
+
   const guardar = useMutation({
-    mutationFn: crearEntrenador,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['entrenadores'] }),
+    mutationFn: (datos: EntrenadorDatos) =>
+      editando ? editarEntrenador(editando.id, datos) : crearEntrenador(datos),
+    onSuccess: () => {
+      setEditando(null)
+      queryClient.invalidateQueries({ queryKey: ['entrenadores'] })
+    },
   })
+
+  // Carga el entrenador en el formulario y sube a la parte de arriba para verlo
+  const editar = (entrenador: Entrenador) => {
+    guardar.reset()
+    setEditando(entrenador)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   return (
     <section className="flex flex-col gap-6">
@@ -23,18 +38,24 @@ export default function Entrenadores() {
         <h1 className="font-titulo text-4xl font-bold">Entrenadores</h1>
         <p className="mt-1 text-gris-calido">Los profes del gimnasio. Para que entren al sistema, creales un usuario en Usuarios.</p>
       </div>
-      <TarjetaSeccion titulo="Nuevo entrenador">
+      <TarjetaSeccion titulo={editando ? `Editar ${editando.nombre}` : 'Nuevo entrenador'}>
         <FormularioEntrenador
-          inicial={null}
+          key={editando?.id ?? 'nuevo'}
+          inicial={editando}
           pendiente={guardar.isPending}
           error={guardar.error?.message ?? null}
           alEnviar={(datos) => guardar.mutate(datos)}
         />
+        {editando && (
+          <button onClick={() => setEditando(null)} className="boton-claro self-start">
+            Cancelar edición
+          </button>
+        )}
       </TarjetaSeccion>
       {isPending && <p>Cargando…</p>}
       {isError && <MensajeError texto={error.message} />}
       {data?.length === 0 && <p className="text-gris-calido">Todavía no hay entrenadores.</p>}
-      {data && data.length > 0 && <TablaEntrenadores entrenadores={data} />}
+      {data && data.length > 0 && <TablaEntrenadores entrenadores={data} alEditar={editar} />}
     </section>
   )
 }
