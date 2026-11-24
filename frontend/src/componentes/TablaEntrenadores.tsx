@@ -59,3 +59,21 @@ def test_un_entrenador_con_su_usuario_entra_pero_no_gestiona(admin, iniciar_sesi
     assert iniciar_sesion(sesion, "laura", "clave-laura-123").status_code == 200
     assert sesion.get("/auth/me").json()["rol"] == "entrenador"
     assert sesion.get("/alumnos").status_code == 403
+
+
+def test_el_usuario_entrenador_exige_un_entrenador_valido_y_libre(admin):
+    entrenador_id = alta(admin).json()["id"]
+    sin_entrenador = {"nombre_usuario": "pedro", "password": "clave-pedro-123", "rol": "entrenador"}
+
+    assert admin.post("/usuarios", json=sin_entrenador).status_code == 422
+    assert usuario_entrenador(admin, 999).status_code == 404
+    assert usuario_entrenador(admin, entrenador_id).status_code == 201
+    # Un entrenador tiene un solo usuario
+    assert usuario_entrenador(admin, entrenador_id, nombre="otro").status_code == 409
+    # Un administrador no lleva entrenador
+    datos = {
+        "nombre_usuario": "marta",
+        "password": "clave-marta-123",
+        "entrenador_id": entrenador_id,
+    }
+    assert admin.post("/usuarios", json=datos).status_code == 422
