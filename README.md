@@ -181,4 +181,14 @@ npm run dev
 
 La aplicación queda en http://localhost:5173.
 
+**4. Datos de demostración (opcional)**
+
+Para probar el sistema con datos cargados (planes, alumnos, pagos, asistencias, rutinas y una entrenadora), después de crear el administrador se ejecuta, desde la raíz del repositorio:
+
+```bash
+psql -U postgres -d gimnasio -f database/datos_demo.sql
+```
+
+El usuario de la entrenadora es `entrenadora_demo` con contraseña `Demo-12345`. Los alumnos ingresan al panel con su DNI (por ejemplo `30111222`) y el código `DEMO2026`. Son datos solo de demostración y no corresponden a un uso real.
+
 **Convenciones de código:** los nombres del dominio van en español y sin tildes (`alumno`, `inscripcion`, `pago`), y los términos técnicos en inglés (`router`, `service`, `schema`). En Python se usa `snake_case` y en TypeScript `camelCase`. Las rutas de la API van en español y en plural (`/alumnos`, `/inscripciones`).
