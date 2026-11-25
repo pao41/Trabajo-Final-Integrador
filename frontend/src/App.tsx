@@ -10,6 +10,7 @@ import NuevoAlumno from './paginas/NuevoAlumno'
 import PanelAlumno from './paginas/PanelAlumno'
 import Planes from './paginas/Planes'
 import Principal from './paginas/Principal'
+import Rutinas from './paginas/Rutinas'
 import Usuarios from './paginas/Usuarios'
 
 
@@ -26,6 +27,7 @@ function App() {
          <Route path="/asistencia" element={<Asistencia />} />
         <Route path="/planes" element={<Planes />} />
         <Route path="/entrenadores" element={<Entrenadores />} />
+        <Route path="/rutinas" element={<Rutinas />} />
         <Route path="/usuarios" element={<Usuarios />} />
         <Route path="/configuracion" element={<Configuracion />} />
 
