@@ -32,3 +32,22 @@ def test_el_asistente_sugiere_solo_rutinas_compatibles_con_la_ficha(
     assert respuesta.status_code == 201
     assert [s["rutina_nombre"] for s in pendientes] == ["Respiración profunda"]
     assert pendientes[0]["alumno_nombre"] == "Ana Pérez"
+
+
+def test_no_se_sugiere_sin_ficha_sin_rutinas_compatibles_ni_con_otra_pendiente(
+    admin, crear_usuario, crear_entrenador, iniciar_sesion
+):
+    entrenador, _ = entrenador_con_sesion(crear_usuario, crear_entrenador, iniciar_sesion)
+    sin_ficha = alta(admin, nombre="Luis Gómez", dni="30111333").json()
+    sesion_sin_ficha, _ = entrar(sin_ficha["dni"], sin_ficha["codigo_acceso"])
+    alumno = alumno_con_ficha(admin, problemas_cardiacos=False)
+    cliente, _ = entrar(alumno["dni"], alumno["codigo_acceso"])
+
+    assert sesion_sin_ficha.post("/sugerencias").status_code == 409
+    # Con ficha pero con el banco vacío
+    assert cliente.post("/sugerencias").status_code == 409
+    cargar(entrenador, "Respiración profunda")
+    cargar(entrenador, "Giros de cadera", tipo="movilidad")
+    assert cliente.post("/sugerencias").status_code == 201
+    # Mientras haya una pendiente no se pide otra
+    assert cliente.post("/sugerencias").status_code == 409
