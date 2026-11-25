@@ -79,3 +79,23 @@ def test_la_rutina_llega_al_alumno_solo_si_el_entrenador_la_aprueba(
         guardada = uow.sugerencias.get_by_id(sugerencia_id)
         assert guardada.entrenador_id == entrenador_id
         assert guardada.fecha_validacion is not None
+
+
+def test_una_rutina_rechazada_no_llega_al_alumno_ni_se_vuelve_a_sugerir(
+    admin, crear_usuario, crear_entrenador, iniciar_sesion
+):
+    entrenador, _ = entrenador_con_sesion(crear_usuario, crear_entrenador, iniciar_sesion)
+    cargar(entrenador, "Respiración profunda")
+    cargar(entrenador, "Giros de cadera", tipo="movilidad")
+    alumno = alumno_con_ficha(admin)
+    cliente, _ = entrar(alumno["dni"], alumno["codigo_acceso"])
+    cliente.post("/sugerencias")
+    sugerencia_id = entrenador.get("/sugerencias").json()[0]["id"]
+
+    rechazada = entrenador.patch(f"/sugerencias/{sugerencia_id}/rechazar")
+    cliente.post("/sugerencias")
+    nueva = entrenador.get("/sugerencias", params={"estado": "pendiente"}).json()
+
+    assert rechazada.json()["estado"] == "rechazada"
+    assert cliente.get("/panel-alumno/rutinas").json()["rutinas"] == []
+    assert [s["rutina_nombre"] for s in nueva] == ["Giros de cadera"]
