@@ -4,7 +4,7 @@ Este documento describe los endpoints de la API REST del sistema, organizados po
 
 El acceso a cada endpoint depende del perfil del usuario, conforme a la matriz de permisos de [`seguridad_y_permisos.md`](./seguridad_y_permisos.md). La sesión del personal se mantiene mediante una cookie HttpOnly, por lo que no es necesario enviar credenciales en cada petición.
 
-La columna "Estado" indica si el endpoint ya se encuentra disponible o si se incorporará junto con su módulo en las próximas etapas.
+La columna "Estado" indica que el endpoint ya se encuentra disponible.
 
 ## Estado del sistema y sesión (módulo 11)
 
