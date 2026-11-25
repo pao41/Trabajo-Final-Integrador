@@ -44,25 +44,26 @@ export default function Alumnos() {
         </Link>
       </div>
 
-      <input
-        className="campo max-w-md"
-        placeholder="Buscar por nombre o DNI"
-        aria-label="Buscar por nombre o DNI"
-        value={buscar}
-        onChange={(e) => setBuscar(e.target.value)}
-      />
-
-      <select
-        className="campo max-w-md"
-        aria-label="Filtrar por estado"
-        value={estado}
-        onChange={(e) => setEstado(e.target.value as EstadoInscripcion | '')}
-      >
-        <option value="">Todos los estados</option>
-        <option value="activo">Activa</option>
-        <option value="por_vencer">Por vencer</option>
-        <option value="vencido">Vencida</option>
-      </select>
+      <div className="flex flex-wrap gap-4">
+        <input
+          className="campo max-w-md flex-1"
+          placeholder="Buscar por nombre o DNI"
+          aria-label="Buscar por nombre o DNI"
+          value={buscar}
+          onChange={(e) => setBuscar(e.target.value)}
+        />
+        <select
+          className="campo max-w-56"
+          aria-label="Filtrar por estado"
+          value={estado}
+          onChange={(e) => setEstado(e.target.value as EstadoInscripcion | '')}
+        >
+          <option value="">Todos los estados</option>
+          <option value="activo">Activa</option>
+          <option value="por_vencer">Por vencer</option>
+          <option value="vencido">Vencida</option>
+        </select>
+      </div>
 
       {isPending && <p>Cargando…</p>}
       {isError && <MensajeError texto={error.message} />}
