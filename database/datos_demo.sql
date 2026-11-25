@@ -79,3 +79,31 @@ FROM (VALUES
 ) AS d(dni, dias, hora)
 JOIN alumnos a ON a.dni = d.dni
 JOIN inscripciones i ON i.alumno_id = a.id;
+
+-- Fichas de salud
+INSERT INTO ficha_salud (alumno_id, problemas_cardiacos, lesiones, observaciones)
+SELECT a.id, f.cardiacos, f.lesiones, f.observaciones
+FROM (VALUES
+    ('30111222', FALSE, 'rodilla', 'Entrena por la mañana'),
+    ('31222333', TRUE, NULL, 'Controles médicos al día'),
+    ('32333444', FALSE, NULL, NULL)
+) AS f(dni, cardiacos, lesiones, observaciones)
+JOIN alumnos a ON a.dni = f.dni;
+
+-- Metas semanales
+INSERT INTO metas_alumno (alumno_id, meta_asistencias_semanales)
+SELECT a.id, m.meta
+FROM (VALUES ('30111222', 4), ('31222333', 3), ('32333444', 2)) AS m(dni, meta)
+JOIN alumnos a ON a.dni = m.dni;
+
+-- Banco de rutinas de la entrenadora
+INSERT INTO rutinas (nombre, tipo, contraindicaciones, descripcion, entrenador_id)
+SELECT r.nombre, r.tipo, r.contra, r.descripcion, e.id
+FROM (VALUES
+    ('Movilidad articular suave', 'movilidad', NULL, 'Círculos de tobillo, cadera y hombros durante cinco minutos.'),
+    ('Trote suave en cinta', 'calentamiento', 'Evitar con lesiones de rodilla y problemas cardíacos', 'Diez minutos de trote a ritmo bajo.'),
+    ('Caminata activa', 'calentamiento', NULL, 'Ocho minutos de caminata con brazos activos.'),
+    ('Salto de soga', 'calentamiento', 'Evitar con lesiones de rodilla', 'Tres series de un minuto con descanso corto.'),
+    ('Estiramientos finales', 'vuelta_a_la_calma', NULL, 'Estiramiento de piernas, espalda y hombros.')
+) AS r(nombre, tipo, contra, descripcion)
+CROSS JOIN entrenadores e WHERE e.nombre = 'Lucía Fernández';
