@@ -1,4 +1,5 @@
 import type { Inscripcion } from './planes'
+import type { TipoRutina } from './rutinas'
 
 // Avance de la meta semanal: ingresos de la semana contra la meta del alumno
 export interface ChecklistSemana {
@@ -20,4 +21,18 @@ export interface IngresoPropio {
   fecha: string
   hora: string
   plan_nombre: string | null
+}
+
+// Una rutina aprobada por el entrenador
+export interface RutinaAprobada {
+  nombre: string
+  tipo: TipoRutina
+  descripcion: string | null
+  contraindicaciones: string | null
+}
+
+// Rutinas aprobadas del alumno, con la aclaración que siempre las acompaña
+export interface RutinasAlumno {
+  aviso: string
+  rutinas: RutinaAprobada[]
 }
