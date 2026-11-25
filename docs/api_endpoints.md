@@ -45,9 +45,20 @@ Banco de rutinas de calentamiento, movilidad y vuelta a la calma. Cada rutina in
 | `POST /rutinas` | Carga una rutina a nombre del entrenador de la sesión | Entrenador | Disponible |
 | `PUT /rutinas/{id}` | Edita una rutina; conserva al entrenador que la cargó | Entrenador | Disponible |
 
+## Asistente de IA (módulo 8)
+
+El asistente no genera ejercicios: filtra el banco de rutinas según la ficha de salud del alumno y deja una sugerencia en estado pendiente. Una rutina se descarta si sus contraindicaciones mencionan los problemas cardíacos o alguna de las lesiones de la ficha, y no se vuelve a sugerir una rutina que el alumno ya tuvo sugerida. Solo se puede tener una sugerencia pendiente a la vez. La rutina llega al alumno únicamente si un entrenador la aprueba.
+
+| Método y ruta | Descripción | Acceso | Estado |
+|---|---|---|---|
+| `POST /sugerencias` | El alumno pide una sugerencia; queda pendiente | Alumno | Disponible |
+| `GET /sugerencias` | Lista las sugerencias; con `?estado=pendiente`, `aprobada` o `rechazada` filtra por estado | Administrador y entrenador | Disponible |
+| `PATCH /sugerencias/{id}/aprobar` | Aprueba una sugerencia pendiente a nombre del entrenador | Entrenador | Disponible |
+| `PATCH /sugerencias/{id}/rechazar` | Rechaza una sugerencia pendiente a nombre del entrenador | Entrenador | Disponible |
+
 ## Panel del Alumno (módulo 6)
 
-El alumno entra con su DNI y su código de acceso, sin contraseña. Su sesión usa una cookie HttpOnly propia, distinta de la del personal, y dura 60 minutos. Las rutinas aprobadas por el entrenador se incorporan junto con los módulos de Rutinas y Asistente de IA.
+El alumno entra con su DNI y su código de acceso, sin contraseña. Su sesión usa una cookie HttpOnly propia, distinta de la del personal, y dura 60 minutos. Las rutinas aprobadas por el entrenador siempre se muestran con la aclaración de que son una guía orientativa.
 
 | Método y ruta | Descripción | Acceso | Estado |
 |---|---|---|---|
@@ -55,6 +66,7 @@ El alumno entra con su DNI y su código de acceso, sin contraseña. Su sesión u
 | `POST /panel-alumno/salir` | Cierra la sesión del alumno | Público | Disponible |
 | `GET /panel-alumno/resumen` | Estado de la cuota, clases restantes y checklist de la semana | Alumno | Disponible |
 | `GET /panel-alumno/asistencias` | Historial de ingresos del propio alumno | Alumno | Disponible |
+| `GET /panel-alumno/rutinas` | Rutinas aprobadas por el entrenador, con la aclaración obligatoria | Alumno | Disponible |
 
 ## Demás módulos
 
@@ -65,7 +77,6 @@ El alumno entra con su DNI y su código de acceso, sin contraseña. Su sesión u
 | 3. Pagos | `POST /pagos`, `GET /pagos` (historial por alumno) | Administrador | Próximamente |
 | 4. Asistencia | `POST /asistencias` (check-in), `GET /asistencias` | Administrador | Próximamente |
 | 5. Dashboard | `GET /dashboard` | Administrador | Próximamente |
-| 8. Asistente de IA | `POST /sugerencias`, `PATCH /sugerencias/{id}/aprobar` y `/rechazar` | Alumno solicita; entrenador aprueba | Próximamente |
 | 9. Configuración | `GET/PUT /configuracion` | Administrador | Próximamente |
 
 Las rutas de los módulos próximos son el diseño inicial y pueden ajustarse durante la implementación.
