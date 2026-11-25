@@ -26,11 +26,11 @@ export default function Rutinas() {
     },
   })
 
-  // Carga la rutina en el formulario y sube a la parte de arriba para verla
+  // Carga la rutina en el formulario y baja al formulario para verla
   const editar = (rutina: Rutina) => {
     guardar.reset()
     setEditando(rutina)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
   }
 
   return (
@@ -39,6 +39,15 @@ export default function Rutinas() {
         <h1 className="font-titulo text-4xl font-bold">Rutinas</h1>
         <p className="mt-1 text-gris-calido">Banco de rutinas de calentamiento, movilidad y vuelta a la calma.</p>
       </div>
+      {isPending && <p>Cargando…</p>}
+      {isError && <MensajeError texto={error.message} />}
+      {data?.length === 0 && (
+        <p className="text-gris-calido">
+          Todavía no hay rutinas cargadas.{!esEntrenador && ' Las rutinas son cargadas por los entrenadores.'}
+        </p>
+      )}
+      {data && data.length > 0 && <TablaRutinas rutinas={data} alEditar={esEntrenador ? editar : undefined} />}
+      {esEntrenador && !editando && <h2 className="font-titulo text-2xl font-bold">¿Desea cargar una nueva rutina?</h2>}
       {esEntrenador && (
         <TarjetaSeccion titulo={editando ? `Editar ${editando.nombre}` : 'Nueva rutina'}>
           <FormularioRutina
@@ -55,10 +64,6 @@ export default function Rutinas() {
           )}
         </TarjetaSeccion>
       )}
-      {isPending && <p>Cargando…</p>}
-      {isError && <MensajeError texto={error.message} />}
-      {data?.length === 0 && <p className="text-gris-calido">Todavía no hay rutinas cargadas.</p>}
-      {data && data.length > 0 && <TablaRutinas rutinas={data} alEditar={esEntrenador ? editar : undefined} />}
     </section>
   )
 }

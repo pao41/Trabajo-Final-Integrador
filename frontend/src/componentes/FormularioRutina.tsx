@@ -28,7 +28,7 @@ export default function FormularioRutina({ inicial, pendiente, error, alEnviar }
           ))}
         </select>
       </label>
-      <Campo etiqueta="Contraindicaciones (condiciones de salud que la excluyen)" valor={datos.contraindicaciones ?? ''} obligatorio={false}
+      <Campo etiqueta="Contraindicaciones (condiciones de salud que la excluyen, por ejemplo: cardíaco, rodilla)" valor={datos.contraindicaciones ?? ''} obligatorio={false}
         alCambiar={(v) => setDatos({ ...datos, contraindicaciones: v || null })} />
       <Campo etiqueta="Descripción" valor={datos.descripcion ?? ''} multilinea
         alCambiar={(v) => setDatos({ ...datos, descripcion: v || null })} />
