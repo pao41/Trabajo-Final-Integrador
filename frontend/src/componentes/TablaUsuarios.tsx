@@ -1,3 +1,4 @@
+import type { Usuario } from '../types/auth'
 import FilaUsuario from './FilaUsuario'
 
 // Tabla con scroll horizontal cuando la pantalla es angosta
