@@ -24,10 +24,12 @@ export default function Usuarios() {
         <h1 className="font-titulo text-4xl font-bold">Usuarios</h1>
          <p className="mt-1 text-gris-calido">Quién puede entrar al sistema y con qué perfil.</p>
       </div>
-      <FormularioUsuario entrenadoresLibres={libres} />
+      
       {isPending && <p>Cargando…</p>}
       {isError && <MensajeError texto={error.message} />}
       {data && <TablaUsuarios usuarios={data} nombresEntrenadores={nombres} />}
+      <h2 className="font-titulo text-2xl font-bold">¿Desea crear un nuevo usuario?</h2>
+      <FormularioUsuario entrenadoresLibres={libres} />
     </section>
   )
 }
