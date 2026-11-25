@@ -8,15 +8,16 @@ export default function Login() {
       <PanelMarca />
       <section className="flex flex-1 items-center justify-center p-6">
         <div className="flex w-full max-w-sm flex-col gap-5">
+          <span className="w-fit rounded-full bg-arena px-3 py-1 text-[15px] font-bold text-cafe">Personal del gimnasio</span>
           <h2 className="font-titulo text-3xl font-bold">Bienvenido/a</h2>
-          <p className="text-gris-calido">Ingresá con tu usuario para continuar.</p>
+          <p className="text-gris-calido">Para administradores y entrenadores. Ingresá con tu usuario y contraseña.</p>
           <FormularioLogin />
           <p className="text-[15px] text-gris-calido">
             ¿Olvidaste tu contraseña? Pedile a un administrador que la restablezca.
           </p>
           <p className="text-[15px] text-gris-calido">
             ¿Sos alumno/a?{' '}
-            <Link to="/panel-alumno" className="font-bold text-terracota-oscuro underline">Consultá tu cuota</Link>.
+            <Link to="/panel-alumno" className="font-bold text-terracota-oscuro underline">Ingresar como alumno</Link>.
           </p>
         </div>
       </section>
