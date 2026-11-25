@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { crearEntrenador, editarEntrenador, listarEntrenadores } from '../api/entrenadores'
+import { listarUsuarios } from '../api/usuarios'
 import FormularioEntrenador from '../componentes/FormularioEntrenador'
 import MensajeError from '../componentes/MensajeError'
 import TablaEntrenadores from '../componentes/TablaEntrenadores'
@@ -16,6 +17,10 @@ export default function Entrenadores() {
     queryFn: listarEntrenadores,
   })
 
+  const usuarios = useQuery({ queryKey: ['usuarios'], queryFn: listarUsuarios })
+  // Ids de los entrenadores que ya tienen usuario para entrar al sistema
+  const conUsuario = usuarios.data?.map((u) => u.entrenador_id) ?? []
+
   const guardar = useMutation({
     mutationFn: (datos: EntrenadorDatos) =>
       editando ? editarEntrenador(editando.id, datos) : crearEntrenador(datos),
@@ -25,11 +30,11 @@ export default function Entrenadores() {
     },
   })
 
-  // Carga el entrenador en el formulario y sube a la parte de arriba para verlo
+  // Carga el entrenador en el formulario y baja al formulario para verlo
   const editar = (entrenador: Entrenador) => {
     guardar.reset()
     setEditando(entrenador)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
   }
 
   return (
@@ -38,6 +43,11 @@ export default function Entrenadores() {
         <h1 className="font-titulo text-4xl font-bold">Entrenadores</h1>
         <p className="mt-1 text-gris-calido">Los profes del gimnasio. Para que entren al sistema, creales un usuario en Usuarios.</p>
       </div>
+      {isPending && <p>Cargando…</p>}
+      {isError && <MensajeError texto={error.message} />}
+      {data?.length === 0 && <p className="text-gris-calido">Todavía no hay entrenadores.</p>}
+      {data && data.length > 0 && <TablaEntrenadores entrenadores={data} conUsuario={conUsuario} alEditar={editar} />}
+      {!editando && <h2 className="font-titulo text-2xl font-bold">¿Desea dar de alta un nuevo entrenador?</h2>}
       <TarjetaSeccion titulo={editando ? `Editar ${editando.nombre}` : 'Nuevo entrenador'}>
         <FormularioEntrenador
           key={editando?.id ?? 'nuevo'}
@@ -52,10 +62,7 @@ export default function Entrenadores() {
           </button>
         )}
       </TarjetaSeccion>
-      {isPending && <p>Cargando…</p>}
-      {isError && <MensajeError texto={error.message} />}
-      {data?.length === 0 && <p className="text-gris-calido">Todavía no hay entrenadores.</p>}
-      {data && data.length > 0 && <TablaEntrenadores entrenadores={data} alEditar={editar} />}
+      
     </section>
   )
 }
