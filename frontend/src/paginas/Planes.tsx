@@ -22,11 +22,11 @@ export default function Planes() {
     },
   })
 
-  // Carga el plan en el formulario y sube a la parte de arriba para verlo
+  // Carga el plan en el formulario y baja al formulario para verlo
   const editar = (plan: Plan) => {
     guardar.reset()
     setEditando(plan)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
   }
 
   return (
@@ -35,20 +35,7 @@ export default function Planes() {
         <h1 className="font-titulo text-4xl font-bold">Planes</h1>
         <p className="mt-1 text-gris-calido">Los planes que ofrece el gimnasio y su precio.</p>
       </div>
-      <TarjetaSeccion titulo={editando ? `Editar ${editando.nombre}` : 'Nuevo plan'}>
-        <FormularioPlan
-          key={editando?.id ?? 'nuevo'}
-          inicial={editando}
-          pendiente={guardar.isPending}
-          error={guardar.error?.message ?? null}
-          alEnviar={(datos) => guardar.mutate(datos)}
-        />
-        {editando && (
-          <button onClick={() => setEditando(null)} className="boton-claro self-start">
-            Cancelar edición
-          </button>
-        )}
-      </TarjetaSeccion>
+
       {isPending && <p>Cargando…</p>}
       {isError && <MensajeError texto={error.message} />}
       {data?.length === 0 && <p className="text-gris-calido">Todavía no hay planes.</p>}
@@ -80,6 +67,21 @@ export default function Planes() {
           </table>
         </div>
       )}
+      {!editando && <h2 className="font-titulo text-2xl font-bold">¿Desea crear un nuevo plan?</h2>}
+      <TarjetaSeccion titulo={editando ? `Editar ${editando.nombre}` : 'Nuevo plan'}>
+        <FormularioPlan
+          key={editando?.id ?? 'nuevo'}
+          inicial={editando}
+          pendiente={guardar.isPending}
+          error={guardar.error?.message ?? null}
+          alEnviar={(datos) => guardar.mutate(datos)}
+        />
+        {editando && (
+          <button onClick={() => setEditando(null)} className="boton-claro self-start">
+            Cancelar edición
+          </button>
+        )}
+      </TarjetaSeccion>
     </section>
   )
 }
