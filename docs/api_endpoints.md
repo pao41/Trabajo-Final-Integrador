@@ -86,11 +86,20 @@ Los alumnos no se eliminan: la baja es lógica y conserva todo su historial. Al 
 | `GET /alumnos/{id}/meta` | Meta semanal de asistencias (3 por defecto) | Administrador | Disponible |
 | `PUT /alumnos/{id}/meta` | Modifica la meta semanal de asistencias | Administrador | Disponible |
 
+## Planes e inscripciones (módulo 2)
+
+| Método y ruta | Descripción | Acceso | Estado |
+|---|---|---|---|
+| `GET /planes` | Lista los planes | Administrador | Disponible |
+| `POST /planes` | Crea un plan; el nombre no se repite | Administrador | Disponible |
+| `PUT /planes/{id}` | Modifica un plan; las inscripciones ya creadas conservan sus fechas y su saldo | Administrador | Disponible |
+| `GET /inscripciones` | Lista las inscripciones; con `alumno_id` muestra las de ese alumno | Administrador | Disponible |
+| `POST /inscripciones` | Inscribe a un alumno en un plan: calcula el vencimiento y, en planes por clases, el saldo | Administrador | Disponible |
+
 ## Demás módulos
 
 | Módulo | Endpoints | Acceso | Estado |
 |---|---|---|---|
-| 2. Planes e inscripciones | `GET/POST/PUT /planes`, `POST /inscripciones`, `GET /inscripciones` | Administrador | Próximamente |
 | 3. Pagos | `POST /pagos`, `GET /pagos` (historial por alumno) | Administrador | Próximamente |
 | 4. Asistencia | `POST /asistencias` (check-in), `GET /asistencias` | Administrador | Próximamente |
 | 5. Dashboard | `GET /dashboard` | Administrador | Próximamente |
