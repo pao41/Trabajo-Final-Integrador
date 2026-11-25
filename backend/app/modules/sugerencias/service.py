@@ -79,3 +79,19 @@ class AsistenteService:
             if s.estado == "aprobada"
         ]
         return RutinasDelAlumno(aviso=AVISO, rutinas=rutinas)
+
+    def _armar(self, sugerencia: RutinaAsignada) -> SugerenciaPublic:
+        alumno = self.uow.alumnos.get_by_id(sugerencia.alumno_id)
+        rutina = self.uow.rutinas.get_by_id(sugerencia.rutina_id)
+        ficha = self.uow.fichas_salud.get_by_alumno(sugerencia.alumno_id)
+        return SugerenciaPublic(
+            id=sugerencia.id,
+            estado=sugerencia.estado,
+            alumno_nombre=alumno.nombre,
+            rutina_nombre=rutina.nombre,
+            rutina_tipo=rutina.tipo,
+            contraindicaciones=rutina.contraindicaciones,
+            problemas_cardiacos=ficha.problemas_cardiacos if ficha else False,
+            lesiones=ficha.lesiones if ficha else None,
+            fecha_validacion=sugerencia.fecha_validacion,
+        )
