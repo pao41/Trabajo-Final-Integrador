@@ -1,4 +1,7 @@
+from fastapi.testclient import TestClient
+
 from app.core.uow import UnitOfWork
+from app.main import app
 from tests.test_alumnos import alta
 from tests.test_panel_alumno import entrar
 from tests.test_rutinas import entrenador_con_sesion
@@ -99,3 +102,21 @@ def test_una_rutina_rechazada_no_llega_al_alumno_ni_se_vuelve_a_sugerir(
     assert rechazada.json()["estado"] == "rechazada"
     assert cliente.get("/panel-alumno/rutinas").json()["rutinas"] == []
     assert [s["rutina_nombre"] for s in nueva] == ["Giros de cadera"]
+
+
+def test_las_sugerencias_las_resuelve_solo_el_entrenador_y_una_sola_vez(
+    admin, crear_usuario, crear_entrenador, iniciar_sesion
+):
+    entrenador, _ = entrenador_con_sesion(crear_usuario, crear_entrenador, iniciar_sesion)
+    cargar(entrenador, "Respiración profunda")
+    alumno = alumno_con_ficha(admin)
+    cliente, _ = entrar(alumno["dni"], alumno["codigo_acceso"])
+    cliente.post("/sugerencias")
+    sin_sesion = TestClient(app)
+
+    assert len(admin.get("/sugerencias").json()) == 1
+    assert admin.patch("/sugerencias/1/aprobar").status_code == 403
+    assert sin_sesion.get("/sugerencias").status_code == 401
+    assert entrenador.patch("/sugerencias/999/aprobar").status_code == 404
+    assert entrenador.patch("/sugerencias/1/aprobar").status_code == 200
+    assert entrenador.patch("/sugerencias/1/rechazar").status_code == 409
