@@ -9,7 +9,7 @@ export default function Principal() {
   return (
     <section className="flex flex-col gap-2">
       <h1 className="font-titulo text-4xl font-bold">Hola, {usuario?.nombre_usuario}</h1>
-      <p className="text-gris-calido">Tus herramientas de entrenador estarán disponibles próximamente.</p>
+      <p className="text-gris-calido">Cargá rutinas en Rutinas y revisá las sugerencias de los alumnos en Sugerencias.</p>
     </section>
   )
 }
