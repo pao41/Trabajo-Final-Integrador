@@ -32,9 +32,12 @@ export default function RutinasAlumno() {
           ))}
         </ul>
       )}
-      {data && <p className="text-[15px] text-gris-calido">{data.aviso}</p>}
+      <div className="mt-2 flex flex-col gap-3 rounded-xl bg-arena/40 p-4">
+        {data && <p className="text-[15px] text-gris-calido">{data.aviso}</p>}
+        <p className="text-[15px] text-gris-calido">El asistente elige una rutina según tu ficha de salud y tu entrenador la revisa antes de que la veas.</p>
+      </div>
       <button className="boton self-start" disabled={pedir.isPending} onClick={() => pedir.mutate()}>
-        Pedir una sugerencia
+        Pedir sugerencia al asistente
       </button>
       {pedir.isSuccess && <p className="font-bold text-verde-texto">{pedir.data.mensaje}</p>}
       {pedir.isError && <MensajeError texto={pedir.error.message} />}
