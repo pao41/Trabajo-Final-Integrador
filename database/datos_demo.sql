@@ -107,3 +107,14 @@ FROM (VALUES
     ('Estiramientos finales', 'vuelta_a_la_calma', NULL, 'Estiramiento de piernas, espalda y hombros.')
 ) AS r(nombre, tipo, contra, descripcion)
 CROSS JOIN entrenadores e WHERE e.nombre = 'Lucía Fernández';
+
+-- Sugerencias: una aprobada (visible en el panel del alumno) y una pendiente de revisión
+INSERT INTO rutinas_asignadas (alumno_id, rutina_id, estado, entrenador_id, fecha_validacion)
+SELECT a.id, r.id, 'aprobada', e.id, CURRENT_DATE - 1
+FROM alumnos a, rutinas r, entrenadores e
+WHERE a.dni = '30111222' AND r.nombre = 'Movilidad articular suave' AND e.nombre = 'Lucía Fernández';
+
+INSERT INTO rutinas_asignadas (alumno_id, rutina_id, estado)
+SELECT a.id, r.id, 'pendiente'
+FROM alumnos a, rutinas r
+WHERE a.dni = '32333444' AND r.nombre = 'Caminata activa';
