@@ -50,3 +50,32 @@ FROM (VALUES
 ) AS d(dni, plan, inicio, clases, estado)
 JOIN alumnos a ON a.dni = d.dni
 JOIN planes p ON p.nombre = d.plan;
+
+-- Pagos: uno por inscripción, con distintos métodos
+INSERT INTO pagos (inscripcion_id, fecha_pago, monto, metodo_pago)
+SELECT i.id, i.fecha_inicio, p.precio, m.metodo
+FROM inscripciones i
+JOIN planes p ON p.id = i.plan_id
+JOIN alumnos a ON a.id = i.alumno_id
+JOIN (VALUES
+    ('30111222', 'transferencia'),
+    ('31222333', 'credito'),
+    ('32333444', 'efectivo'),
+    ('33444555', 'efectivo'),
+    ('34555666', 'debito'),
+    ('35666777', 'efectivo'),
+    ('36777888', 'transferencia')
+) AS m(dni, metodo) ON m.dni = a.dni;
+
+-- Asistencias de las últimas semanas
+INSERT INTO asistencias (alumno_id, inscripcion_id, fecha, hora)
+SELECT a.id, i.id, CURRENT_DATE - d.dias, d.hora::time
+FROM (VALUES
+    ('30111222', 0, '08:15'), ('30111222', 1, '08:20'), ('30111222', 3, '18:40'), ('30111222', 5, '08:10'),
+    ('31222333', 0, '19:05'), ('31222333', 2, '19:10'), ('31222333', 4, '19:00'),
+    ('32333444', 1, '10:30'), ('32333444', 4, '10:25'), ('32333444', 7, '10:35'),
+    ('33444555', 2, '07:50'), ('33444555', 6, '07:45'),
+    ('34555666', 0, '17:30'), ('34555666', 3, '17:35')
+) AS d(dni, dias, hora)
+JOIN alumnos a ON a.dni = d.dni
+JOIN inscripciones i ON i.alumno_id = a.id;
