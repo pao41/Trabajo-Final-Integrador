@@ -1,13 +1,17 @@
 from fastapi import HTTPException, status
 
+from app.core.clock import today_ar
 from app.core.uow import UnitOfWork
 from app.modules.alumnos.model import FichaSalud
 from app.modules.rutinas.model import Rutina
 from app.modules.sugerencias.model import (
+    RutinaAprobada,
     RutinaAsignada,
+    RutinasDelAlumno,
+    SugerenciaPublic,
 )
 
-# Aclaración que acompaña a toda rutina que ve el alumno (RN23)
+# Aclaración que acompaña a toda rutina que ve el alumno
 AVISO = (
     "Estas rutinas son una guía orientativa: no reemplazan la supervisión presencial "
     "del entrenador ni una evaluación médica profesional."
@@ -51,3 +55,27 @@ class AsistenteService:
         raise HTTPException(
             status.HTTP_409_CONFLICT, "No hay rutinas compatibles para sugerirte por ahora"
         )
+
+    def listar(self, estado: str | None) -> list[SugerenciaPublic]:
+        return [self._armar(s) for s in self.uow.sugerencias.listar(estado)]
+
+    def resolver(self, sugerencia_id: int, entrenador_id: int, estado: str) -> SugerenciaPublic:
+        """Aprueba o rechaza una sugerencia pendiente, a nombre del entrenador (RN21, RN24)."""
+        sugerencia = self.uow.sugerencias.get_by_id(sugerencia_id)
+        if not sugerencia:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Sugerencia no encontrada")
+        if sugerencia.estado != "pendiente":
+            raise HTTPException(status.HTTP_409_CONFLICT, "Esa sugerencia ya fue resuelta")
+        sugerencia.estado = estado
+        sugerencia.entrenador_id = entrenador_id
+        sugerencia.fecha_validacion = today_ar()
+        return self._armar(self.uow.sugerencias.update(sugerencia))
+
+    def rutinas_del_alumno(self, alumno_id: int) -> RutinasDelAlumno:
+        """Solo las rutinas aprobadas llegan al alumno (RN21)."""
+        rutinas = [
+            RutinaAprobada.model_validate(self.uow.rutinas.get_by_id(s.rutina_id))
+            for s in self.uow.sugerencias.de_alumno(alumno_id)
+            if s.estado == "aprobada"
+        ]
+        return RutinasDelAlumno(aviso=AVISO, rutinas=rutinas)
