@@ -35,6 +35,16 @@ Cada entrenador se da de alta con su nombre y un contacto opcional. Para que pue
 | `POST /entrenadores` | Da de alta un entrenador | Administrador | Disponible |
 | `PUT /entrenadores/{id}` | Edita el nombre y el contacto de un entrenador | Administrador | Disponible |
 
+## Rutinas (módulo 7)
+
+Banco de rutinas de calentamiento, movilidad y vuelta a la calma. Cada rutina indica sus contraindicaciones y queda asociada al entrenador que la cargó. Solo el entrenador carga y edita rutinas; el administrador las consulta.
+
+| Método y ruta | Descripción | Acceso | Estado |
+|---|---|---|---|
+| `GET /rutinas` | Lista las rutinas del banco | Administrador y entrenador | Disponible |
+| `POST /rutinas` | Carga una rutina a nombre del entrenador de la sesión | Entrenador | Disponible |
+| `PUT /rutinas/{id}` | Edita una rutina; conserva al entrenador que la cargó | Entrenador | Disponible |
+
 ## Panel del Alumno (módulo 6)
 
 El alumno entra con su DNI y su código de acceso, sin contraseña. Su sesión usa una cookie HttpOnly propia, distinta de la del personal, y dura 60 minutos. Las rutinas aprobadas por el entrenador se incorporan junto con los módulos de Rutinas y Asistente de IA.
@@ -55,7 +65,6 @@ El alumno entra con su DNI y su código de acceso, sin contraseña. Su sesión u
 | 3. Pagos | `POST /pagos`, `GET /pagos` (historial por alumno) | Administrador | Próximamente |
 | 4. Asistencia | `POST /asistencias` (check-in), `GET /asistencias` | Administrador | Próximamente |
 | 5. Dashboard | `GET /dashboard` | Administrador | Próximamente |
-| 7. Rutinas | `GET/POST/PUT /rutinas` | Entrenador (lectura: administrador) | Próximamente |
 | 8. Asistente de IA | `POST /sugerencias`, `PATCH /sugerencias/{id}/aprobar` y `/rechazar` | Alumno solicita; entrenador aprueba | Próximamente |
 | 9. Configuración | `GET/PUT /configuracion` | Administrador | Próximamente |
 
