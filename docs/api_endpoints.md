@@ -96,11 +96,17 @@ Los alumnos no se eliminan: la baja es lógica y conserva todo su historial. Al 
 | `GET /inscripciones` | Lista las inscripciones; con `alumno_id` muestra las de ese alumno | Administrador | Disponible |
 | `POST /inscripciones` | Inscribe a un alumno en un plan: calcula el vencimiento y, en planes por clases, el saldo | Administrador | Disponible |
 
+## Pagos (módulo 3)
+
+| Método y ruta | Descripción | Acceso | Estado |
+|---|---|---|---|
+| `GET /pagos` | Historial de pagos; con `alumno_id` muestra los de ese alumno | Administrador | Disponible |
+| `POST /pagos` | Registra un pago y renueva la inscripción en la misma operación | Administrador | Disponible |
+
 ## Demás módulos
 
 | Módulo | Endpoints | Acceso | Estado |
 |---|---|---|---|
-| 3. Pagos | `POST /pagos`, `GET /pagos` (historial por alumno) | Administrador | Próximamente |
 | 4. Asistencia | `POST /asistencias` (check-in), `GET /asistencias` | Administrador | Próximamente |
 | 5. Dashboard | `GET /dashboard` | Administrador | Próximamente |
 | 9. Configuración | `GET/PUT /configuracion` | Administrador | Próximamente |
