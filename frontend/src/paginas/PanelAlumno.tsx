@@ -6,6 +6,7 @@ import IngresosAlumno from '../componentes/IngresosAlumno'
 import Logo from '../componentes/Logo'
 import MensajeError from '../componentes/MensajeError'
 import ResumenPanel from '../componentes/ResumenPanel'
+import RutinasAlumno from '../componentes/RutinasAlumno'
 
 // Panel del alumno: sin sesión pide el acceso; con sesión muestra su cuota, su semana y sus ingresos
 export default function PanelAlumno() {
@@ -35,6 +36,7 @@ export default function PanelAlumno() {
         <button className="boton-claro" onClick={() => salir.mutate()}>Salir</button>
       </header>
       <ResumenPanel resumen={data} />
+      <RutinasAlumno />
       <IngresosAlumno />
     </main>
   )
