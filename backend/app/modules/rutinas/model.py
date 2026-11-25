@@ -26,6 +26,7 @@ class RutinaDatos(SQLModel):
     contraindicaciones: str | None = Field(default=None, max_length=500)
     descripcion: str | None = Field(default=None, max_length=1000)
 
+
 # Datos que se devuelven al frontend
 class RutinaPublic(RutinaDatos):
     id: int

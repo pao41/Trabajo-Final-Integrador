@@ -23,6 +23,7 @@ def listar(
     with uow:
         return RutinaService(uow).listar()
 
+
 @router.post("", response_model=RutinaPublic, status_code=status.HTTP_201_CREATED)
 def crear(
     datos: RutinaDatos,

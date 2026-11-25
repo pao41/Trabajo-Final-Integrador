@@ -14,7 +14,6 @@ from app.modules.panel_alumno.model import (
     ChecklistSemana,
     IngresoPropio,
     ResumenAlumno,
-
 )
 from app.modules.planes.inscripcion_service import InscripcionService
 
@@ -41,7 +40,6 @@ class PanelAlumnoService:
             raise HTTPException(status.HTTP_401_UNAUTHORIZED, "DNI o código incorrectos")
         control_de_intentos.limpiar(clave)
         return create_alumno_token(alumno.id)
-
 
     def resumen(self, alumno: AlumnoPublic) -> ResumenAlumno:
         """Cuota actual (la inscripción más reciente) y checklist de la semana."""
