@@ -9,6 +9,8 @@ from app.core.uow import UnitOfWork, get_uow
 from app.modules.alumnos.model import AlumnoPublic
 from app.modules.panel_alumno.model import AccesoDatos, IngresoPropio, ResumenAlumno
 from app.modules.panel_alumno.service import PanelAlumnoService
+from app.modules.sugerencias.model import RutinasDelAlumno
+from app.modules.sugerencias.service import AsistenteService
 
 router = APIRouter(prefix="/panel-alumno", tags=["Panel del Alumno"])
 
@@ -61,3 +63,12 @@ def asistencias(
 ):
     with uow:
         return PanelAlumnoService(uow).historial(alumno)
+
+
+@router.get("/rutinas", response_model=RutinasDelAlumno)
+def rutinas(
+    alumno: Annotated[AlumnoPublic, Depends(get_alumno_actual)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with uow:
+        return AsistenteService(uow).rutinas_del_alumno(alumno.id)
