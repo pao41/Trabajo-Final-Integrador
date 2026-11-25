@@ -116,11 +116,10 @@ Los alumnos no se eliminan: la baja es lógica y conserva todo su historial. Al 
 |---|---|---|---|
 | `GET /dashboard` | Indicadores del mes en curso y de las últimas semanas | Administrador | Disponible |
 
-## Demás módulos
+## Configuración (módulo 9)
 
-| Módulo | Endpoints | Acceso | Estado |
+| Método y ruta | Descripción | Acceso | Estado |
 |---|---|---|---|
-| 9. Configuración | `GET/PUT /configuracion` | Administrador | Próximamente |
-
-Las rutas de los módulos próximos son el diseño inicial y pueden ajustarse durante la implementación.
+| `GET /configuracion` | Datos del gimnasio, días de aviso de vencimiento y métodos de pago habilitados; la primera vez se crea con valores por defecto | Administrador | Disponible |
+| `PUT /configuracion` | Modifica la configuración | Administrador | Disponible |
 
