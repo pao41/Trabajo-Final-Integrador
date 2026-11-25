@@ -110,11 +110,16 @@ Los alumnos no se eliminan: la baja es lógica y conserva todo su historial. Al 
 | `GET /asistencias` | Ingresos registrados; con `alumno_id` los de un alumno y con `fecha` los de ese día | Administrador | Disponible |
 | `POST /asistencias` | Registra el ingreso (check-in): rechaza un duplicado dentro de las 2 horas y, en planes por clases, descuenta una clase | Administrador | Disponible |
 
+## Dashboard (módulo 5)
+
+| Método y ruta | Descripción | Acceso | Estado |
+|---|---|---|---|
+| `GET /dashboard` | Indicadores del mes en curso y de las últimas semanas | Administrador | Disponible |
+
 ## Demás módulos
 
 | Módulo | Endpoints | Acceso | Estado |
 |---|---|---|---|
-| 5. Dashboard | `GET /dashboard` | Administrador | Próximamente |
 | 9. Configuración | `GET/PUT /configuracion` | Administrador | Próximamente |
 
 Las rutas de los módulos próximos son el diseño inicial y pueden ajustarse durante la implementación.
