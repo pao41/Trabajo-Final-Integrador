@@ -14,6 +14,7 @@ from app.modules.planes.inscripcion_router import router as inscripciones_router
 from app.modules.planes.router import router as planes_router
 from app.modules.rutinas.router import router as rutinas_router
 from app.modules.salud.router import router as salud_router
+from app.modules.sugerencias.router import router as sugerencias_router
 from app.modules.usuarios.router import auth_router
 from app.modules.usuarios.router import router as usuarios_router
 
@@ -46,3 +47,4 @@ app.include_router(dashboard_router)
 app.include_router(panel_alumno_router)
 app.include_router(entrenadores_router)
 app.include_router(rutinas_router)
+app.include_router(sugerencias_router)
