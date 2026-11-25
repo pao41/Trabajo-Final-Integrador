@@ -47,3 +47,14 @@ def aprobar(
     detalle = f"sugerencia {sugerencia_id}"
     with auditar(entrenador.nombre_usuario, "aprobar sugerencia", detalle), uow:
         return AsistenteService(uow).resolver(sugerencia_id, entrenador.entrenador_id, "aprobada")
+
+
+@router.patch("/{sugerencia_id}/rechazar", response_model=SugerenciaPublic)
+def rechazar(
+    sugerencia_id: int,
+    entrenador: Annotated[UsuarioPublic, Depends(solo_entrenador)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    detalle = f"sugerencia {sugerencia_id}"
+    with auditar(entrenador.nombre_usuario, "rechazar sugerencia", detalle), uow:
+        return AsistenteService(uow).resolver(sugerencia_id, entrenador.entrenador_id, "rechazada")
