@@ -1,5 +1,7 @@
+import { useQuery } from '@tanstack/react-query'
 import { NavLink, Outlet } from 'react-router-dom'
-import { useAuthStore } from '../store/authStore'
+import { obtenerConfiguracion } from '../api/configuracion'
+import { useAuthStore } from '../store/authStore''
 import type { Rol } from '../types/auth'
 import BloqueSesion from './BloqueSesion'
 import Logo from './Logo'
@@ -12,7 +14,7 @@ const secciones: { ruta: string; nombre: string; perfiles: Rol[] }[] = [
   { ruta: '/asistencia', nombre: 'Asistencia', perfiles: ['administrador'] },
   { ruta: '/planes', nombre: 'Planes', perfiles: ['administrador'] },
   { ruta: '/rutinas', nombre: 'Rutinas', perfiles: ['administrador', 'entrenador'] },
-  { ruta: '/sugerencias', nombre: 'Sugerencias', perfiles: ['administrador', 'entrenador'] },
+  { ruta: '/sugerencias', nombre: 'Asistente', perfiles: ['administrador', 'entrenador'] },
   { ruta: '/entrenadores', nombre: 'Entrenadores', perfiles: ['administrador'] },
   { ruta: '/usuarios', nombre: 'Usuarios', perfiles: ['administrador'] },
   { ruta: '/configuracion', nombre: 'Configuración', perfiles: ['administrador'] },
@@ -24,14 +26,23 @@ const estiloEnlace = ({ isActive }: { isActive: boolean }) =>
 
 export default function Layout() {
   const usuario = useAuthStore((estado) => estado.usuario)
-  const visibles = secciones.filter((seccion) => usuario && seccion.perfiles.includes(usuario.rol))
+  // El nombre del gimnasio solo lo puede consultar el administrador
+  const configuracion = useQuery({
+    queryKey: ['configuracion'],
+    queryFn: obtenerConfiguracion,
+    enabled: usuario?.rol === 'administrador',
+  })
+  const visibles
 
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
       <nav className="flex shrink-0 flex-col gap-6 bg-cafe p-4 text-crema md:w-64">
         <div className="flex items-center gap-3 px-2">
           <Logo />
-          <span className="font-titulo text-lg font-bold">Gestión de Gimnasio</span>
+          <div className="flex flex-col">
+            <span className="font-titulo text-lg font-bold">Gestión de Gimnasio</span>
+            {configuracion.data && <span className="text-[15px] text-arena">{configuracion.data.nombre_gimnasio}</span>}
+          </div>
          </div>
         <div className="flex flex-col gap-1">
           {visibles.map((seccion) => (
