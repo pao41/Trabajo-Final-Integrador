@@ -11,6 +11,7 @@ import PanelAlumno from './paginas/PanelAlumno'
 import Planes from './paginas/Planes'
 import Principal from './paginas/Principal'
 import Rutinas from './paginas/Rutinas'
+import Sugerencias from './paginas/Sugerencias'
 import Usuarios from './paginas/Usuarios'
 
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/planes" element={<Planes />} />
         <Route path="/entrenadores" element={<Entrenadores />} />
         <Route path="/rutinas" element={<Rutinas />} />
+        <Route path="/sugerencias" element={<Sugerencias />} />
         <Route path="/usuarios" element={<Usuarios />} />
         <Route path="/configuracion" element={<Configuracion />} />
 
