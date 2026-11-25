@@ -68,11 +68,28 @@ El alumno entra con su DNI y su código de acceso, sin contraseña. Su sesión u
 | `GET /panel-alumno/asistencias` | Historial de ingresos del propio alumno | Alumno | Disponible |
 | `GET /panel-alumno/rutinas` | Rutinas aprobadas por el entrenador, con la aclaración obligatoria | Alumno | Disponible |
 
+## Alumnos (módulo 1)
+
+Los alumnos no se eliminan: la baja es lógica y conserva todo su historial. Al darlos de alta el sistema genera su código de acceso, que se muestra una sola vez. La ficha de salud también la puede consultar, sin modificarla, el entrenador.
+
+| Método y ruta | Descripción | Acceso | Estado |
+|---|---|---|---|
+| `GET /alumnos` | Lista los alumnos; con `buscar` filtra por nombre o DNI | Administrador | Disponible |
+| `POST /alumnos` | Da de alta un alumno y genera su código de acceso; el DNI no se repite | Administrador | Disponible |
+| `GET /alumnos/{id}` | Datos de un alumno | Administrador | Disponible |
+| `PUT /alumnos/{id}` | Modifica nombre, DNI y contacto | Administrador | Disponible |
+| `PATCH /alumnos/{id}/desactivar` | Baja lógica del alumno | Administrador | Disponible |
+| `PATCH /alumnos/{id}/activar` | Reactiva al alumno | Administrador | Disponible |
+| `POST /alumnos/{id}/codigo-acceso` | Genera un código de acceso nuevo; el anterior deja de servir | Administrador | Disponible |
+| `GET /alumnos/{id}/ficha-salud` | Consulta la ficha de salud | Administrador y entrenador | Disponible |
+| `PUT /alumnos/{id}/ficha-salud` | Carga o modifica la ficha de salud (una por alumno) | Administrador | Disponible |
+| `GET /alumnos/{id}/meta` | Meta semanal de asistencias (3 por defecto) | Administrador | Disponible |
+| `PUT /alumnos/{id}/meta` | Modifica la meta semanal de asistencias | Administrador | Disponible |
+
 ## Demás módulos
 
 | Módulo | Endpoints | Acceso | Estado |
 |---|---|---|---|
-| 1. Alumnos | `GET/POST /alumnos`, `GET/PUT /alumnos/{id}`, baja lógica, regenerar código de acceso, ficha de salud y meta semanal | Administrador (ficha: también entrenador, solo lectura) | Próximamente |
 | 2. Planes e inscripciones | `GET/POST/PUT /planes`, `POST /inscripciones`, `GET /inscripciones` | Administrador | Próximamente |
 | 3. Pagos | `POST /pagos`, `GET /pagos` (historial por alumno) | Administrador | Próximamente |
 | 4. Asistencia | `POST /asistencias` (check-in), `GET /asistencias` | Administrador | Próximamente |
