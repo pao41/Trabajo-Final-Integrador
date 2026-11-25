@@ -1,16 +1,24 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { listarSugerencias } from '../api/sugerencias'
+import { aprobarSugerencia, listarSugerencias, rechazarSugerencia } from '../api/sugerencias'
 import MensajeError from '../componentes/MensajeError'
 import TablaSugerencias from '../componentes/TablaSugerencias'
+import { useAuthStore } from '../store/authStore'
 import type { EstadoSugerencia } from '../types/sugerencias'
 
-// Sugerencias del asistente que esperan la decisión de un entrenador
+// Sugerencias del asistente: el entrenador las aprueba o rechaza y el administrador las consulta
 export default function Sugerencias() {
   const [estado, setEstado] = useState<EstadoSugerencia | ''>('pendiente')
+  const esEntrenador = useAuthStore((e) => e.usuario?.rol === 'entrenador')
+  const queryClient = useQueryClient()
   const { data, isPending, isError, error } = useQuery({
     queryKey: ['sugerencias', estado],
     queryFn: () => listarSugerencias(estado || undefined),
+  })
+  const resolver = useMutation({
+    mutationFn: ({ id, aprobar }: { id: number; aprobar: boolean }) =>
+      aprobar ? aprobarSugerencia(id) : rechazarSugerencia(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['sugerencias'] }),
   })
 
   return (
@@ -28,10 +36,17 @@ export default function Sugerencias() {
           <option value="">Todas</option>
         </select>
       </label>
+      {resolver.isError && <MensajeError texto={resolver.error.message} />}
       {isPending && <p>Cargando…</p>}
       {isError && <MensajeError texto={error.message} />}
       {data?.length === 0 && <p className="text-gris-calido">No hay sugerencias para mostrar.</p>}
-      {data && data.length > 0 && <TablaSugerencias sugerencias={data} />}
+      {data && data.length > 0 && (
+        <TablaSugerencias
+          sugerencias={data}
+          alAprobar={esEntrenador ? (id) => resolver.mutate({ id, aprobar: true }) : undefined}
+          alRechazar={esEntrenador ? (id) => resolver.mutate({ id, aprobar: false }) : undefined}
+        />
+      )}
     </section>
   )
 }

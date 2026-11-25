@@ -3,10 +3,13 @@ import type { Sugerencia } from '../types/sugerencias'
 
 interface Props {
   sugerencias: Sugerencia[]
+  // Si no se pasan, la tabla es solo de lectura (como la ve el administrador)
+  alAprobar?: (id: number) => void
+  alRechazar?: (id: number) => void
 }
 
 // Tabla con scroll horizontal cuando la pantalla es angosta
-export default function TablaSugerencias({ sugerencias }: Props) {
+export default function TablaSugerencias({ sugerencias, alAprobar, alRechazar }: Props) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-borde bg-white">
       <table className="w-full min-w-[720px] text-left">
@@ -16,6 +19,7 @@ export default function TablaSugerencias({ sugerencias }: Props) {
             <th className="p-4">Rutina sugerida</th>
             <th className="p-4">Ficha de salud</th>
             <th className="p-4">Estado</th>
+            {alAprobar && <th className="p-4">Acciones</th>}
           </tr>
         </thead>
         <tbody>
@@ -33,6 +37,16 @@ export default function TablaSugerencias({ sugerencias }: Props) {
                 <span className="text-gris-calido">Lesiones: {s.lesiones ?? '—'}</span>
               </td>
               <td className="p-4 capitalize">{s.estado}</td>
+              {alAprobar && (
+                <td className="p-4">
+                  {s.estado === 'pendiente' && (
+                    <div className="flex gap-2">
+                      <button onClick={() => alAprobar(s.id)} className="boton">Aprobar</button>
+                      <button onClick={() => alRechazar?.(s.id)} className="boton-claro">Rechazar</button>
+                    </div>
+                  )}
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
