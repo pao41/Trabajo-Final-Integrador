@@ -12,6 +12,7 @@ const secciones: { ruta: string; nombre: string; perfiles: Rol[] }[] = [
   { ruta: '/asistencia', nombre: 'Asistencia', perfiles: ['administrador'] },
   { ruta: '/planes', nombre: 'Planes', perfiles: ['administrador'] },
   { ruta: '/rutinas', nombre: 'Rutinas', perfiles: ['administrador', 'entrenador'] },
+  { ruta: '/sugerencias', nombre: 'Sugerencias', perfiles: ['administrador', 'entrenador'] },
   { ruta: '/entrenadores', nombre: 'Entrenadores', perfiles: ['administrador'] },
   { ruta: '/usuarios', nombre: 'Usuarios', perfiles: ['administrador'] },
   { ruta: '/configuracion', nombre: 'Configuración', perfiles: ['administrador'] },
