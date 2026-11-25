@@ -6,10 +6,12 @@ import { listarAlumnos } from '../api/alumnos'
 import { listarInscripciones } from '../api/planes'
 import EtiquetaEstado, { EtiquetaInscripcion } from '../componentes/EtiquetaEstado'
 import MensajeError from '../componentes/MensajeError'
+import type { EstadoInscripcion } from '../types/planes'
 
 // Listado de alumnos del gimnasio
 export default function Alumnos() {
   const [buscar, setBuscar] = useState('')
+  const [estado, setEstado] = useState<EstadoInscripcion | ''>('')
   const { data, isPending, isError, error } = useQuery({
     queryKey: ['alumnos', 'lista', buscar],
     queryFn: () => listarAlumnos(buscar),
@@ -24,6 +26,9 @@ export default function Alumnos() {
 
   const planDe = (alumnoId: number) =>
     inscripciones.data?.find((i) => i.alumno_id === alumnoId)
+
+  // Con un estado elegido, solo quedan los alumnos cuya inscripción tiene ese estado
+  const visibles = data?.filter((a) => estado === '' || planDe(a.id)?.estado === estado)
 
   return (
     <section className="flex flex-col gap-6">
@@ -47,13 +52,25 @@ export default function Alumnos() {
         onChange={(e) => setBuscar(e.target.value)}
       />
 
+      <select
+        className="campo max-w-md"
+        aria-label="Filtrar por estado"
+        value={estado}
+        onChange={(e) => setEstado(e.target.value as EstadoInscripcion | '')}
+      >
+        <option value="">Todos los estados</option>
+        <option value="activo">Activa</option>
+        <option value="por_vencer">Por vencer</option>
+        <option value="vencido">Vencida</option>
+      </select>
+
       {isPending && <p>Cargando…</p>}
       {isError && <MensajeError texto={error.message} />}
-      {data?.length === 0 && (
+      {visibles?.length === 0 && (
         <p className="text-gris-calido">No hay alumnos que coincidan.</p>
       )}
 
-      {data && data.length > 0 && (
+      {visibles && visibles.length > 0 && (
         <div className="overflow-x-auto rounded-2xl border border-borde bg-white">
           <table className="w-full min-w-[720px] text-left">
             <thead className="text-[15px] text-gris-calido">
@@ -67,7 +84,7 @@ export default function Alumnos() {
               </tr>
             </thead>
             <tbody>
-              {data.map((alumno) => (
+              {visibles.map((alumno) => (
                 <tr key={alumno.id} className="border-t border-borde">
                   <td className="p-4 font-bold">{alumno.nombre}</td>
                   <td className="p-4">{alumno.dni}</td>
