@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { NavLink, Outlet } from 'react-router-dom'
 import { obtenerConfiguracion } from '../api/configuracion'
-import { useAuthStore } from '../store/authStore''
+import { useAuthStore } from '../store/authStore'
 import type { Rol } from '../types/auth'
 import BloqueSesion from './BloqueSesion'
 import Logo from './Logo'
@@ -32,7 +32,7 @@ export default function Layout() {
     queryFn: obtenerConfiguracion,
     enabled: usuario?.rol === 'administrador',
   })
-  const visibles
+  const visibles = secciones.filter((seccion) => usuario && seccion.perfiles.includes(usuario.rol))
 
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
