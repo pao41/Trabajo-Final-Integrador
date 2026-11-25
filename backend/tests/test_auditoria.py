@@ -2,6 +2,10 @@ import logging
 
 import pytest
 
+from tests.test_panel_alumno import entrar
+from tests.test_rutinas import entrenador_con_sesion
+from tests.test_sugerencias import alumno_con_ficha, cargar
+
 
 @pytest.fixture
 def lineas(caplog):
@@ -95,4 +99,24 @@ def test_gestionar_entrenadores_se_registra(admin, lineas):
     assert acciones == [
         ["crear entrenador", "entrenador Laura Gómez", "éxito"],
         ["editar entrenador", f"entrenador {entrenador_id}", "éxito"],
+    ]
+
+
+def test_aprobar_y_rechazar_sugerencias_se_registra(
+    admin, crear_usuario, crear_entrenador, iniciar_sesion, lineas
+):
+    entrenador, _ = entrenador_con_sesion(crear_usuario, crear_entrenador, iniciar_sesion)
+    cargar(entrenador, "Respiración profunda")
+    cargar(entrenador, "Giros de cadera", tipo="movilidad")
+    alumno = alumno_con_ficha(admin)
+    cliente, _ = entrar(alumno["dni"], alumno["codigo_acceso"])
+    cliente.post("/sugerencias")
+    entrenador.patch("/sugerencias/1/aprobar")
+    cliente.post("/sugerencias")
+    entrenador.patch("/sugerencias/2/rechazar")
+
+    acciones = [linea.split(" | ")[1:] for linea in lineas() if "sugerencia" in linea]
+    assert acciones == [
+        ["laura", "aprobar sugerencia", "sugerencia 1", "éxito"],
+        ["laura", "rechazar sugerencia", "sugerencia 2", "éxito"],
     ]
