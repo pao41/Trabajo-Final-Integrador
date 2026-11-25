@@ -103,11 +103,17 @@ Los alumnos no se eliminan: la baja es lógica y conserva todo su historial. Al 
 | `GET /pagos` | Historial de pagos; con `alumno_id` muestra los de ese alumno | Administrador | Disponible |
 | `POST /pagos` | Registra un pago y renueva la inscripción en la misma operación | Administrador | Disponible |
 
+## Asistencia (módulo 4)
+
+| Método y ruta | Descripción | Acceso | Estado |
+|---|---|---|---|
+| `GET /asistencias` | Ingresos registrados; con `alumno_id` los de un alumno y con `fecha` los de ese día | Administrador | Disponible |
+| `POST /asistencias` | Registra el ingreso (check-in): rechaza un duplicado dentro de las 2 horas y, en planes por clases, descuenta una clase | Administrador | Disponible |
+
 ## Demás módulos
 
 | Módulo | Endpoints | Acceso | Estado |
 |---|---|---|---|
-| 4. Asistencia | `POST /asistencias` (check-in), `GET /asistencias` | Administrador | Próximamente |
 | 5. Dashboard | `GET /dashboard` | Administrador | Próximamente |
 | 9. Configuración | `GET/PUT /configuracion` | Administrador | Próximamente |
 
