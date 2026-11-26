@@ -56,7 +56,8 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 2. **Banco de rutinas predefinido, no generativo:** el asistente de IA no crea ejercicios nuevos ni combina movimientos de forma libre. Selecciona únicamente entre rutinas pre-cargadas y etiquetadas por el equipo/entrenador, indicando para cada una qué condiciones de salud la excluyen.
 3. **Aprobación del entrenador antes de asignar:** ninguna rutina sugerida por el asistente llega al alumno de forma automática. Queda en estado "pendiente de revisión" hasta que un entrenador la valida y aprueba para ese alumno en particular.
 4. **Alcance estrictamente limitado:** el asistente se limita a ejercicios básicos de calentamiento, movilidad articular y vuelta a la calma, nunca rutinas de entrenamiento de fuerza o alta intensidad, que quedan fuera del alcance de este módulo.
-5. **Mensaje explícito al alumno:** toda sugerencia se presenta junto con la aclaración de que es una guía orientativa, aprobada por el entrenador, y no reemplaza su supervisión presencial ni una evaluación médica.
+5. **Asistente guiado con IA opcional:** el alumno responde cómo se siente y qué quiere hacer; el sistema filtra las rutinas por su ficha de salud y la IA (Gemini) solo elige entre las compatibles y explica el motivo, sin recibir nombre, DNI ni datos de contacto. Sin clave o sin conexión, el asistente sigue funcionando y sugiere la primera rutina compatible.
+6. **Mensaje explícito al alumno:** toda sugerencia se presenta junto con la aclaración de que es una guía orientativa, aprobada por el entrenador, y no reemplaza su supervisión presencial ni una evaluación médica.
 
 ---
 
@@ -95,6 +96,7 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 * **Frontend:** React con TypeScript, Vite y Tailwind CSS, con TanStack Query para los datos de la API 
 * **Backend:** Python + FastAPI, con SQLModel y PostgreSQL 
 * **Arquitectura del backend:** Router, Servicio, Unit of Work y Repositorio
+* **Inteligencia Artificial:** API de Gemini (Google), consultada solo desde el backend y de forma opcional
 * **Seguridad:** hash con bcrypt y sesión con JWT en una cookie HttpOnly
 * **Pruebas y calidad:** pytest y ruff
 * **Base de datos:** PostgreSQL
@@ -166,6 +168,8 @@ cp .env.example .env             # completar DATABASE_URL con su usuario y contr
 python -m app.db.seed            # pide usuario y contraseña del primer administrador              
 uvicorn app.main:app --reload
 ```
+
+Para activar la explicación con IA, completar `GEMINI_API_KEY` en `backend/.env` con una clave de Google AI Studio. Es opcional: sin clave, el asistente sugiere igual, sin explicación.
 
 La API queda en http://localhost:8000 y su documentación interactiva en http://localhost:8000/docs.
 Las pruebas y el control de estilo se ejecutan con `python -m pytest` y `ruff check .`.
