@@ -16,6 +16,7 @@ export default function Configuracion() {
     onSuccess: () => {
       // Los estados de las inscripciones dependen de los días de aviso
       queryClient.invalidateQueries({ queryKey: ['configuracion'] })
+      queryClient.invalidateQueries({ queryKey: ['nombre-gimnasio'] })
       queryClient.invalidateQueries({ queryKey: ['inscripciones'] })
     },
   })

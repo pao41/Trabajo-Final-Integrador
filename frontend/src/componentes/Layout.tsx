@@ -1,8 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
 import { NavLink, Outlet } from 'react-router-dom'
-import { obtenerConfiguracion } from '../api/configuracion'
 import { useAuthStore } from '../store/authStore'
 import type { Rol } from '../types/auth'
+import { useNombreGimnasio } from '../utilidades/useNombreGimnasio'
 import BloqueSesion from './BloqueSesion'
 import Logo from './Logo'
 
@@ -26,12 +25,7 @@ const estiloEnlace = ({ isActive }: { isActive: boolean }) =>
 
 export default function Layout() {
   const usuario = useAuthStore((estado) => estado.usuario)
-  // El nombre del gimnasio solo lo puede consultar el administrador
-  const configuracion = useQuery({
-    queryKey: ['configuracion'],
-    queryFn: obtenerConfiguracion,
-    enabled: usuario?.rol === 'administrador',
-  })
+  const nombre = useNombreGimnasio()
   const visibles = secciones.filter((seccion) => usuario && seccion.perfiles.includes(usuario.rol))
 
   return (
@@ -40,8 +34,8 @@ export default function Layout() {
         <div className="flex items-center gap-3 px-2">
           <Logo />
           <div className="flex flex-col">
-            <span className="font-titulo text-lg font-bold">Gestión de Gimnasio</span>
-            {configuracion.data && <span className="text-[15px] text-arena">{configuracion.data.nombre_gimnasio}</span>}
+            <span className="font-titulo text-2xl leading-tight font-bold">{nombre ?? 'Gestión de Gimnasio'}</span>
+            {nombre && <span className="text-[15px] text-arena">Gestión de Gimnasio</span>}
           </div>
          </div>
         <div className="flex flex-col gap-1">
