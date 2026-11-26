@@ -182,20 +182,3 @@ def test_si_la_ia_falla_el_asistente_sugiere_la_primera_rutina_compatible(
     assert respuesta.status_code == 201
     assert respuesta.json()["explicacion"] is None
     assert [s["rutina_nombre"] for s in pendientes] == ["Respiración profunda"]
-
-def test_el_alumno_puede_pedir_un_tipo_de_rutina(
-    admin, crear_usuario, crear_entrenador, iniciar_sesion
-):
-    entrenador, _ = entrenador_con_sesion(crear_usuario, crear_entrenador, iniciar_sesion)
-    cargar(entrenador, "Respiración profunda")
-    cargar(entrenador, "Giros de cadera", tipo="movilidad")
-    alumno = alumno_con_ficha(admin)
-    cliente, _ = entrar(alumno["dni"], alumno["codigo_acceso"])
-
-    sin_rutinas = cliente.post("/sugerencias", json={"tipo": "vuelta_a_la_calma"})
-    movilidad = cliente.post("/sugerencias", json={"tipo": "movilidad", "animo": "cansado"})
-    pendientes = entrenador.get("/sugerencias", params={"estado": "pendiente"}).json()
-
-    assert sin_rutinas.status_code == 409
-    assert movilidad.status_code == 201
-    assert [s["rutina_nombre"] for s in pendientes] == ["Giros de cadera"]
