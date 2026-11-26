@@ -17,7 +17,14 @@ El alumno podría abonar su cuota desde la web mediante una pasarela de pago, y 
 A partir de las asistencias que el sistema ya registra, se podrían mostrar gráficos con los días y los horarios de mayor concurrencia a lo largo de la semana. El gimnasio podría usar esa información para organizar los turnos de los entrenadores, programar las clases en los mejores horarios y detectar a los alumnos que dejaron de asistir.
 
 ## Mejoras del asistente de IA
-El banco de rutinas podría ampliarse con más ejercicios y los criterios de sugerencia podrían volverse más precisos, por ejemplo considerando más datos de la ficha de salud. Siempre se mantendría la aprobación del entrenador antes de que una rutina llegue al alumno, para ofrecer sugerencias más variadas sin perder seguridad.
+Hoy el asistente guía al alumno con dos preguntas (cómo se siente y qué quiere hacer), elige una rutina compatible con su ficha de salud y explica el motivo, pero la sugerencia queda pendiente hasta que un entrenador la aprueba. Como mejoras futuras se proponen:
+
+* **Entrega inmediata con banco validado:** si el entrenador revisa de antemano el banco de rutinas y marca cuáles pueden entregarse sin revisión individual, el alumno podría recibir la rutina al instante, y el entrenador podría revisarla después y retirarla si no la considera adecuada. Esto cambiaría la regla RN21 y requeriría confirmarlo con el tutor y con el gimnasio.
+* **Conversación libre:** permitir que el alumno escriba su consulta en lugar de elegir opciones, manteniendo el filtro por ficha de salud y la restricción a rutinas del banco.
+* **Más preguntas y mejores criterios:** considerar, por ejemplo, el tiempo disponible o el objetivo del alumno, y ampliar el banco con más ejercicios.
+* **Historial de consultas:** que el alumno y el entrenador puedan ver las consultas anteriores y las explicaciones recibidas.
+
+En todos los casos se mantendría el alcance limitado a calentamiento, movilidad y vuelta a la calma, y la supervisión del entrenador, previa o posterior a la entrega.
 
 ## Aplicación móvil
 El Panel del Alumno podría ofrecerse como una aplicación para el celular o como una web instalable, con avisos en el teléfono. El alumno podría consultar su estado de cuota, su asistencia y sus rutinas aprobadas desde cualquier lugar, sin depender de una computadora.
