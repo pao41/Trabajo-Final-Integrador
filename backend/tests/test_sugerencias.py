@@ -120,3 +120,39 @@ def test_las_sugerencias_las_resuelve_solo_el_entrenador_y_una_sola_vez(
     assert entrenador.patch("/sugerencias/999/aprobar").status_code == 404
     assert entrenador.patch("/sugerencias/1/aprobar").status_code == 200
     assert entrenador.patch("/sugerencias/1/rechazar").status_code == 409
+
+
+def test_el_alumno_puede_pedir_un_tipo_de_rutina(
+    admin, crear_usuario, crear_entrenador, iniciar_sesion
+):
+    entrenador, _ = entrenador_con_sesion(crear_usuario, crear_entrenador, iniciar_sesion)
+    cargar(entrenador, "Respiración profunda")
+    cargar(entrenador, "Giros de cadera", tipo="movilidad")
+    alumno = alumno_con_ficha(admin)
+    cliente, _ = entrar(alumno["dni"], alumno["codigo_acceso"])
+
+    sin_rutinas = cliente.post("/sugerencias", json={"tipo": "vuelta_a_la_calma"})
+    movilidad = cliente.post("/sugerencias", json={"tipo": "movilidad", "animo": "cansado"})
+    pendientes = entrenador.get("/sugerencias", params={"estado": "pendiente"}).json()
+
+    assert sin_rutinas.status_code == 409
+    assert movilidad.status_code == 201
+    assert [s["rutina_nombre"] for s in pendientes] == ["Giros de cadera"]
+
+
+def test_el_alumno_puede_pedir_un_tipo_de_rutina(
+    admin, crear_usuario, crear_entrenador, iniciar_sesion
+):
+    entrenador, _ = entrenador_con_sesion(crear_usuario, crear_entrenador, iniciar_sesion)
+    cargar(entrenador, "Respiración profunda")
+    cargar(entrenador, "Giros de cadera", tipo="movilidad")
+    alumno = alumno_con_ficha(admin)
+    cliente, _ = entrar(alumno["dni"], alumno["codigo_acceso"])
+
+    sin_rutinas = cliente.post("/sugerencias", json={"tipo": "vuelta_a_la_calma"})
+    movilidad = cliente.post("/sugerencias", json={"tipo": "movilidad", "animo": "cansado"})
+    pendientes = entrenador.get("/sugerencias", params={"estado": "pendiente"}).json()
+
+    assert sin_rutinas.status_code == 409
+    assert movilidad.status_code == 201
+    assert [s["rutina_nombre"] for s in pendientes] == ["Giros de cadera"]
