@@ -4,10 +4,12 @@ from app.core.clock import today_ar
 from app.core.uow import UnitOfWork
 from app.modules.alumnos.model import FichaSalud
 from app.modules.rutinas.model import Rutina
+from app.modules.sugerencias.ia import elegir
 from app.modules.sugerencias.model import (
     RutinaAprobada,
     RutinaAsignada,
     RutinasDelAlumno,
+    SolicitudSugerencia,
     SugerenciaPublic,
 )
 
@@ -34,8 +36,10 @@ class AsistenteService:
     def __init__(self, uow: UnitOfWork):
         self.uow = uow
 
-    def solicitar(self, alumno_id: int) -> None:
-        """Deja una rutina compatible con la ficha del alumno como sugerencia pendiente."""
+    def solicitar(self, alumno_id: int, datos: SolicitudSugerencia) -> str | None:
+        """Deja una rutina compatible con la ficha como sugerencia pendiente.
+
+        Devuelve la explicación de la IA, o None si la IA no respondió."""
         ficha = self.uow.fichas_salud.get_by_alumno(alumno_id)
         if not ficha:
             raise HTTPException(
@@ -48,13 +52,20 @@ class AsistenteService:
                 status.HTTP_409_CONFLICT, "Ya tenés una sugerencia pendiente de aprobación"
             )
         ya_sugeridas = {s.rutina_id for s in anteriores}
-        for rutina in self.uow.rutinas.listar():
-            if rutina.id not in ya_sugeridas and es_compatible(rutina, ficha):
-                self.uow.sugerencias.add(RutinaAsignada(alumno_id=alumno_id, rutina_id=rutina.id))
-                return
-        raise HTTPException(
-            status.HTTP_409_CONFLICT, "No hay rutinas compatibles para sugerirte por ahora"
-        )
+        candidatas = [
+            rutina
+            for rutina in self.uow.rutinas.listar()
+            if rutina.id not in ya_sugeridas
+            and es_compatible(rutina, ficha)
+            and (datos.tipo is None or rutina.tipo == datos.tipo)
+        ]
+        if not candidatas:
+            raise HTTPException(
+                status.HTTP_409_CONFLICT, "No hay rutinas compatibles para sugerirte por ahora"
+            )
+        rutina, explicacion = elegir(candidatas, ficha, datos.animo)
+        self.uow.sugerencias.add(RutinaAsignada(alumno_id=alumno_id, rutina_id=rutina.id))
+        return explicacion
 
     def listar(self, estado: str | None) -> list[SugerenciaPublic]:
         return [self._armar(s) for s in self.uow.sugerencias.listar(estado)]

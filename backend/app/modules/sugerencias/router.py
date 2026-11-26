@@ -6,7 +6,11 @@ from app.core.auditoria import auditar
 from app.core.deps import get_alumno_actual, require_role
 from app.core.uow import UnitOfWork, get_uow
 from app.modules.alumnos.model import AlumnoPublic
-from app.modules.sugerencias.model import EstadoSugerencia, SugerenciaPublic
+from app.modules.sugerencias.model import (
+    EstadoSugerencia,
+    SolicitudSugerencia,
+    SugerenciaPublic,
+)
 from app.modules.sugerencias.service import AsistenteService
 from app.modules.usuarios.model import UsuarioPublic
 
@@ -21,11 +25,16 @@ solo_entrenador = require_role(["entrenador"])
 def solicitar(
     alumno: Annotated[AlumnoPublic, Depends(get_alumno_actual)],
     uow: Annotated[UnitOfWork, Depends(get_uow)],
+    datos: SolicitudSugerencia | None = None,
 ):
     """El alumno pide una sugerencia; queda pendiente hasta que la apruebe un entrenador."""
     with uow:
-        AsistenteService(uow).solicitar(alumno.id)
-    return {"mensaje": "Tu sugerencia quedó pendiente de aprobación del entrenador"}
+        explicacion = AsistenteService(uow).solicitar(alumno.id, datos or SolicitudSugerencia())
+    return {
+        "mensaje": "Se la enviamos a tu entrenador para que la revise. "
+        "Cuando la apruebe, la vas a ver en Mis rutinas.",
+        "explicacion": explicacion,
+    }
 
 
 @router.get("", response_model=list[SugerenciaPublic])
