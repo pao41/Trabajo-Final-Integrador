@@ -1,8 +1,17 @@
-import type { EstadoSugerencia, Sugerencia } from '../types/sugerencias'
+import type {
+  EstadoSugerencia,
+  RespuestaAsistente,
+  SolicitudSugerencia,
+  Sugerencia,
+} from '../types/sugerencias'
 import { enviarJson, pedirJson } from './cliente'
 
 // El alumno pide una sugerencia: queda pendiente hasta que la apruebe un entrenador
 export const solicitarSugerencia = () => enviarJson<{ mensaje: string }>('/sugerencias', 'POST')
+
+// El alumno consulta al asistente: elige cómo se siente y qué tipo de rutina quiere
+export const consultarAsistente = (datos: SolicitudSugerencia) =>
+  enviarJson<RespuestaAsistente>('/sugerencias', 'POST', datos)
 
 // Sin estado trae todas las sugerencias
 export const listarSugerencias = (estado?: EstadoSugerencia) =>
