@@ -97,6 +97,7 @@ Se toman como marco los principios de la Ley 25.326 de Protección de Datos Pers
 - **Confidencialidad:** acceso limitado por perfil y comunicación cifrada con HTTPS.
 - **Registros sin datos sensibles:** el log del backend no incluye contraseñas, códigos de acceso ni datos de salud.
 - **Servicio de IA externo:** al usar el asistente, el backend envía a Gemini solo las condiciones de salud declaradas, cómo se siente el alumno, el tipo de rutina y las rutinas candidatas; nunca nombre, DNI ni contacto (RN43). La clave de la IA se guarda como variable de entorno, fuera del código y de GitHub.
+- **Dato público:** el nombre del gimnasio se consulta sin sesión para mostrarlo en las pantallas de acceso; es el único dato de la configuración con esa característica (RN44).
 
 ## 7. Limitaciones del MVP y mejoras futuras
 
