@@ -87,10 +87,12 @@ flowchart LR
 - **Actor:** Alumno
 - **Precondición:** El alumno tiene ficha de salud cargada.
 - **Flujo principal:**
-  1. El alumno solicita una sugerencia desde el Panel del Alumno.
-  2. El sistema filtra el banco de rutinas según su ficha de salud (RN18, RN20).
-  3. El sistema crea la sugerencia en estado `pendiente`.
-  4. El alumno recibe el mensaje de que la sugerencia está sujeta a aprobación del entrenador (RN23).
+  1. El alumno abre el asistente del Panel del Alumno y responde cómo se siente hoy (con energía, cansado/a o con alguna molestia).
+  2. El alumno elige qué quiere hacer (calentamiento, movilidad articular o vuelta a la calma).
+  3. El sistema filtra el banco de rutinas según su ficha de salud y el tipo elegido (RN18, RN20).
+  4. La IA elige una de las rutinas compatibles y explica el motivo; si no está disponible, el sistema toma la primera compatible (RN43).
+  5. El sistema crea la sugerencia en estado `pendiente`.
+  6. El alumno recibe el mensaje de que la sugerencia fue enviada a su entrenador y está sujeta a su aprobación (RN21, RN23). Si dijo tener una molestia, se le recomienda consultar al entrenador antes de entrenar.
 - **Flujo alternativo:** Si no hay rutinas compatibles, el sistema informa que no hay sugerencias disponibles.
 
 ### UC11 — Aprobar o Rechazar Rutinas Sugeridas
