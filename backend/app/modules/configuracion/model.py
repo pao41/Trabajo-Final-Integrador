@@ -23,3 +23,8 @@ class ConfiguracionDatos(SQLModel):
     # Días de anticipación para el estado "por vencer" (RN09)
     dias_aviso_vencimiento: int = Field(ge=1, le=60)
     metodos_pago_habilitados: list[MetodoPago] = Field(min_length=1)
+
+
+# Lo único que se muestra sin iniciar sesión: el nombre del gimnasio
+class NombreGimnasio(SQLModel):
+    nombre_gimnasio: str
