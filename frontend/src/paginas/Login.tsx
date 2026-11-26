@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import FormularioLogin from '../componentes/FormularioLogin'
+import MarcaMovil from '../componentes/MarcaMovil'
 import PanelMarca from '../componentes/PanelMarca'
 
 export default function Login() {
@@ -8,6 +9,7 @@ export default function Login() {
       <PanelMarca />
       <section className="flex flex-1 items-center justify-center p-6">
         <div className="flex w-full max-w-sm flex-col gap-5">
+          <MarcaMovil />
           <span className="w-fit rounded-full bg-arena px-3 py-1 text-[15px] font-bold text-cafe">Personal del gimnasio</span>
           <h2 className="font-titulo text-3xl font-bold">Bienvenido/a</h2>
           <p className="text-gris-calido">Para administradores y entrenadores. Ingresá con tu usuario y contraseña.</p>
