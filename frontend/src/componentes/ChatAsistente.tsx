@@ -5,8 +5,8 @@ import { consultarAsistente } from '../api/sugerencias'
 import { NOMBRES_TIPO } from '../types/rutinas'
 import type { TipoRutina } from '../types/rutinas'
 import type { Animo } from '../types/sugerencias'
+import MensajeError from './MensajeError'
 import TarjetaSeccion from './TarjetaSeccion'
-
 
 const ANIMOS: { valor: Animo; texto: string }[] = [
   { valor: 'con_energia', texto: 'Con energía' },
@@ -53,6 +53,11 @@ export default function ChatAsistente() {
     setTipo(elegido)
     consultar.mutate({ animo: animo ?? undefined, tipo: elegido })
   }
+  const reiniciar = () => {
+    setAnimo(null)
+    setTipo(null)
+    consultar.reset()
+  }
 
   return (
     <TarjetaSeccion titulo="Asistente de rutinas">
@@ -73,6 +78,14 @@ export default function ChatAsistente() {
           {consultar.data.explicacion && <p className="mb-2">{consultar.data.explicacion}</p>}
           <p className="text-[15px] text-gris-calido">{consultar.data.mensaje}</p>
         </Burbuja>
+      )}
+      {consultar.isError && (
+        <>
+          <MensajeError texto={consultar.error.message} />
+          <button className="boton-claro self-start" onClick={reiniciar}>
+            Volver a empezar
+          </button>
+        </>
       )}
     </TarjetaSeccion>
   )
