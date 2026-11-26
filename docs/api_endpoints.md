@@ -120,6 +120,6 @@ Los alumnos no se eliminan: la baja es lógica y conserva todo su historial. Al 
 
 | Método y ruta | Descripción | Acceso | Estado |
 |---|---|---|---|
+| `GET /configuracion/publica` | Solo el nombre del gimnasio, para mostrarlo en todas las pantallas | Público (sin sesión) | Disponible |
 | `GET /configuracion` | Datos del gimnasio, días de aviso de vencimiento y métodos de pago habilitados; la primera vez se crea con valores por defecto | Administrador | Disponible |
 | `PUT /configuracion` | Modifica la configuración | Administrador | Disponible |
-
