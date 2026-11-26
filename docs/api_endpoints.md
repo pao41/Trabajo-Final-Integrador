@@ -47,11 +47,11 @@ Banco de rutinas de calentamiento, movilidad y vuelta a la calma. Cada rutina in
 
 ## Asistente de IA (módulo 8)
 
-El asistente no genera ejercicios: filtra el banco de rutinas según la ficha de salud del alumno y deja una sugerencia en estado pendiente. Una rutina se descarta si sus contraindicaciones mencionan los problemas cardíacos o alguna de las lesiones de la ficha, y no se vuelve a sugerir una rutina que el alumno ya tuvo sugerida. Solo se puede tener una sugerencia pendiente a la vez. La rutina llega al alumno únicamente si un entrenador la aprueba.
+El asistente no genera ejercicios: filtra el banco de rutinas según la ficha de salud del alumno (y el tipo de rutina que el alumno elige) y deja una sugerencia en estado pendiente. Entre las rutinas compatibles, el servicio de IA (Gemini) elige una y explica el motivo; si la IA no está configurada o no responde, se usa la primera compatible, sin explicación. Una rutina se descarta si sus contraindicaciones mencionan los problemas cardíacos o alguna de las lesiones de la ficha, y no se vuelve a sugerir una rutina que el alumno ya tuvo sugerida. Solo se puede tener una sugerencia pendiente a la vez. La rutina llega al alumno únicamente si un entrenador la aprueba.
 
 | Método y ruta | Descripción | Acceso | Estado |
 |---|---|---|---|
-| `POST /sugerencias` | El alumno pide una sugerencia; queda pendiente | Alumno | Disponible |
+| `POST /sugerencias` | El alumno pide una sugerencia; el cuerpo es opcional e indica `animo` (con_energia, cansado, con_molestia) y `tipo` de rutina. Devuelve el mensaje y la explicación; la sugerencia queda pendiente | Alumno | Disponible |
 | `GET /sugerencias` | Lista las sugerencias; con `?estado=pendiente`, `aprobada` o `rechazada` filtra por estado | Administrador y entrenador | Disponible |
 | `PATCH /sugerencias/{id}/aprobar` | Aprueba una sugerencia pendiente a nombre del entrenador | Entrenador | Disponible |
 | `PATCH /sugerencias/{id}/rechazar` | Rechaza una sugerencia pendiente a nombre del entrenador | Entrenador | Disponible |

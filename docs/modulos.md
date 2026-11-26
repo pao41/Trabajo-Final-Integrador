@@ -95,7 +95,9 @@ En este documento detallan los módulos funcionales del sistema
 **Descripción:** Componente que sugiere rutinas del banco predefinido según el perfil de salud del alumno, sin generar contenido nuevo.
 
 **Funcionalidades:**
+- Chat guiado en el Panel del Alumno: cómo se siente hoy y qué quiere hacer.
 - Filtrado de rutinas compatibles con la ficha de salud del alumno.
+- Elección de una rutina y explicación breve mediante un servicio externo de IA (Gemini); sin IA, se usa la primera compatible.
 - Generación de sugerencia en estado "pendiente" hasta aprobación del entrenador.
 
 ---
