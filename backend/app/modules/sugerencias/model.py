@@ -1,7 +1,6 @@
 from datetime import date
 from typing import Literal
 
-
 from sqlmodel import Field, SQLModel
 
 from app.modules.rutinas.model import TipoRutina

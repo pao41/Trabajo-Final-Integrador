@@ -156,7 +156,6 @@ def test_la_ia_elige_la_rutina_y_explica_el_motivo(
     respuesta = cliente.post("/sugerencias", json={"animo": "cansado"})
     pendientes = entrenador.get("/sugerencias", params={"estado": "pendiente"}).json()
 
-
     assert respuesta.json()["explicacion"] == "Es suave para un día de poca energía."
     assert [s["rutina_nombre"] for s in pendientes] == ["Giros de cadera"]
 
