@@ -31,6 +31,7 @@ Contraseñas, códigos de acceso ni datos de salud, para no exponer información
 | Escenario | Impacto | Respuesta |
 |---|---|---|
 | Sin internet o sistema caído en horario de atención | No se pueden registrar ingresos ni pagos | Se usa la planilla manual de contingencia (ver abajo); los datos se cargan al volver el servicio (RN41) |
+| El servicio de IA no responde o no está configurado | El asistente no puede explicar la sugerencia | El sistema sigue sugiriendo la primera rutina compatible, sin explicación, y la sugerencia queda pendiente de aprobación (RN43) |
 | Falla del servicio de hosting del backend | El sistema no responde | Se espera la restauración del proveedor; mientras tanto, planilla manual. El código se puede redesplegar desde GitHub |
 | Pérdida o corrupción de datos | Se pierde información de alumnos, pagos o asistencias | Procedimiento de recuperación (sección 3) |
 | Carga errónea de un dato | Un pago o ingreso mal cargado | El registro no se elimina (RN28): el administrador corrige el dato y la modificación queda registrada en el log (RN40) |
