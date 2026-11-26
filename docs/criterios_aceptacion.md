@@ -19,7 +19,7 @@ Precondición, acción disparadora y resultado esperado para cada Requerimiento 
 | RF13 | Existe una rutina sugerida en estado `pendiente`. | El entrenador aprueba o rechaza la sugerencia. | El estado cambia a `aprobada` o `rechazada`; solo las aprobadas son visibles para el alumno. |
 | RF14 | El alumno tiene pagos registrados. | Se da de baja al alumno o cambia de plan. | El historial de pagos e inscripciones previas permanece intacto y consultable. |
 | RF15 | El alumno reporta pérdida de su código. | El administrador solicita la regeneración. | Se genera un nuevo código de acceso, se muestra una única vez y el código anterior deja de ser válido (RN37). |
-| RF16 | — | El administrador modifica un parámetro general. | El nuevo valor se aplica a los cálculos y validaciones del sistema. |
+| RF16 | — | El administrador modifica un parámetro general. | El nuevo valor se aplica a los cálculos y validaciones del sistema. Si cambia el nombre del gimnasio, se ve en las pantallas de acceso y en los paneles. |
 | RF17 | — | El administrador da de alta o edita un entrenador. | El entrenador queda disponible para cargar y aprobar rutinas. |
 | RF18 | Existe al menos un entrenador registrado. | Se carga una rutina o se aprueba una sugerencia. | La acción queda asociada al entrenador que la realizó (trazabilidad). |
 | RF19 | El alumno está registrado. | El administrador configura su meta semanal de asistencias. | El Panel del Alumno calcula el checklist comparando asistencias de la semana contra la meta. |
