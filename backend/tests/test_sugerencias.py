@@ -156,8 +156,32 @@ def test_la_ia_elige_la_rutina_y_explica_el_motivo(
     respuesta = cliente.post("/sugerencias", json={"animo": "cansado"})
     pendientes = entrenador.get("/sugerencias", params={"estado": "pendiente"}).json()
 
+
     assert respuesta.json()["explicacion"] == "Es suave para un día de poca energía."
     assert [s["rutina_nombre"] for s in pendientes] == ["Giros de cadera"]
+
+
+def test_si_la_ia_falla_el_asistente_sugiere_la_primera_rutina_compatible(
+    admin, crear_usuario, crear_entrenador, iniciar_sesion, monkeypatch
+):
+    entrenador, _ = entrenador_con_sesion(crear_usuario, crear_entrenador, iniciar_sesion)
+    cargar(entrenador, "Respiración profunda")
+    cargar(entrenador, "Giros de cadera", tipo="movilidad")
+    alumno = alumno_con_ficha(admin)
+    cliente, _ = entrar(alumno["dni"], alumno["codigo_acceso"])
+
+    def sin_conexion(texto):
+        raise OSError("sin conexión")
+
+    monkeypatch.setattr(settings, "gemini_api_key", "clave")
+    monkeypatch.setattr(ia, "consultar", sin_conexion)
+
+    respuesta = cliente.post("/sugerencias", json={"animo": "con_molestia"})
+    pendientes = entrenador.get("/sugerencias", params={"estado": "pendiente"}).json()
+
+    assert respuesta.status_code == 201
+    assert respuesta.json()["explicacion"] is None
+    assert [s["rutina_nombre"] for s in pendientes] == ["Respiración profunda"]
 
 def test_el_alumno_puede_pedir_un_tipo_de_rutina(
     admin, crear_usuario, crear_entrenador, iniciar_sesion
