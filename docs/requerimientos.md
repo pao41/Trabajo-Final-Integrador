@@ -22,7 +22,7 @@ El sistema se organiza en dos paneles diferenciados, según el actor que los uti
 | RF09 | El sistema debe mostrar el listado de alumnos filtrado por estado (activo / por vencer / vencido). |
 | RF10 | El sistema debe ofrecer un panel de autoconsulta para que el alumno vea su estado de cuota e historial de asistencia, accediendo con su DNI y su código de acceso. |
 | RF11 | El sistema debe permitir cargar un banco de rutinas de calentamiento, movilidad y vuelta a la calma, indicando contraindicaciones de salud para cada una. |
-| RF12 | El sistema debe sugerir rutinas al alumno filtrando el banco de rutinas según su ficha de salud, sin generar ejercicios nuevos. |
+| RF12 | El sistema debe ofrecer al alumno un asistente que, según cómo se siente y qué quiere hacer, sugiera una rutina del banco filtrado por su ficha de salud y explique el motivo, sin generar ejercicios nuevos. |
 | RF13 | Toda rutina sugerida debe quedar en estado "pendiente" hasta ser aprobada por un entrenador antes de estar disponible para el alumno. |
 | RF14 | El sistema debe conservar el historial completo de pagos e inscripciones de cada alumno, sin eliminarlo ante bajas o cambios de plan. |
 | RF15 | El sistema debe permitir al personal del gimnasio regenerar el código de acceso de un alumno desde el Panel Administrador, en caso de pérdida u olvido; el código anterior deja de ser válido. |
