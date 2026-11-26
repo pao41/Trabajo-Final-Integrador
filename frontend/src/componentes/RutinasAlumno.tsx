@@ -1,20 +1,14 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { listarRutinasAprobadas } from '../api/panelAlumno'
-import { solicitarSugerencia } from '../api/sugerencias'
 import { NOMBRES_TIPO } from '../types/rutinas'
 import MensajeError from './MensajeError'
 import TarjetaSeccion from './TarjetaSeccion'
 
-// Rutinas aprobadas por el entrenador y botón para pedir una nueva sugerencia
+// Rutinas aprobadas por el entrenador, con el aviso de que son una guía orientativa
 export default function RutinasAlumno() {
-  const queryClient = useQueryClient()
   const { data, isPending, isError, error } = useQuery({
     queryKey: ['panel-alumno', 'rutinas'],
     queryFn: listarRutinasAprobadas,
-  })
-  const pedir = useMutation({
-    mutationFn: solicitarSugerencia,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['panel-alumno', 'rutinas'] }),
   })
 
   return (
@@ -36,11 +30,6 @@ export default function RutinasAlumno() {
         {data && <p className="text-[15px] text-gris-calido">{data.aviso}</p>}
         <p className="text-[15px] text-gris-calido">El asistente elige una rutina según tu ficha de salud y tu entrenador la revisa antes de que la veas.</p>
       </div>
-      <button className="boton self-start" disabled={pedir.isPending} onClick={() => pedir.mutate()}>
-        Pedir sugerencia al asistente
-      </button>
-      {pedir.isSuccess && <p className="font-bold text-verde-texto">{pedir.data.mensaje}</p>}
-      {pedir.isError && <MensajeError texto={pedir.error.message} />}
     </TarjetaSeccion>
   )
 }
