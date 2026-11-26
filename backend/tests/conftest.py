@@ -54,6 +54,14 @@ def sin_bloqueos():
     control_de_intentos.reiniciar()
 
 
+@pytest.fixture(autouse=True)
+def sin_ia(monkeypatch):
+    """Las pruebas no consultan a Gemini aunque el .env tenga una clave."""
+    from app.core.config import settings
+
+    monkeypatch.setattr(settings, "gemini_api_key", "")
+
+
 @pytest.fixture
 def client():
     from fastapi.testclient import TestClient
