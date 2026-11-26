@@ -1,7 +1,9 @@
 from fastapi.testclient import TestClient
 
+from app.core.config import settings
 from app.core.uow import UnitOfWork
 from app.main import app
+from app.modules.sugerencias import ia
 from tests.test_alumnos import alta
 from tests.test_panel_alumno import entrar
 from tests.test_rutinas import entrenador_con_sesion
@@ -139,6 +141,23 @@ def test_el_alumno_puede_pedir_un_tipo_de_rutina(
     assert movilidad.status_code == 201
     assert [s["rutina_nombre"] for s in pendientes] == ["Giros de cadera"]
 
+
+def test_la_ia_elige_la_rutina_y_explica_el_motivo(
+    admin, crear_usuario, crear_entrenador, iniciar_sesion, monkeypatch
+):
+    entrenador, _ = entrenador_con_sesion(crear_usuario, crear_entrenador, iniciar_sesion)
+    cargar(entrenador, "Respiración profunda")
+    cargar(entrenador, "Giros de cadera", tipo="movilidad")
+    alumno = alumno_con_ficha(admin)
+    cliente, _ = entrar(alumno["dni"], alumno["codigo_acceso"])
+    monkeypatch.setattr(settings, "gemini_api_key", "clave")
+    monkeypatch.setattr(ia, "consultar", lambda texto: "2\nEs suave para un día de poca energía.")
+
+    respuesta = cliente.post("/sugerencias", json={"animo": "cansado"})
+    pendientes = entrenador.get("/sugerencias", params={"estado": "pendiente"}).json()
+
+    assert respuesta.json()["explicacion"] == "Es suave para un día de poca energía."
+    assert [s["rutina_nombre"] for s in pendientes] == ["Giros de cadera"]
 
 def test_el_alumno_puede_pedir_un_tipo_de_rutina(
     admin, crear_usuario, crear_entrenador, iniciar_sesion
