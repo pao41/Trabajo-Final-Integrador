@@ -1,4 +1,5 @@
 import json
+import logging
 import urllib.request
 
 from app.core.config import settings
@@ -45,3 +46,19 @@ def consultar(texto: str) -> str:
     with urllib.request.urlopen(pedido, timeout=ESPERA) as respuesta:
         datos = json.load(respuesta)
     return datos["candidates"][0]["content"]["parts"][0]["text"]
+
+
+def elegir(
+    candidatas: list[Rutina], ficha: FichaSalud, animo: str | None
+) -> tuple[Rutina, str | None]:
+    """La IA elige una de las candidatas y explica por qué; si no responde, queda la primera."""
+    if settings.gemini_api_key:
+        try:
+            respuesta = consultar(armar_consulta(candidatas, ficha, animo))
+            numero, explicacion = respuesta.strip().split("\n", 1)
+            posicion = int(numero.strip().rstrip(".")) - 1
+            if 0 <= posicion < len(candidatas):
+                return candidatas[posicion], explicacion.strip()[:400]
+        except (OSError, ValueError, KeyError, IndexError) as error:
+            logging.warning("No se pudo consultar a la IA: %s", error)
+    return candidatas[0], None
