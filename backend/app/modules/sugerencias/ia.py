@@ -1,5 +1,13 @@
+import json
+import urllib.request
+
+from app.core.config import settings
 from app.modules.alumnos.model import FichaSalud
 from app.modules.rutinas.model import Rutina
+
+URL = "https://generativelanguage.googleapis.com/v1beta/models/{modelo}:generateContent"
+# Segundos máximos de espera de la respuesta de la IA
+ESPERA = 8
 
 # Cómo se describe en la consulta lo que el alumno dijo sobre cómo se siente
 ANIMOS = {
@@ -25,3 +33,15 @@ def armar_consulta(candidatas: list[Rutina], ficha: FichaSalud, animo: str | Non
         "Segunda línea: explicá en una o dos oraciones, hablándole de vos, por qué es adecuada. "
         "No uses nombres propios y no inventes ejercicios ni rutinas."
     )
+
+
+def consultar(texto: str) -> str:
+    """Envía el texto a Gemini y devuelve la respuesta."""
+    pedido = urllib.request.Request(
+        URL.format(modelo=settings.gemini_model),
+        data=json.dumps({"contents": [{"parts": [{"text": texto}]}]}).encode(),
+        headers={"Content-Type": "application/json", "x-goog-api-key": settings.gemini_api_key},
+    )
+    with urllib.request.urlopen(pedido, timeout=ESPERA) as respuesta:
+        datos = json.load(respuesta)
+    return datos["candidates"][0]["content"]["parts"][0]["text"]
