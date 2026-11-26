@@ -25,9 +25,16 @@ flowchart LR
         end
     end
 
+    subgraph N5["«node» Servicio externo de IA"]
+        subgraph E5["«execution environment» Gemini API"]
+            A5["«artifact» Modelo de lenguaje"]
+        end
+    end
+
     A1 -->|"«HTTPS» descarga de la aplicación"| A2
     A1 -->|"«HTTPS / JSON» API REST"| A3
     A3 -->|"«TCP / SQL» puerto 5432"| A4
+    A3 -->|"«HTTPS / JSON» consulta del asistente"| A5
 ```
 
 ## Elementos del diagrama
@@ -38,6 +45,7 @@ flowchart LR
 | Hosting del frontend | `«node»` | Servidor de archivos estáticos | Build de React (HTML, JS y CSS) | Vercel |
 | Hosting del backend | `«node»` | Python | API REST con FastAPI | Render o Railway |
 | Base de datos gestionada | `«node»` | PostgreSQL | Base de datos creada con `database/schema.sql` | Railway o Supabase |
+| Servicio externo de IA | `«node»` | Gemini API | Modelo de lenguaje que elige la rutina y explica el motivo (opcional) | Google AI Studio |
 
 ## Caminos de comunicación
 
@@ -46,9 +54,11 @@ flowchart LR
 | Navegador | Hosting del frontend | HTTPS | Descarga de la aplicación (RNF09) |
 | Navegador | Hosting del backend | HTTPS con datos en JSON | La aplicación React ejecutada en el navegador consume la API REST. El backend acepta solo el origen del frontend (CORS) |
 | Backend | Base de datos | TCP (SQL), puerto 5432 | Solo el backend accede a la base; el navegador nunca se conecta a ella |
+| Backend | Servicio de IA | HTTPS con datos en JSON | Solo el backend consulta a la IA, con la clave guardada como variable de entorno. Si no responde, el sistema sigue funcionando (RN43) |
 
 ## Configuración por entorno
 
-- Las credenciales de la base de datos y la clave de firma de las sesiones se definen como variables de entorno en el hosting del backend, fuera del código y de GitHub.
+- Las credenciales de la base de datos y la clave de firma de las sesiones y la clave de la IA se definen como variables de entorno en el hosting del backend, fuera del código y de GitHub.
 - La base de datos solo acepta conexiones del backend.
+- El servicio de IA es opcional: sin su clave o sin conexión, el asistente sugiere igual, sin explicación.
 - La plataforma definitiva de cada nodo se confirma en la etapa de despliegue (ver [`arquitectura.md`](./arquitectura.md)).
