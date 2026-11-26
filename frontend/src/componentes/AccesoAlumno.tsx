@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { entrarAlPanel } from '../api/panelAlumno'
 import Campo from './Campo'
+import MarcaMovil from './MarcaMovil'
 import MensajeError from './MensajeError'
 import PanelMarca from './PanelMarca'
 
@@ -23,6 +24,7 @@ export default function AccesoAlumno() {
       <PanelMarca titulo="Tu cuota, tu semana y tus rutinas, siempre a mano." texto="Consultá tu plan, tus ingresos y tu meta semanal cuando quieras." />
       <section className="flex flex-1 items-center justify-center p-6">
         <form onSubmit={(e) => { e.preventDefault(); entrar.mutate() }} className="flex w-full max-w-sm flex-col gap-5">
+          <MarcaMovil />
           <span className="w-fit rounded-full bg-arena px-3 py-1 text-[15px] font-bold text-cafe">Alumnos</span>
           <h2 className="font-titulo text-3xl font-bold">Bienvenido/a</h2>
           <p className="text-gris-calido">Ingresá con tu DNI y el código de acceso que te dio el gimnasio.</p>
