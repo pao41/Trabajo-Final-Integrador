@@ -56,3 +56,16 @@ def test_hace_falta_al_menos_un_metodo_de_pago_valido(admin):
 
     assert admin.put("/configuracion", json=sin_metodos).status_code == 422
     assert admin.put("/configuracion", json=invalido).status_code == 422
+
+
+def test_el_nombre_del_gimnasio_se_ve_sin_iniciar_sesion(admin):
+    sin_sesion = TestClient(app)
+
+    por_defecto = sin_sesion.get("/configuracion/publica")
+    admin.put("/configuracion", json=NUEVA)
+    cambiado = sin_sesion.get("/configuracion/publica")
+
+    assert por_defecto.json() == {"nombre_gimnasio": "Mi gimnasio"}
+    assert cambiado.json() == {"nombre_gimnasio": "Gimnasio Central"}
+    # Solo se publica el nombre: el resto de la configuración sigue siendo del administrador
+    assert sin_sesion.get("/configuracion").status_code == 401
