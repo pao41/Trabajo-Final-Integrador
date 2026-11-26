@@ -28,19 +28,22 @@ sequenceDiagram
     participant Frontend
     participant Backend
     participant DB as Base de Datos
+    participant IA as Servicio de IA (Gemini)
     actor Entrenador
 
-    Alumno->>Frontend: Solicita sugerencia de rutina
-    Frontend->>Backend: GET /rutinas/sugerencia
+    Alumno->>Frontend: Responde como se siente y que quiere hacer
+    Frontend->>Backend: POST /sugerencias
     Backend->>DB: Consultar ficha_salud del alumno
     DB-->>Backend: Ficha de salud
     Backend->>DB: Filtrar rutinas compatibles (RN18, RN20)
-    DB-->>Backend: Rutina candidata
+    DB-->>Backend: Rutinas candidatas
+    Backend->>IA: Elegir una candidata y explicar el motivo (RN43)
+    IA-->>Backend: Rutina elegida y explicacion (si no responde, primera candidata)
     Backend->>DB: Crear rutina_asignada (estado=pendiente)
     DB-->>Backend: OK
     Backend-->>Frontend: Sugerencia pendiente de aprobacion
     Entrenador->>Frontend: Revisa sugerencias pendientes
-    Entrenador->>Backend: PATCH /rutinas-asignadas/id (aprobar)
+    Entrenador->>Backend: PATCH /sugerencias/id/aprobar
     Backend->>DB: Actualizar estado=aprobada, entrenador_id, fecha_validacion
     DB-->>Backend: OK
     Backend-->>Frontend: Rutina aprobada visible para el alumno

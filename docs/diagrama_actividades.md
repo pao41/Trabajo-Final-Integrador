@@ -23,11 +23,12 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    Start([Inicio]) --> A[Alumno solicita sugerencia de rutina]
-    A --> B[Sistema filtra banco de rutinas segun ficha de salud]
+    Start([Inicio]) --> A[Alumno responde al asistente como se siente y que quiere hacer]
+    A --> B[Sistema filtra banco de rutinas segun ficha de salud y tipo elegido]
     B --> C{Existe rutina compatible?}
     C -->|No| D[Sistema informa que no hay sugerencias disponibles]
-    C -->|Si| E[Se crea rutina_asignada en estado pendiente]
+    C -->|Si| C2[La IA elige una rutina y explica el motivo, y sin IA se usa la primera]
+    C2 --> E[Se crea rutina_asignada en estado pendiente]
     E --> F[Entrenador revisa la sugerencia]
     F --> G{Aprueba?}
     G -->|Si| H[Estado: aprobada - visible para el alumno]
