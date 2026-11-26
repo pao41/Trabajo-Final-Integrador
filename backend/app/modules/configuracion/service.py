@@ -1,5 +1,5 @@
 from app.core.uow import UnitOfWork
-from app.modules.configuracion.model import Configuracion, ConfiguracionDatos
+from app.modules.configuracion.model import Configuracion, ConfiguracionDatos, NombreGimnasio
 
 
 class ConfiguracionService:
@@ -18,6 +18,13 @@ class ConfiguracionService:
             )
             self.uow.configuracion.add(configuracion)
         return configuracion
+
+    def nombre_publico(self) -> NombreGimnasio:
+        """Devuelve solo el nombre del gimnasio; sin configurar, el nombre por defecto."""
+        configuracion = self.uow.configuracion.get_actual()
+        if not configuracion:
+            return NombreGimnasio(nombre_gimnasio="Mi gimnasio")
+        return NombreGimnasio(nombre_gimnasio=configuracion.nombre_gimnasio)
 
     def guardar(self, datos: ConfiguracionDatos) -> Configuracion:
         configuracion = self.obtener()

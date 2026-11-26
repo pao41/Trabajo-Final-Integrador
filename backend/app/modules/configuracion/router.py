@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 from app.core.auditoria import auditar
 from app.core.deps import require_role
 from app.core.uow import UnitOfWork, get_uow
-from app.modules.configuracion.model import ConfiguracionDatos
+from app.modules.configuracion.model import ConfiguracionDatos, NombreGimnasio
 from app.modules.configuracion.service import ConfiguracionService
 from app.modules.usuarios.model import UsuarioPublic
 
@@ -13,6 +13,13 @@ router = APIRouter(prefix="/configuracion", tags=["Configuración"])
 
 # Solo el administrador cambia la configuración
 solo_admin = require_role(["administrador"])
+
+
+@router.get("/publica", response_model=NombreGimnasio)
+def nombre_publico(uow: Annotated[UnitOfWork, Depends(get_uow)]):
+    """El nombre del gimnasio lo ven todos, incluso antes de iniciar sesión."""
+    with uow:
+        return ConfiguracionService(uow).nombre_publico()
 
 
 @router.get("", response_model=ConfiguracionDatos)
