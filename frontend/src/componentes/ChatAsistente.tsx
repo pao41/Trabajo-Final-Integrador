@@ -5,8 +5,10 @@ import { consultarAsistente } from '../api/sugerencias'
 import { NOMBRES_TIPO } from '../types/rutinas'
 import type { TipoRutina } from '../types/rutinas'
 import type { Animo } from '../types/sugerencias'
+import { useNombreGimnasio } from '../utilidades/useNombreGimnasio'
 import MensajeError from './MensajeError'
 import TarjetaSeccion from './TarjetaSeccion'
+
 
 const ANIMOS: { valor: Animo; texto: string }[] = [
   { valor: 'con_energia', texto: 'Con energía' },
@@ -42,8 +44,10 @@ function Opciones<T extends string>(props: {
   )
 }
 
+
 // Chat del alumno con el asistente: pregunta cómo se siente y qué rutina quiere
 export default function ChatAsistente() {
+  const nombreGimnasio = useNombreGimnasio()
   const [animo, setAnimo] = useState<Animo | null>(null)
   const [tipo, setTipo] = useState<TipoRutina | null>(null)
   const consultar = useMutation({ mutationFn: consultarAsistente })
@@ -59,9 +63,10 @@ export default function ChatAsistente() {
     consultar.reset()
   }
 
+
   return (
     <TarjetaSeccion titulo="Asistente de rutinas">
-      <Burbuja>Hola, soy el asistente de tu gimnasio. ¿Cómo te sentís hoy?</Burbuja>
+      <Burbuja>Hola, soy el asistente de {nombreGimnasio ?? 'tu gimnasio'}. ¿Cómo te sentís hoy?</Burbuja>
       {!animo && <Opciones opciones={ANIMOS} alElegir={setAnimo} />}
       {animo && <Burbuja propia>{ANIMOS.find((a) => a.valor === animo)?.texto}</Burbuja>}
       {animo === 'con_molestia' && (

@@ -8,10 +8,12 @@ import Logo from '../componentes/Logo'
 import MensajeError from '../componentes/MensajeError'
 import ResumenPanel from '../componentes/ResumenPanel'
 import RutinasAlumno from '../componentes/RutinasAlumno'
+import { useNombreGimnasio } from '../utilidades/useNombreGimnasio'
 
 // Panel del alumno: sin sesión pide el acceso; con sesión muestra su cuota, su semana y sus ingresos
 export default function PanelAlumno() {
   const queryClient = useQueryClient()
+  const nombreGimnasio = useNombreGimnasio()
   // Sin reintentos: un 401 significa "todavía no ingresó" y se muestra el acceso enseguida
   const { data, isPending, isError, error } = useQuery({
     queryKey: ['panel-alumno', 'resumen'],
@@ -32,7 +34,12 @@ export default function PanelAlumno() {
       <header className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <Logo />
-          <h1 className="font-titulo text-3xl font-bold">Hola, {data.nombre}</h1>
+          <div>
+            {nombreGimnasio && (
+              <p className="font-titulo text-2xl leading-tight font-bold text-terracota-oscuro">{nombreGimnasio}</p>
+            )}
+            <h1 className="font-titulo text-3xl font-bold">Hola, {data.nombre}</h1>
+          </div>
         </div>
         <button className="boton-claro" onClick={() => salir.mutate()}>Salir</button>
       </header>
