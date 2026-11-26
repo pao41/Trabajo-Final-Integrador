@@ -12,6 +12,10 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 480
     # La cookie viaja solo por HTTPS cuando es True (se activa en producción)
     cookie_secure: bool = False
+    # Clave de la API de Gemini; sin clave el asistente funciona, pero sin el texto de la IA
+    gemini_api_key: str = ""
+    # Modelo de Gemini que elige la rutina y redacta la explicación
+    gemini_model: str = "gemini-3.5-flash"
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
