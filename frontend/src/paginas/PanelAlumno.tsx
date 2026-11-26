@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ErrorApi } from '../api/cliente'
 import { obtenerResumen, salirDelPanel } from '../api/panelAlumno'
 import AccesoAlumno from '../componentes/AccesoAlumno'
+import ChatAsistente from '../componentes/ChatAsistente'
 import IngresosAlumno from '../componentes/IngresosAlumno'
 import Logo from '../componentes/Logo'
 import MensajeError from '../componentes/MensajeError'
@@ -36,6 +37,7 @@ export default function PanelAlumno() {
         <button className="boton-claro" onClick={() => salir.mutate()}>Salir</button>
       </header>
       <ResumenPanel resumen={data} />
+      <ChatAsistente />
       <RutinasAlumno />
       <IngresosAlumno />
     </main>
