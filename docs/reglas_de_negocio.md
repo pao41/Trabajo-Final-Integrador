@@ -75,3 +75,4 @@
 
 - **RN41** — Ante la indisponibilidad del sistema, el personal registra ingresos y pagos en una planilla manual de contingencia y los carga al restablecerse el servicio, conservando la fecha y hora reales de cada operación.
 - **RN42** — Se realizan copias de respaldo periódicas de la base de datos. El archivo `database/schema.sql` permite reconstruir su estructura ante una pérdida total.
+- **RN43** — El asistente usa un servicio externo de IA (Gemini) solo para elegir una rutina entre las que el sistema ya filtró como compatibles con la ficha de salud y para explicar el motivo. Se le envían únicamente las condiciones de salud declaradas, cómo se siente el alumno, el tipo de rutina elegido y el nombre y la descripción de las rutinas; nunca nombre, DNI ni datos de contacto. Si la IA no está configurada o no responde, el sistema sugiere la primera rutina compatible sin explicación. La sugerencia sigue pendiente hasta la aprobación del entrenador (RN21).

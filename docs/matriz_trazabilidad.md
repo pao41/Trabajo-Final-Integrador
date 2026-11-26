@@ -15,7 +15,7 @@
 | RF09 | RN01 | 1. Módulo de Alumnos / 5. Módulo de Dashboard Administrativo |
 | RF10 | RN16, RN17, RN38, RN39 | 6. Módulo de Panel del Alumno |
 | RF11 | RN18, RN19, RN24, RN35 | 7. Módulo de Rutinas |
-| RF12 | RN18, RN20, RN22 | 8. Módulo de Asistente de IA |
+| RF12 | RN18, RN20, RN22, RN43 | 8. Módulo de Asistente de IA |
 | RF13 | RN21, RN23, RN24 | 7. Módulo de Rutinas / 8. Módulo de Asistente de IA |
 | RF14 | RN14, RN28 | 3. Módulo de Pagos |
 | RF15 | RN16, RN37 | 1. Módulo de Alumnos |
@@ -45,7 +45,7 @@ Cada requerimiento se rastrea hasta su verificación: el caso de uso está en `c
 | RF09 | UC01 | CA-RF09 | CP15 |
 | RF10 | UC08 | CA-RF10 | CP16, CP17, CP18 |
 | RF11 | UC10 | CA-RF11 | CP19 |
-| RF12 | UC09 | CA-RF12 | CP07 |
+| RF12 | UC09 | CA-RF12 | CP07, CP35, CP36 |
 | RF13 | UC11 | CA-RF13 | CP08, CP32 |
 | RF14 | UC03 | CA-RF14 | CP09, CP30 |
 | RF15 | UC01 | CA-RF15 | CP10 |
