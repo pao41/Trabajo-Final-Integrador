@@ -1,5 +1,7 @@
+import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import type { ReactNode } from 'react'
+import { consultarAsistente } from '../api/sugerencias'
 import { NOMBRES_TIPO } from '../types/rutinas'
 import type { TipoRutina } from '../types/rutinas'
 import type { Animo } from '../types/sugerencias'
@@ -44,6 +46,13 @@ function Opciones<T extends string>(props: {
 export default function ChatAsistente() {
   const [animo, setAnimo] = useState<Animo | null>(null)
   const [tipo, setTipo] = useState<TipoRutina | null>(null)
+  const consultar = useMutation({ mutationFn: consultarAsistente })
+
+  // Al elegir el tipo de rutina se envía la consulta con las dos respuestas
+  const elegirTipo = (elegido: TipoRutina) => {
+    setTipo(elegido)
+    consultar.mutate({ animo: animo ?? undefined, tipo: elegido })
+  }
 
   return (
     <TarjetaSeccion titulo="Asistente de rutinas">
@@ -56,8 +65,15 @@ export default function ChatAsistente() {
         </p>
       )}
       {animo && <Burbuja>Gracias por contarme. ¿Qué querés hacer hoy?</Burbuja>}
-      {animo && !tipo && <Opciones opciones={TIPOS} alElegir={setTipo} />}
+      {animo && !tipo && <Opciones opciones={TIPOS} alElegir={elegirTipo} />}
       {tipo && <Burbuja propia>{NOMBRES_TIPO[tipo]}</Burbuja>}
+      {consultar.isPending && <Burbuja>Pensando…</Burbuja>}
+      {consultar.isSuccess && (
+        <Burbuja>
+          {consultar.data.explicacion && <p className="mb-2">{consultar.data.explicacion}</p>}
+          <p className="text-[15px] text-gris-calido">{consultar.data.mensaje}</p>
+        </Burbuja>
+      )}
     </TarjetaSeccion>
   )
 }
