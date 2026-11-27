@@ -133,6 +133,13 @@ La arquitectura del proyecto sigue un esquema cliente-servidor de tres capas (fr
 ```
 ---
 
+### Limitaciones y dependencias externas
+
+* **Inteligencia Artificial (Gemini):** servicio externo y opcional. Sin clave o sin conexión, el asistente sugiere igual una rutina compatible, sin explicación.
+* **Rutinas ya aprobadas:** si el alumno actualiza su ficha de salud, las rutinas aprobadas con anterioridad no se vuelven a evaluar.
+* **Pagos:** el registro es informativo; el sistema no incluye pasarela de pago ni pagos parciales.
+* **Plan gratuito:** el backend se suspende tras un tiempo sin uso y la primera consulta posterior tarda unos segundos.
+
 ### Documentación
 
 * [Listado de módulos](./docs/modulos.md)
@@ -146,6 +153,7 @@ La arquitectura del proyecto sigue un esquema cliente-servidor de tres capas (fr
 * [Diagramas de secuencia](./docs/diagramas_secuencia.md)
 * [Diagramas de actividades](./docs/diagrama_actividades.md)
 * [Diagrama de despliegue](./docs/diagrama_despliegue.md)
+* [Guía de despliegue](./docs/despliegue.md)
 * [Matriz de trazabilidad](./docs/matriz_trazabilidad.md)
 * [Criterios de aceptación](./docs/criterios_aceptacion.md)
 * [Casos de prueba](./docs/casos_prueba.md)
@@ -156,6 +164,10 @@ La arquitectura del proyecto sigue un esquema cliente-servidor de tres capas (fr
 * [Uso de la Inteligencia Artificial](./docs/uso_de_ia.md)
 * [Escalabilidad y funcionalidades futuras](./docs/escalabilidad_y_funcionalidades_futuras.md)
 * [Endpoints de la API](./docs/api_endpoints.md)
+
+### Despliegue
+
+El procedimiento para publicar el sistema en Supabase, Render y Vercel está descrito en la [guía de despliegue](./docs/despliegue.md).
 
 ### Cómo ejecutar el proyecto en local
 
