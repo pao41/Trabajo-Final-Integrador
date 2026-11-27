@@ -8,7 +8,7 @@ from app.modules.rutinas.model import Rutina
 
 URL = "https://generativelanguage.googleapis.com/v1beta/models/{modelo}:generateContent"
 # Segundos máximos de espera de la respuesta de la IA
-ESPERA = 8
+ESPERA = 25
 
 # Cómo se describe en la consulta lo que el alumno dijo sobre cómo se siente
 ANIMOS = {
@@ -38,9 +38,14 @@ def armar_consulta(candidatas: list[Rutina], ficha: FichaSalud, animo: str | Non
 
 def consultar(texto: str) -> str:
     """Envía el texto a Gemini y devuelve la respuesta."""
+    cuerpo = {
+        "contents": [{"parts": [{"text": texto}]}],
+        # Razonamiento mínimo: la tarea es simple y así responde más rápido
+        "generationConfig": {"thinkingConfig": {"thinkingLevel": "MINIMAL"}},
+    }
     pedido = urllib.request.Request(
         URL.format(modelo=settings.gemini_model),
-        data=json.dumps({"contents": [{"parts": [{"text": texto}]}]}).encode(),
+        data=json.dumps(cuerpo).encode(),
         headers={"Content-Type": "application/json", "x-goog-api-key": settings.gemini_api_key},
     )
     with urllib.request.urlopen(pedido, timeout=ESPERA) as respuesta:
