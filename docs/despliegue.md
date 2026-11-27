@@ -26,3 +26,25 @@ El orden de publicación es el de este documento, dado que cada paso requiere un
 3. En la opción Connect, copiar la cadena de conexión del Session pooler y reemplazar `[YOUR-PASSWORD]` por la contraseña registrada. El texto resultante es el valor de la variable `DATABASE_URL`.
 
 Se utiliza el Session pooler porque la conexión directa de Supabase emplea únicamente IPv6, mientras que Render requiere IPv4.
+
+## 4. Backend (Render)
+
+Se crea un Web Service conectado al repositorio, con la siguiente configuración:
+
+| Parámetro | Valor |
+|---|---|
+| Root Directory | `backend` |
+| Build Command | `pip install -r requirements.txt` |
+| Start Command | `uvicorn app.main:app --host 0.0.0.0 --port $PORT` |
+
+Se definen las siguientes variables de entorno:
+
+| Variable | Valor |
+|---|---|
+| `PYTHON_VERSION` | `3.13.5` |
+| `DATABASE_URL` | Cadena de conexión de Supabase obtenida en la sección 3. |
+| `SECRET_KEY` | Clave de firma de las sesiones, de 32 caracteres o más. Puede generarse con `python -c "import secrets; print(secrets.token_urlsafe(48))"`. |
+| `COOKIE_SECURE` | `true`. La cookie de sesión se transmite solo por HTTPS. |
+| `FRONTEND_ORIGIN` | URL del frontend en Vercel, disponible al finalizar la sección 5. |
+| `GEMINI_API_KEY` | Clave de Google AI Studio (opcional). |
+| `GEMINI_MODEL` | `gemini-3.5-flash` |
