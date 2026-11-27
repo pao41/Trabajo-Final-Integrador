@@ -72,3 +72,25 @@ El archivo `database/datos_demo.sql` carga alumnos, planes y rutinas de ejemplo 
 4. Copiar la URL final de Vercel en la variable `FRONTEND_ORIGIN` del backend en Render, que vuelve a publicar el servicio.
 
 El archivo `frontend/vercel.json` define dos reglas: la primera reenvía al backend las solicitudes que comienzan con `/api`, y la segunda devuelve `index.html` para el resto de las rutas, de modo que las pantallas de la aplicación también abren al recargar la página. Con esta configuración el navegador se comunica siempre con el dominio del frontend y la cookie de sesión pertenece al mismo sitio, condición necesaria para su atributo `SameSite=Lax`.
+
+## 6. Verificación
+
+* La URL del backend seguida de `/docs` muestra la documentación de la API.
+* El administrador inicia sesión y el menú muestra el nombre del gimnasio.
+* Se crea un alumno, se lo inscribe y se registran un pago y un ingreso.
+* El alumno accede a su panel con el DNI y el código de acceso, y el asistente responde.
+
+## 7. Consideraciones del plan gratuito
+
+* Render suspende el servicio después de un tiempo sin uso, por lo que la primera consulta posterior tarda unos segundos en responder.
+* Supabase pausa los proyectos gratuitos después de una semana sin actividad; se reactivan desde su panel.
+* Los intentos fallidos de acceso se contabilizan en la memoria del servicio y se reinician junto con él.
+* La clave de Gemini se almacena únicamente como variable de entorno en Render y no forma parte del repositorio.
+
+## 8. Direcciones del sistema publicado
+
+| Componente | Dirección |
+|---|---|
+| Frontend (Vercel) | A completar |
+| Backend (Render) | A completar |
+| Documentación de la API | A completar (dirección del backend seguida de `/docs`) |
