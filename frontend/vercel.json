@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://URL-DEL-BACKEND/:path*" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

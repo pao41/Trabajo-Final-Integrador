@@ -48,3 +48,27 @@ Se definen las siguientes variables de entorno:
 | `FRONTEND_ORIGIN` | URL del frontend en Vercel, disponible al finalizar la sección 5. |
 | `GEMINI_API_KEY` | Clave de Google AI Studio (opcional). |
 | `GEMINI_MODEL` | `gemini-3.5-flash` |
+
+### Primer administrador
+
+La base de datos nueva no contiene usuarios y el sistema no ofrece registro público, por lo que el primer administrador se crea desde una computadora conectada a la base de producción. En PowerShell, dentro de la carpeta `backend` y con el entorno virtual activo:
+
+```powershell
+$env:DATABASE_URL="cadena-de-supabase"
+python -m app.db.seed
+```
+
+El comando solicita el nombre de usuario y la contraseña del administrador.
+
+### Datos de demostración (opcional)
+
+El archivo `database/datos_demo.sql` carga alumnos, planes y rutinas de ejemplo y se ejecuta desde el editor SQL de Supabase. Incluye un usuario y un código de acceso conocidos, por lo que no debe cargarse en una base con datos reales.
+
+## 5. Frontend (Vercel)
+
+1. Crear un proyecto desde el mismo repositorio, con `frontend` como Root Directory. Vercel detecta Vite: el comando de compilación es `npm run build` y la carpeta de salida es `dist`.
+2. Definir la variable de entorno `VITE_API_URL` con el valor `/api`.
+3. En el archivo `frontend/vercel.json`, reemplazar el marcador `URL-DEL-BACKEND` por la URL del servicio publicado en Render.
+4. Copiar la URL final de Vercel en la variable `FRONTEND_ORIGIN` del backend en Render, que vuelve a publicar el servicio.
+
+El archivo `frontend/vercel.json` define dos reglas: la primera reenvía al backend las solicitudes que comienzan con `/api`, y la segunda devuelve `index.html` para el resto de las rutas, de modo que las pantallas de la aplicación también abren al recargar la página. Con esta configuración el navegador se comunica siempre con el dominio del frontend y la cookie de sesión pertenece al mismo sitio, condición necesaria para su atributo `SameSite=Lax`.
