@@ -6,9 +6,19 @@
 * Arjona, Martin
 * Arjona, Paola
 
---
 - **Grupo:** 105
 - **Tutor:** Herrera, Gerardo Adrian
+
+### Enlaces principales
+
+| Recurso | Enlace |
+|---|---|
+| Sistema desplegado | A completar |
+| Documentación de la API | `/docs` |
+| Informe final (PDF) | [informe/](./informe/) |
+| Video de presentación | A completar |
+| Guía de despliegue | [docs/despliegue.md](./docs/despliegue.md) |
+
 ---
 
 ### Descripción del proyecto
@@ -118,6 +128,7 @@ La arquitectura del proyecto sigue un esquema cliente-servidor de tres capas (fr
 ├── backend/ 
 ├── database/ 
 ├── docs/ 
+├── informe/
 └── README.md
 ```
 ---
