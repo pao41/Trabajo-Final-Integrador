@@ -5,10 +5,11 @@ interface Props {
   rutinas: Rutina[]
   // Si no se pasa, la tabla es solo de lectura (como la ve el administrador)
   alEditar?: (rutina: Rutina) => void
+  alEliminar?: (rutina: Rutina) => void
 }
 
 // Tabla con scroll horizontal cuando la pantalla es angosta
-export default function TablaRutinas({ rutinas, alEditar }: Props) {
+export default function TablaRutinas({ rutinas, alEditar, alEliminar }: Props) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-borde bg-white">
       <table className="w-full min-w-[640px] text-left">
@@ -27,8 +28,11 @@ export default function TablaRutinas({ rutinas, alEditar }: Props) {
               <td className="p-4">{NOMBRES_TIPO[r.tipo]}</td>
               <td className="p-4">{r.contraindicaciones ?? '—'}</td>
               {alEditar && (
-                <td className="p-4">
+                <td className="flex gap-2 p-4">
                   <button onClick={() => alEditar(r)} className="boton-claro">Editar</button>
+                  {alEliminar && (
+                    <button onClick={() => alEliminar(r)} className="boton-claro border-ladrillo text-ladrillo">Eliminar</button>
+                  )}
                 </td>
               )}
             </tr>
