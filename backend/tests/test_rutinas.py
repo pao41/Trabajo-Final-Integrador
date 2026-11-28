@@ -80,3 +80,16 @@ def test_no_se_repite_el_nombre_de_una_rutina(crear_usuario, crear_entrenador, i
     assert sesion.put(f"/rutinas/{otra}", json=NUEVA).status_code == 409
     # Editar conservando el propio nombre sí se puede
     assert sesion.put(f"/rutinas/{primera}", json=NUEVA).status_code == 200
+
+
+def test_el_entrenador_elimina_una_rutina_que_nunca_se_sugirio(
+    admin, crear_usuario, crear_entrenador, iniciar_sesion
+):
+    sesion, _ = entrenador_con_sesion(crear_usuario, crear_entrenador, iniciar_sesion)
+    rutina_id = sesion.post("/rutinas", json=NUEVA).json()["id"]
+
+    assert admin.delete(f"/rutinas/{rutina_id}").status_code == 403
+    assert sesion.delete(f"/rutinas/{rutina_id}").status_code == 204
+    assert sesion.get("/rutinas").json() == []
+    assert sesion.delete(f"/rutinas/{rutina_id}").status_code == 404
+
