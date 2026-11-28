@@ -27,23 +27,26 @@ La columna "Estado" indica que el endpoint ya se encuentra disponible.
 
 ## Entrenadores (módulo 10)
 
-Cada entrenador se da de alta con su nombre y un contacto opcional. Para que pueda entrar al sistema, el administrador le crea un usuario con perfil entrenador desde Usuarios. Cada entrenador tiene un solo usuario.
+Cada entrenador se da de alta con su nombre y un contacto opcional. Para que pueda entrar al sistema, el administrador le crea un usuario con perfil entrenador desde Usuarios. Cada entrenador tiene un solo usuario. Los entrenadores no se eliminan: cuando dejan el gimnasio se dan de baja y conservan sus rutinas y aprobaciones.
 
 | Método y ruta | Descripción | Acceso | Estado |
 |---|---|---|---|
 | `GET /entrenadores` | Lista los entrenadores ordenados por nombre | Administrador | Disponible |
-| `POST /entrenadores` | Da de alta un entrenador | Administrador | Disponible |
+| `POST /entrenadores` | Da de alta un entrenador; el nombre no se repite | Administrador | Disponible |
 | `PUT /entrenadores/{id}` | Edita el nombre y el contacto de un entrenador | Administrador | Disponible |
+| `PATCH /entrenadores/{id}/desactivar` | Da de baja a un entrenador y desactiva su usuario | Administrador | Disponible |
+| `PATCH /entrenadores/{id}/activar` | Reactiva a un entrenador | Administrador | Disponible |
 
 ## Rutinas (módulo 7)
 
-Banco de rutinas de calentamiento, movilidad y vuelta a la calma. Cada rutina indica sus contraindicaciones y queda asociada al entrenador que la cargó. Solo el entrenador carga y edita rutinas; el administrador las consulta.
+Banco de rutinas de calentamiento, movilidad y vuelta a la calma. Cada rutina indica sus contraindicaciones y queda asociada al entrenador que la cargó. Solo el entrenador carga, edita y elimina rutinas; el administrador las consulta.
 
 | Método y ruta | Descripción | Acceso | Estado |
 |---|---|---|---|
 | `GET /rutinas` | Lista las rutinas del banco | Administrador y entrenador | Disponible |
-| `POST /rutinas` | Carga una rutina a nombre del entrenador de la sesión | Entrenador | Disponible |
+| `POST /rutinas` | Carga una rutina a nombre del entrenador de la sesión; el nombre no se repite | Entrenador | Disponible |
 | `PUT /rutinas/{id}` | Edita una rutina; conserva al entrenador que la cargó | Entrenador | Disponible |
+| `DELETE /rutinas/{id}` | Elimina una rutina que nunca se sugirió a un alumno | Entrenador | Disponible |
 
 ## Asistente de IA (módulo 8)
 
@@ -93,6 +96,7 @@ Los alumnos no se eliminan: la baja es lógica y conserva todo su historial. Al 
 | `GET /planes` | Lista los planes | Administrador | Disponible |
 | `POST /planes` | Crea un plan; el nombre no se repite | Administrador | Disponible |
 | `PUT /planes/{id}` | Modifica un plan; las inscripciones ya creadas conservan sus fechas y su saldo | Administrador | Disponible |
+| `DELETE /planes/{id}` | Elimina un plan que nunca tuvo inscripciones | Administrador | Disponible |
 | `GET /inscripciones` | Lista las inscripciones; con `alumno_id` muestra las de ese alumno | Administrador | Disponible |
 | `POST /inscripciones` | Inscribe a un alumno en un plan: calcula el vencimiento y, en planes por clases, el saldo | Administrador | Disponible |
 
@@ -107,7 +111,7 @@ Los alumnos no se eliminan: la baja es lógica y conserva todo su historial. Al 
 
 | Método y ruta | Descripción | Acceso | Estado |
 |---|---|---|---|
-| `GET /asistencias` | Ingresos registrados; con `alumno_id` los de un alumno y con `fecha` los de ese día | Administrador | Disponible |
+| `GET /asistencias` | Ingresos registrados, con las clases que le quedan al alumno; con `alumno_id` los de un alumno y con `fecha` los de ese día | Administrador | Disponible |
 | `POST /asistencias` | Registra el ingreso (check-in): rechaza un duplicado dentro de las 2 horas y, en planes por clases, descuenta una clase | Administrador | Disponible |
 
 ## Dashboard (módulo 5)
