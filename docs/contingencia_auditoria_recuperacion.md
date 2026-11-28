@@ -13,9 +13,9 @@ Este documento describe, a nivel conceptual, cómo se registran las acciones imp
 
 ### Formato del registro de acciones sensibles
 
-Cada acción sensible genera una línea de log con: fecha y hora, usuario (o "alumno" en el Panel del Alumno), acción, entidad afectada y resultado (éxito o rechazo).
+Cada acción sensible genera una línea de log con: fecha y hora, usuario del personal, acción, entidad afectada y resultado (éxito o rechazo).
 
-Ejemplo: `2026-11-03 10:42:15 | usuario=admin | BAJA_ALUMNO | alumnos#12 | OK`
+Ejemplo: `2026-11-03 10:42:15 | admin | dar de baja | alumno 12 | éxito`
 
 ### Qué no se registra
 
