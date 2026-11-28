@@ -7,7 +7,7 @@ La aplicación valida los datos primero, para dar mensajes claros al usuario. La
 | Regla | Mecanismo en la base de datos | Tabla.columna |
 |---|---|---|
 | RN13 — DNI único | `UNIQUE` | `alumnos.dni` |
-| RN14, RN28, RF14 — el historial no se borra | `ON DELETE RESTRICT` en todas las claves foráneas: no se puede eliminar un alumno, plan, inscripción o entrenador con registros asociados | Todas las FK |
+| RN14, RN28, RF14 — el historial no se borra | `ON DELETE RESTRICT` en todas las claves foráneas: no se puede eliminar un alumno, plan, inscripción o entrenador con registros asociados; solo se eliminan los planes sin inscripciones y las rutinas nunca sugeridas (RN47) | Todas las FK |
 | RN01 — estados válidos de la inscripción | `CHECK` (`activo`, `por_vencer`, `vencido`) | `inscripciones.estado` |
 | RN02 — coherencia de fechas | `CHECK (fecha_vencimiento >= fecha_inicio)` | `inscripciones` |
 | RN29 — plan por clases con cantidad, plan por tiempo sin cantidad | `CHECK chk_plan_clases` | `planes.tipo` y `planes.cantidad_clases` |
