@@ -8,6 +8,11 @@ export interface Alumno {
   fecha_alta: string
 }
 
+// Alumno del listado: incluye cuántas rutinas aprobadas tiene
+export interface AlumnoListado extends Alumno {
+  rutinas_aprobadas: number
+}
+
 // Datos que se cargan para dar de alta o editar un alumno
 export interface AlumnoDatos {
   nombre: string

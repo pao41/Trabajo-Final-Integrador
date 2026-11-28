@@ -2,7 +2,7 @@ import type { Alumno, AlumnoConCodigo, AlumnoDatos } from '../types/alumnos'
 import { enviarJson, pedirJson } from './cliente'
 
 export const listarAlumnos = (buscar: string) =>
-  pedirJson<Alumno[]>(`/alumnos?buscar=${encodeURIComponent(buscar)}`)
+  pedirJson<AlumnoListado[]>(`/alumnos?buscar=${encodeURIComponent(buscar)}`)
 
 export const obtenerAlumno = (id: number) => pedirJson<Alumno>(`/alumnos/${id}`)
 
