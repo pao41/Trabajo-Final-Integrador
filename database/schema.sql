@@ -70,6 +70,7 @@ CREATE TABLE entrenadores (
     id              SERIAL PRIMARY KEY,
     nombre          VARCHAR(150) NOT NULL,
     contacto        VARCHAR(150),
+    activo          BOOLEAN NOT NULL DEFAULT TRUE,
     fecha_alta      DATE NOT NULL DEFAULT CURRENT_DATE
 );
 

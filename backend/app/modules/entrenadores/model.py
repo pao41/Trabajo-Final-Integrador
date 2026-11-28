@@ -12,6 +12,7 @@ class Entrenador(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     nombre: str
     contacto: str | None = None
+    activo: bool = True
     fecha_alta: date = Field(default_factory=today_ar)
 
 
@@ -24,4 +25,5 @@ class EntrenadorDatos(SQLModel):
 # Entrenador que se devuelve al frontend
 class EntrenadorPublic(EntrenadorDatos):
     id: int
+    activo: bool
     fecha_alta: date
