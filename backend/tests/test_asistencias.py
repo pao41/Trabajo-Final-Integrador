@@ -152,3 +152,12 @@ def test_historial_por_alumno_y_por_dia(admin):
     assert del_alumno[0]["fecha"] == today_ar().isoformat()
     assert {a["alumno_id"] for a in de_hoy} == {alumno_id, otro_id}
     assert len(de_hoy) == 2
+
+
+def test_el_historial_informa_las_clases_restantes(admin):
+    alumno_id, _ = alumno_inscripto(admin, CLASES)
+    ingresar(admin, alumno_id)
+
+    historial = admin.get("/asistencias", params={"alumno_id": alumno_id}).json()
+
+    assert historial[0]["clases_restantes"] == 9
