@@ -34,9 +34,11 @@ INSERT INTO alumnos (nombre, dni, contacto, codigo_acceso_hash, fecha_alta) VALU
 ('Sofía Luna', '34555666', '387-5551005', '$2b$12$aQXRgdXiAiqDesjUFDOj.u15NPCxLhASmZc3INuOzQ5xAyxkO/tAe', CURRENT_DATE - 20),
 ('Diego Herrera', '35666777', '387-5551006', '$2b$12$aQXRgdXiAiqDesjUFDOj.u15NPCxLhASmZc3INuOzQ5xAyxkO/tAe', CURRENT_DATE - 12),
 ('Julieta Vega', '36777888', '387-5551007', '$2b$12$aQXRgdXiAiqDesjUFDOj.u15NPCxLhASmZc3INuOzQ5xAyxkO/tAe', CURRENT_DATE - 5),
-('Tomás Aguirre', '37888999', '387-5551008', '$2b$12$aQXRgdXiAiqDesjUFDOj.u15NPCxLhASmZc3INuOzQ5xAyxkO/tAe', CURRENT_DATE - 2);
+('Tomás Aguirre', '37888999', '387-5551008', '$2b$12$aQXRgdXiAiqDesjUFDOj.u15NPCxLhASmZc3INuOzQ5xAyxkO/tAe', CURRENT_DATE - 2),
+('Lucas Medina', '38999000', '387-5551009', '$2b$12$aQXRgdXiAiqDesjUFDOj.u15NPCxLhASmZc3INuOzQ5xAyxkO/tAe', CURRENT_DATE - 70),
+('Paula Ríos', '39000111', '387-5551010', '$2b$12$aQXRgdXiAiqDesjUFDOj.u15NPCxLhASmZc3INuOzQ5xAyxkO/tAe', CURRENT_DATE - 110);
 
--- Inscripciones: tres activas, dos por vencer, dos vencidas y un alumno sin plan
+-- Inscripciones: tres activas, dos por vencer, cuatro vencidas y un alumno sin plan
 INSERT INTO inscripciones (alumno_id, plan_id, fecha_inicio, fecha_vencimiento, clases_restantes, estado)
 SELECT a.id, p.id, CURRENT_DATE - d.inicio, CURRENT_DATE - d.inicio + p.duracion_dias, d.clases, d.estado
 FROM (VALUES
@@ -46,7 +48,9 @@ FROM (VALUES
     ('33444555', 'Mensual libre', 27, NULL, 'por_vencer'),
     ('34555666', 'Mensual libre', 26, NULL, 'por_vencer'),
     ('35666777', 'Mensual libre', 42, NULL, 'vencido'),
-    ('36777888', 'Pack 8 clases', 45, 0, 'vencido')
+    ('36777888', 'Pack 8 clases', 45, 0, 'vencido'),
+    ('38999000', 'Mensual libre', 38, NULL, 'vencido'),
+    ('39000111', 'Trimestral', 100, NULL, 'vencido')
 ) AS d(dni, plan, inicio, clases, estado)
 JOIN alumnos a ON a.dni = d.dni
 JOIN planes p ON p.nombre = d.plan;
@@ -64,7 +68,9 @@ JOIN (VALUES
     ('33444555', 'efectivo'),
     ('34555666', 'debito'),
     ('35666777', 'efectivo'),
-    ('36777888', 'transferencia')
+    ('36777888', 'transferencia'),
+    ('38999000', 'debito'),
+    ('39000111', 'efectivo')
 ) AS m(dni, metodo) ON m.dni = a.dni;
 
 -- Asistencias de las últimas semanas
