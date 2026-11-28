@@ -82,9 +82,10 @@ Las acciones sensibles se registran en el log del backend con usuario, acción, 
 |---|---|
 | Baja lógica de un alumno | Administrador |
 | Regeneración de código de acceso | Administrador |
-| Alta o edición de entrenadores (RF17); su acceso se corta desactivando su usuario | Administrador |
+| Alta, edición y baja de entrenadores (RF17); la baja desactiva su usuario | Administrador |
 | Alta o desactivación de usuarios y restablecimiento de contraseñas | Administrador |
-| Cambios en configuración, planes y precios | Administrador |
+| Cambios en configuración, planes y precios, y eliminación de planes | Administrador |
+| Eliminación de una rutina que nunca se sugirió | Entrenador |
 | Aprobación o rechazo de una sugerencia de rutina | Entrenador |
 
 ## 6. Protección de datos personales y de salud
