@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { crearRutina, editarRutina, listarRutinas } from '../api/rutinas'
+import { crearRutina, editarRutina, eliminarRutina, listarRutinas } from '../api/rutinas'
 import FormularioRutina from '../componentes/FormularioRutina'
 import MensajeError from '../componentes/MensajeError'
 import TablaRutinas from '../componentes/TablaRutinas'
@@ -26,6 +26,16 @@ export default function Rutinas() {
     },
   })
 
+  // Solo se elimina una rutina que nunca se sugirió; si ya se sugirió, el servidor la rechaza
+  const eliminar = useMutation({
+    mutationFn: (rutina: Rutina) => eliminarRutina(rutina.id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['rutinas'] }),
+  })
+
+  const alEliminar = (rutina: Rutina) => {
+    if (window.confirm(`¿Eliminar la rutina ${rutina.nombre}?`)) eliminar.mutate(rutina)
+  }
+
   // Carga la rutina en el formulario y baja al formulario para verla
   const editar = (rutina: Rutina) => {
     guardar.reset()
@@ -46,7 +56,14 @@ export default function Rutinas() {
           Todavía no hay rutinas cargadas.{!esEntrenador && ' Las rutinas son cargadas por los entrenadores.'}
         </p>
       )}
-      {data && data.length > 0 && <TablaRutinas rutinas={data} alEditar={esEntrenador ? editar : undefined} />}
+      {data && data.length > 0 && (
+        <TablaRutinas
+          rutinas={data}
+          alEditar={esEntrenador ? editar : undefined}
+          alEliminar={esEntrenador ? alEliminar : undefined}
+        />
+      )}
+      {eliminar.isError && <MensajeError texto={eliminar.error.message} />}
       {esEntrenador && !editando && <h2 className="font-titulo text-2xl font-bold">¿Desea cargar una nueva rutina?</h2>}
       {esEntrenador && (
         <TarjetaSeccion titulo={editando ? `Editar ${editando.nombre}` : 'Nueva rutina'}>
