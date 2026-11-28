@@ -43,3 +43,24 @@ def editar(
 ):
     with auditar(admin.nombre_usuario, "editar entrenador", f"entrenador {entrenador_id}"), uow:
         return EntrenadorService(uow).editar(entrenador_id, datos)
+
+
+@router.patch("/{entrenador_id}/desactivar", response_model=EntrenadorPublic)
+def desactivar(
+    entrenador_id: int,
+    admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with auditar(admin.nombre_usuario, "baja de entrenador", f"entrenador {entrenador_id}"), uow:
+        return EntrenadorService(uow).cambiar_estado(entrenador_id, False)
+
+
+@router.patch("/{entrenador_id}/activar", response_model=EntrenadorPublic)
+def activar(
+    entrenador_id: int,
+    admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with auditar(admin.nombre_usuario, "reactivar entrenador", f"entrenador {entrenador_id}"), uow:
+        return EntrenadorService(uow).cambiar_estado(entrenador_id, True)
+

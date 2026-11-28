@@ -29,6 +29,18 @@ class EntrenadorService:
         entrenador.contacto = datos.contacto
         return EntrenadorPublic.model_validate(self.uow.entrenadores.update(entrenador))
 
+    def cambiar_estado(self, entrenador_id: int, activo: bool) -> EntrenadorPublic:
+        """Da de baja o reactiva un entrenador; la baja también desactiva su usuario (RN46)."""
+        entrenador = self.uow.entrenadores.get_by_id(entrenador_id)
+        if not entrenador:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Entrenador no encontrado")
+        entrenador.activo = activo
+        usuario = self.uow.usuarios.get_by_entrenador_id(entrenador_id)
+        if usuario and not activo:
+            usuario.activo = False
+            self.uow.usuarios.update(usuario)
+        return EntrenadorPublic.model_validate(self.uow.entrenadores.update(entrenador))
+
     def _validar_nombre(self, nombre: str, propio_id: int | None = None) -> None:
         """El nombre no se repite entre entrenadores (RN45); al editar se ignora el propio."""
         otro = self.uow.entrenadores.get_by_nombre(nombre)
