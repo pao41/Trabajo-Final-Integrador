@@ -179,8 +179,25 @@ def test_si_la_ia_falla_el_asistente_sugiere_la_primera_rutina_compatible(
     pendientes = entrenador.get("/sugerencias", params={"estado": "pendiente"}).json()
 
     assert respuesta.status_code == 201
-    assert respuesta.json()["explicacion"] is None
-    assert [s["rutina_nombre"] for s in pendientes] == ["Respiración profunda"]
+    assert respuesta.status_code == 409
+    assert [r["nombre"] for r in entrenador.get("/rutinas").json()] == ["Respiración profunda"]
+
+
+def test_el_listado_de_alumnos_cuenta_las_rutinas_aprobadas(
+    admin, crear_usuario, crear_entrenador, iniciar_sesion
+):
+    entrenador, _ = entrenador_con_sesion(crear_usuario, crear_entrenador, iniciar_sesion)
+    cargar(entrenador, "Respiración profunda")
+    alumno = alumno_con_ficha(admin, problemas_cardiacos=False)
+    cliente, _ = entrar(alumno["dni"], alumno["codigo_acceso"])
+    cliente.post("/sugerencias")
+
+    antes = admin.get("/alumnos").json()[0]["rutinas_aprobadas"]
+    sugerencia_id = entrenador.get("/sugerencias").json()[0]["id"]
+    entrenador.patch(f"/sugerencias/{sugerencia_id}/aprobar")
+    despues = admin.get("/alumnos").json()[0]["rutinas_aprobadas"]
+
+    assert (antes, despues) == (0, 1)
 
 
 def test_no_se_elimina_una_rutina_que_ya_se_sugirio(
