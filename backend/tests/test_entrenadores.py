@@ -116,3 +116,8 @@ def test_la_baja_de_un_entrenador_desactiva_su_usuario_y_conserva_su_historial(
     assert admin.patch("/entrenadores/999/desactivar").status_code == 404
 
 
+def test_no_se_crea_un_usuario_para_un_entrenador_dado_de_baja(admin):
+    entrenador_id = alta(admin).json()["id"]
+    admin.patch(f"/entrenadores/{entrenador_id}/desactivar")
+
+    assert usuario_entrenador(admin, entrenador_id).status_code == 409
