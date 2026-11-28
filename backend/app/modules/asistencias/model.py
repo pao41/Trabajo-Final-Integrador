@@ -28,9 +28,9 @@ class AsistenciaPublic(SQLModel):
     alumno_nombre: str
     inscripcion_id: int | None
     plan_nombre: str | None
+    clases_restantes: int | None
     fecha: date
     hora: time
-
 
 # Respuesta de registrar un ingreso: el ingreso y cómo quedó la inscripción
 class AsistenciaRegistrada(SQLModel):

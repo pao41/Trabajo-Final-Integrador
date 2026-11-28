@@ -51,7 +51,7 @@ class AsistenciaService:
         return [self._armar(a) for a in self.uow.asistencias.listar(alumno_id, fecha)]
 
     def _armar(self, asistencia: Asistencia) -> AsistenciaPublic:
-        """Arma la respuesta con el nombre del alumno y el del plan."""
+        """Arma la respuesta con el nombre del alumno, el del plan y las clases que le quedan."""
         alumno = self.uow.alumnos.get_by_id(asistencia.alumno_id)
         inscripcion = self.uow.inscripciones.get_by_id(asistencia.inscripcion_id)
         plan = self.uow.planes.get_by_id(inscripcion.plan_id) if inscripcion else None
@@ -59,6 +59,7 @@ class AsistenciaService:
             **asistencia.model_dump(),
             alumno_nombre=alumno.nombre,
             plan_nombre=plan.nombre if plan else None,
+            clases_restantes=inscripcion.clases_restantes if inscripcion else None,
         )
 
     def _alumno_activo(self, alumno_id: int) -> Alumno:
