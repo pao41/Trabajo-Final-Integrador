@@ -13,7 +13,7 @@ El sistema se organiza en dos paneles diferenciados, según el actor que los uti
 |---|---|
 | RF01 | El sistema debe permitir registrar, editar y dar de baja (lógica) alumnos (nombre, DNI, contacto), generando un código de acceso para el Panel del Alumno. |
 | RF02 | El sistema debe permitir registrar la ficha de salud básica de cada alumno (problemas cardíacos, lesiones, observaciones). |
-| RF03 | El sistema debe permitir crear y editar planes (nombre, duración, precio y tipo: por tiempo o por clases; en los planes por clases, también la cantidad de clases incluidas). |
+| RF03 | El sistema debe permitir crear, editar y eliminar planes (nombre, duración, precio y tipo: por tiempo o por clases; en los planes por clases, también la cantidad de clases incluidas). Solo se eliminan los planes que nunca tuvieron inscripciones. |
 | RF04 | El sistema debe permitir inscribir a un alumno en un plan, calculando automáticamente la fecha de vencimiento. |
 | RF05 | El sistema debe actualizar automáticamente el estado de cada inscripción (activo / por vencer / vencido) según la fecha actual. |
 | RF06 | El sistema debe permitir registrar pagos asociados a una inscripción, indicando fecha, monto y método de pago. |
@@ -21,13 +21,13 @@ El sistema se organiza en dos paneles diferenciados, según el actor que los uti
 | RF08 | El sistema debe mostrar un dashboard con facturación total del mes y desglose por método de pago. |
 | RF09 | El sistema debe mostrar el listado de alumnos filtrado por estado (activo / por vencer / vencido). |
 | RF10 | El sistema debe ofrecer un panel de autoconsulta para que el alumno vea su estado de cuota e historial de asistencia, accediendo con su DNI y su código de acceso. |
-| RF11 | El sistema debe permitir cargar un banco de rutinas de calentamiento, movilidad y vuelta a la calma, indicando contraindicaciones de salud para cada una. |
+| RF11 | El sistema debe permitir cargar un banco de rutinas de calentamiento, movilidad y vuelta a la calma, indicando contraindicaciones de salud para cada una. Solo se eliminan las rutinas que nunca se sugirieron a un alumno. |
 | RF12 | El sistema debe ofrecer al alumno un asistente que, según cómo se siente y qué quiere hacer, sugiera una rutina del banco filtrado por su ficha de salud y explique el motivo, sin generar ejercicios nuevos. |
 | RF13 | Toda rutina sugerida debe quedar en estado "pendiente" hasta ser aprobada por un entrenador antes de estar disponible para el alumno. |
 | RF14 | El sistema debe conservar el historial completo de pagos e inscripciones de cada alumno, sin eliminarlo ante bajas o cambios de plan. |
 | RF15 | El sistema debe permitir al personal del gimnasio regenerar el código de acceso de un alumno desde el Panel Administrador, en caso de pérdida u olvido; el código anterior deja de ser válido. |
 | RF16 | El sistema debe permitir configurar parámetros generales: datos del gimnasio (su nombre se muestra en todas las pantallas), días de anticipación para el estado "por vencer", y métodos de pago habilitados. |
-| RF17 | El sistema debe permitir al administrador dar de alta y editar entrenadores. |
+| RF17 | El sistema debe permitir al administrador dar de alta, editar y dar de baja entrenadores. |
 | RF18 | El sistema debe asociar cada rutina cargada y cada rutina aprobada al entrenador que realizó la acción. |
 | RF19 | El sistema debe permitir configurar una meta semanal de asistencias por alumno, utilizada para calcular el checklist del Panel del Alumno. |
 | RF20 | El sistema debe gestionar el saldo de clases de las inscripciones por clases: inicializarlo al inscribir, descontar una clase por cada ingreso registrado y no registrar ingresos cuando el saldo sea cero (ver [`planes_por_clases.md`](./planes_por_clases.md)). |
