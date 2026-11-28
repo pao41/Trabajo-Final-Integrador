@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, status
 from app.core.auditoria import auditar
 from app.core.deps import require_role
 from app.core.uow import UnitOfWork, get_uow
-from app.modules.alumnos.model import AlumnoConCodigo, AlumnoDatos, AlumnoPublic
+from app.modules.alumnos.model import AlumnoConCodigo, AlumnoDatos, AlumnoListado, AlumnoPublic
 from app.modules.alumnos.service import AlumnoService
 from app.modules.usuarios.model import UsuarioPublic
 
@@ -15,7 +15,7 @@ router = APIRouter(prefix="/alumnos", tags=["Alumnos"])
 solo_admin = require_role(["administrador"])
 
 
-@router.get("", response_model=list[AlumnoPublic])
+@router.get("", response_model=list[AlumnoListado])
 def listar(
     _admin: Annotated[UsuarioPublic, Depends(solo_admin)],
     uow: Annotated[UnitOfWork, Depends(get_uow)],

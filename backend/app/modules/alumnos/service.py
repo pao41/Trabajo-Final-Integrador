@@ -2,7 +2,13 @@ from fastapi import HTTPException, status
 
 from app.core.security import generate_access_code, hash_password
 from app.core.uow import UnitOfWork
-from app.modules.alumnos.model import Alumno, AlumnoConCodigo, AlumnoDatos, AlumnoPublic
+from app.modules.alumnos.model import (
+    Alumno,
+    AlumnoConCodigo,
+    AlumnoDatos,
+    AlumnoListado,
+    AlumnoPublic,
+)
 
 
 class AlumnoService:
@@ -23,8 +29,13 @@ class AlumnoService:
         )
         return self._con_codigo(self.uow.alumnos.add(alumno), codigo)
 
-    def listar(self, texto: str | None = None) -> list[AlumnoPublic]:
-        return [AlumnoPublic.model_validate(a) for a in self.uow.alumnos.buscar(texto)]
+    def listar(self, texto: str | None = None) -> list[AlumnoListado]:
+        """Lista los alumnos con la cantidad de rutinas aprobadas de cada uno."""
+        aprobadas = self.uow.sugerencias.conteo_aprobadas_por_alumno()
+        return [
+            AlumnoListado(**a.model_dump(), rutinas_aprobadas=aprobadas.get(a.id, 0))
+            for a in self.uow.alumnos.buscar(texto)
+        ]
 
     def obtener(self, alumno_id: int) -> AlumnoPublic:
         return AlumnoPublic.model_validate(self._buscar(alumno_id))
