@@ -58,7 +58,7 @@ Si el dueño también entrena, se le crean dos usuarios, uno por perfil.
 | **Regenerar el código de acceso de un alumno** | ✔ | — |
 | Cargar y editar la ficha de salud | ✔ | — |
 | Consultar la ficha de salud | ✔ | ✔ |
-| **Crear y editar planes y precios** | ✔ | — |
+| **Crear, editar y eliminar planes y precios** | ✔ | — |
 | Inscribir alumnos y renovar | ✔ | — |
 | Registrar pagos | ✔ | — |
 | Registrar asistencia (check-in) | ✔ | — |
@@ -68,7 +68,7 @@ Si el dueño también entrena, se le crean dos usuarios, uno por perfil.
 | **Configuración general del sistema** | ✔ | — |
 | **Gestionar entrenadores** | ✔ | — |
 | **Gestionar usuarios** | ✔ | — |
-| Cargar y editar rutinas del banco | — | ✔ |
+| Cargar, editar y eliminar rutinas del banco | — | ✔ |
 | Aprobar o rechazar sugerencias del Asistente de IA | — | ✔ |
 | Consultar rutinas y sugerencias | ✔ (lectura) | ✔ |
 
