@@ -41,6 +41,9 @@
 
 - **RN24** — Un entrenador debe existir registrado en el sistema antes de poder cargar rutinas o aprobar sugerencias generadas por el Asistente de IA.
 
+- **RN45** — No puede haber dos entrenadores ni dos rutinas con el mismo nombre. La comparación no distingue mayúsculas ni los espacios del principio y del final.
+- **RN46** — Los entrenadores no se eliminan: cuando dejan de trabajar en el gimnasio se dan de baja. La baja desactiva su usuario y conserva sus rutinas y aprobaciones. No se crean ni se reactivan usuarios de un entrenador dado de baja, salvo que se lo reactive.
+
 ## Checklist y metas personales
 - **RN25** — Cada alumno tiene una meta semanal de asistencias configurable (valor por defecto: 3 por semana). El checklist del Panel del Alumno se calcula comparando las asistencias registradas en la semana en curso contra esta meta.
 
@@ -52,6 +55,8 @@
 ## Auditoría y trazabilidad operativa
 
 - **RN28** — Todo registro de pago, inscripción, asistencia, carga de rutina y validación de sugerencias del Asistente de IA conserva su fecha de ejecución y el entrenador responsable cuando corresponda, sin permitir el borrado físico de operaciones históricas.
+
+- **RN47** — Un plan solo puede eliminarse si nunca tuvo inscripciones, y una rutina solo si nunca fue sugerida a un alumno. Con historial no se eliminan, para conservar la trazabilidad (RN28).
 
 ## Planes por cantidad de clases
 
@@ -69,7 +74,7 @@
 - **RN37** — El código de acceso del alumno lo genera el sistema de forma aleatoria y no se deriva del DNI. Se almacena cifrado (hash) y se muestra al personal una única vez, al generarlo o regenerarlo. Al regenerarlo, el código anterior deja de ser válido.
 - **RN38** — Después de 5 intentos fallidos consecutivos de acceso (alumno o personal) el sistema bloquea nuevos intentos durante 15 minutos. Los mensajes de error son genéricos y no indican qué dato falló.
 - **RN39** — La ficha de salud solo puede ser consultada por personal autenticado según su perfil (administrador y entrenador). Nunca se muestra en el Panel del Alumno.
-- **RN40** — Las acciones sensibles (baja de alumnos, regeneración de códigos, gestión de entrenadores y usuarios, cambios de configuración, planes y precios, y aprobación o rechazo de rutinas) se registran en el log del backend con usuario, acción, fecha y hora. El registro no incluye contraseñas, códigos de acceso ni datos de salud.
+- **RN40** — Las acciones sensibles (baja de alumnos, regeneración de códigos, gestión de entrenadores y usuarios, cambios de configuración, planes y precios, eliminación de planes y rutinas, y aprobación o rechazo de rutinas) se registran en el log del backend con usuario, acción, fecha y hora. El registro no incluye contraseñas, códigos de acceso ni datos de salud.
 
 ## Contingencia y recuperación
 
