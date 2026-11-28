@@ -80,6 +80,7 @@ Un sistema web centralizado que conecta la administración del gimnasio con el s
 * **Registro de pagos:** Alta de cobranzas con especificación del método de pago (efectivo, transferencia, débito, crédito).
 * **Checklist de asistencia:** Módulo rápido de registro manual para la marcación diaria de presencia de los alumnos con validación para evitar check-ins duplicados.
 * **Módulo de Rutinas:** Banco de rutinas de entrenamiento físico, cargado y mantenido por el entrenador.
+* **Gestión de entrenadores:** Alta, edición y baja de los entrenadores que cargan las rutinas y aprueban las sugerencias; la baja desactiva su usuario y conserva su historial.
 * **Asistente de IA (con supervisión):** Sugerencia guiada de ejercicios básicos de calentamiento, movilidad articular y estiramiento, filtrada por la ficha de salud del alumno y sujeta a aprobación del entrenador antes de estar disponible para consulta.
 * **Dashboard administrativo:** Facturación total y por método de pago, alumnos nuevos del mes, asistencias semanales, cuotas vencidas e ingresos proyectados.
 * **Módulo de Configuración:** Datos generales del gimnasio, días de anticipación para el estado "por vencer" y métodos de pago habilitados.
