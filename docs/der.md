@@ -91,6 +91,7 @@ erDiagram
         int id PK
         string nombre
         string contacto
+        boolean activo
         date fecha_alta
     }
      USUARIOS {

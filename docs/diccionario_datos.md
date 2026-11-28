@@ -75,6 +75,7 @@ Las restricciones de cada columna están definidas en [`/database/schema.sql`](.
 | id | SERIAL | Identificador único | PK |
 | nombre | VARCHAR(150) | Nombre del entrenador | NOT NULL |
 | contacto | VARCHAR(150) | Teléfono o email | — |
+| activo | BOOLEAN | Indica si el entrenador sigue trabajando; la baja es lógica (RN46) | NOT NULL, DEFAULT TRUE |
 | fecha_alta | DATE | Fecha de alta en el sistema | NOT NULL, DEFAULT hoy |
 
 ## Tabla: usuarios
