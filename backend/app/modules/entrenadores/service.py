@@ -15,6 +15,7 @@ class EntrenadorService:
 
     def crear(self, datos: EntrenadorDatos) -> EntrenadorPublic:
         """Da de alta un entrenador; después se le puede crear su usuario."""
+        self._validar_nombre(datos.nombre)
         entrenador = Entrenador(nombre=datos.nombre.strip(), contacto=datos.contacto)
         return EntrenadorPublic.model_validate(self.uow.entrenadores.add(entrenador))
 
@@ -23,6 +24,13 @@ class EntrenadorService:
         entrenador = self.uow.entrenadores.get_by_id(entrenador_id)
         if not entrenador:
             raise HTTPException(status.HTTP_404_NOT_FOUND, "Entrenador no encontrado")
+        self._validar_nombre(datos.nombre, entrenador_id)
         entrenador.nombre = datos.nombre.strip()
         entrenador.contacto = datos.contacto
         return EntrenadorPublic.model_validate(self.uow.entrenadores.update(entrenador))
+
+    def _validar_nombre(self, nombre: str, propio_id: int | None = None) -> None:
+        """El nombre no se repite entre entrenadores (RN45); al editar se ignora el propio."""
+        otro = self.uow.entrenadores.get_by_nombre(nombre)
+        if otro and otro.id != propio_id:
+            raise HTTPException(status.HTTP_409_CONFLICT, "Ya existe un entrenador con ese nombre")
