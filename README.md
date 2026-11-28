@@ -180,6 +180,8 @@ psql -U postgres -c "CREATE DATABASE gimnasio;"
 psql -U postgres -d gimnasio -f database/schema.sql
 ```
 
+En Windows, si `psql` no se reconoce, se agrega la carpeta `bin` de PostgreSQL (por ejemplo `C:\Program Files\PostgreSQL\16\bin`) a la variable de entorno `PATH`, o se ejecuta el comando con la ruta completa. Para que las tildes se carguen bien desde PowerShell, antes de ejecutar un archivo SQL se define `$env:PGCLIENTENCODING="UTF8"`.
+
 **2. Backend** (desde la raíz del repositorio)
 
 ```bash
