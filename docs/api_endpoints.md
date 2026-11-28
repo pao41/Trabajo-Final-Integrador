@@ -77,7 +77,7 @@ Los alumnos no se eliminan: la baja es lógica y conserva todo su historial. Al 
 
 | Método y ruta | Descripción | Acceso | Estado |
 |---|---|---|---|
-| `GET /alumnos` | Lista los alumnos; con `buscar` filtra por nombre o DNI | Administrador | Disponible |
+| `GET /alumnos` | Lista los alumnos con la cantidad de rutinas aprobadas de cada uno; con `buscar` filtra por nombre o DNI | Administrador | Disponible |
 | `POST /alumnos` | Da de alta un alumno y genera su código de acceso; el DNI no se repite | Administrador | Disponible |
 | `GET /alumnos/{id}` | Datos de un alumno | Administrador | Disponible |
 | `PUT /alumnos/{id}` | Modifica nombre, DNI y contacto | Administrador | Disponible |
