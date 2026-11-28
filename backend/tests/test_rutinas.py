@@ -67,3 +67,16 @@ def test_solo_se_permiten_los_tres_tipos_de_rutina(crear_usuario, crear_entrenad
     fuerza = sesion.post("/rutinas", json={**NUEVA, "tipo": "fuerza"})
 
     assert fuerza.status_code == 422
+
+
+def test_no_se_repite_el_nombre_de_una_rutina(crear_usuario, crear_entrenador, iniciar_sesion):
+    sesion, _ = entrenador_con_sesion(crear_usuario, crear_entrenador, iniciar_sesion)
+    primera = sesion.post("/rutinas", json=NUEVA).json()["id"]
+    otra = sesion.post("/rutinas", json={**NUEVA, "nombre": "Estiramiento"}).json()["id"]
+
+    assert sesion.post("/rutinas", json=NUEVA).status_code == 409
+    repetida = {**NUEVA, "nombre": " MOVILIDAD de hombros"}
+    assert sesion.post("/rutinas", json=repetida).status_code == 409
+    assert sesion.put(f"/rutinas/{otra}", json=NUEVA).status_code == 409
+    # Editar conservando el propio nombre sí se puede
+    assert sesion.put(f"/rutinas/{primera}", json=NUEVA).status_code == 200
