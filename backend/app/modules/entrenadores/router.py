@@ -63,4 +63,3 @@ def activar(
 ):
     with auditar(admin.nombre_usuario, "reactivar entrenador", f"entrenador {entrenador_id}"), uow:
         return EntrenadorService(uow).cambiar_estado(entrenador_id, True)
-

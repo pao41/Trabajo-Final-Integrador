@@ -15,4 +15,3 @@ class EntrenadorRepository(BaseRepository[Entrenador]):
         """Busca por nombre sin distinguir mayúsculas ni espacios de los costados."""
         consulta = select(Entrenador).where(func.lower(Entrenador.nombre) == nombre.strip().lower())
         return self.session.exec(consulta).first()
-

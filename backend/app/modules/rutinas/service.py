@@ -46,4 +46,3 @@ class RutinaService:
         otra = self.uow.rutinas.get_by_nombre(nombre)
         if otra and otra.id != propia_id:
             raise HTTPException(status.HTTP_409_CONFLICT, "Ya existe una rutina con ese nombre")
-

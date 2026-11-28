@@ -179,8 +179,8 @@ def test_si_la_ia_falla_el_asistente_sugiere_la_primera_rutina_compatible(
     pendientes = entrenador.get("/sugerencias", params={"estado": "pendiente"}).json()
 
     assert respuesta.status_code == 201
-    assert respuesta.status_code == 409
-    assert [r["nombre"] for r in entrenador.get("/rutinas").json()] == ["Respiración profunda"]
+    assert respuesta.json()["explicacion"] is None
+    assert [s["rutina_nombre"] for s in pendientes] == ["Respiración profunda"]
 
 
 def test_el_listado_de_alumnos_cuenta_las_rutinas_aprobadas(

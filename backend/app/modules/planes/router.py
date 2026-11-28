@@ -53,4 +53,3 @@ def eliminar(
 ):
     with auditar(admin.nombre_usuario, "eliminar plan", f"plan {plan_id}"), uow:
         PlanService(uow).eliminar(plan_id)
-

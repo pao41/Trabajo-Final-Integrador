@@ -32,6 +32,7 @@ class AsistenciaPublic(SQLModel):
     fecha: date
     hora: time
 
+
 # Respuesta de registrar un ingreso: el ingreso y cómo quedó la inscripción
 class AsistenciaRegistrada(SQLModel):
     asistencia: AsistenciaPublic

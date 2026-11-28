@@ -102,7 +102,7 @@ class UsuarioService:
             raise HTTPException(status.HTTP_409_CONFLICT, "Ese entrenador está dado de baja")
         if self.uow.usuarios.get_by_entrenador_id(datos.entrenador_id):
             raise HTTPException(status.HTTP_409_CONFLICT, "Ese entrenador ya tiene un usuario")
-        
+
     def _validar_largo(self, password: str) -> None:
         # bcrypt solo admite hasta 72 bytes (una letra con tilde ocupa 2)
         if len(password.encode("utf-8")) > 72:

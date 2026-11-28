@@ -92,4 +92,3 @@ def test_el_entrenador_elimina_una_rutina_que_nunca_se_sugirio(
     assert sesion.delete(f"/rutinas/{rutina_id}").status_code == 204
     assert sesion.get("/rutinas").json() == []
     assert sesion.delete(f"/rutinas/{rutina_id}").status_code == 404
-

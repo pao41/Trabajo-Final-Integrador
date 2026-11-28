@@ -51,4 +51,3 @@ class PlanService:
     def _validar_nombre(self, nombre: str) -> None:
         if self.uow.planes.get_by_nombre(nombre):
             raise HTTPException(status.HTTP_409_CONFLICT, "Ya existe un plan con ese nombre")
-

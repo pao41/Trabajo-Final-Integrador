@@ -54,4 +54,3 @@ def eliminar(
 ):
     with auditar(entrenador.nombre_usuario, "eliminar rutina", f"rutina {rutina_id}"), uow:
         RutinaService(uow).eliminar(rutina_id)
-
