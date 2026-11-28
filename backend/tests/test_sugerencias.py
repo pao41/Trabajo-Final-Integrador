@@ -181,3 +181,18 @@ def test_si_la_ia_falla_el_asistente_sugiere_la_primera_rutina_compatible(
     assert respuesta.status_code == 201
     assert respuesta.json()["explicacion"] is None
     assert [s["rutina_nombre"] for s in pendientes] == ["Respiración profunda"]
+
+
+def test_no_se_elimina_una_rutina_que_ya_se_sugirio(
+    admin, crear_usuario, crear_entrenador, iniciar_sesion
+):
+    entrenador, _ = entrenador_con_sesion(crear_usuario, crear_entrenador, iniciar_sesion)
+    rutina_id = cargar(entrenador, "Respiración profunda")
+    alumno = alumno_con_ficha(admin, problemas_cardiacos=False)
+    cliente, _ = entrar(alumno["dni"], alumno["codigo_acceso"])
+    cliente.post("/sugerencias")
+
+    respuesta = entrenador.delete(f"/rutinas/{rutina_id}")
+
+    assert respuesta.status_code == 409
+    assert [r["nombre"] for r in entrenador.get("/rutinas").json()] == ["Respiración profunda"]
