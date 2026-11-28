@@ -29,6 +29,18 @@ class RutinaService:
             setattr(rutina, campo, valor)
         return RutinaPublic.model_validate(self.uow.rutinas.update(rutina))
 
+    def eliminar(self, rutina_id: int) -> None:
+        """Elimina una rutina que nunca se sugirió; con historial no se borra (RN28, RN47)."""
+        rutina = self.uow.rutinas.get_by_id(rutina_id)
+        if not rutina:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Rutina no encontrada")
+        if self.uow.sugerencias.existe_de_rutina(rutina_id):
+            raise HTTPException(
+                status.HTTP_409_CONFLICT,
+                "No se puede eliminar una rutina que ya fue sugerida a un alumno",
+            )
+        self.uow.rutinas.delete(rutina)
+
     def _validar_nombre(self, nombre: str, propia_id: int | None = None) -> None:
         """El nombre no se repite en el banco (RN45); al editar se ignora la propia rutina."""
         otra = self.uow.rutinas.get_by_nombre(nombre)
