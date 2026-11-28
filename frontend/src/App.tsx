@@ -22,17 +22,20 @@ function App() {
       <Route path="/panel-alumno" element={<PanelAlumno />} />
       <Route element={<RutaProtegida />}>
         <Route path="/" element={<Principal />} />
-        <Route path="/alumnos" element={<Alumnos />} />
-        <Route path="/alumnos/nuevo" element={<NuevoAlumno />} />
-        <Route path="/alumnos/:id" element={<DetalleAlumno />} />
-         <Route path="/asistencia" element={<Asistencia />} />
-        <Route path="/planes" element={<Planes />} />
-        <Route path="/entrenadores" element={<Entrenadores />} />
-        <Route path="/rutinas" element={<Rutinas />} />
-        <Route path="/sugerencias" element={<Sugerencias />} />
-        <Route path="/usuarios" element={<Usuarios />} />
-        <Route path="/configuracion" element={<Configuracion />} />
-
+        <Route element={<RutaPorPerfil perfiles={['administrador']} />}>
+          <Route path="/alumnos" element={<Alumnos />} />
+          <Route path="/alumnos/nuevo" element={<NuevoAlumno />} />
+          <Route path="/alumnos/:id" element={<DetalleAlumno />} />
+          <Route path="/asistencia" element={<Asistencia />} />
+          <Route path="/planes" element={<Planes />} />
+          <Route path="/entrenadores" element={<Entrenadores />} />
+          <Route path="/usuarios" element={<Usuarios />} />
+          <Route path="/configuracion" element={<Configuracion />} />
+        </Route>
+        <Route element={<RutaPorPerfil perfiles={['administrador', 'entrenador']} />}>
+          <Route path="/rutinas" element={<Rutinas />} />
+          <Route path="/sugerencias" element={<Sugerencias />} />
+        </Route>
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
