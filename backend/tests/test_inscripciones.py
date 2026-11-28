@@ -201,3 +201,19 @@ def test_editar_el_precio_no_cambia_las_inscripciones_hechas(admin):
     despues = admin.get("/inscripciones", params={"alumno_id": alumno_id}).json()[0]
 
     assert despues["fecha_vencimiento"] == antes["fecha_vencimiento"]
+
+
+def test_se_elimina_un_plan_que_nunca_se_uso(admin):
+    plan_id = nuevo_plan(admin)
+
+    assert admin.delete(f"/planes/{plan_id}").status_code == 204
+    assert admin.get("/planes").json() == []
+    assert admin.delete(f"/planes/{plan_id}").status_code == 404
+
+
+def test_no_se_elimina_un_plan_con_inscripciones(admin):
+    alumno_id, plan_id = nuevo_alumno(admin), nuevo_plan(admin)
+    inscribir(admin, alumno_id, plan_id)
+
+    assert admin.delete(f"/planes/{plan_id}").status_code == 409
+    assert len(admin.get("/planes").json()) == 1
