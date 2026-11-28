@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
+import RutaPorPerfil from './componentes/RutaPorPerfil'
 import RutaProtegida from './componentes/RutaProtegida'
 import Alumnos from './paginas/Alumnos'
 import Asistencia from './paginas/Asistencia'
