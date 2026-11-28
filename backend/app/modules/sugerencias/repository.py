@@ -18,3 +18,8 @@ class SugerenciaRepository(BaseRepository[RutinaAsignada]):
     def de_alumno(self, alumno_id: int) -> list[RutinaAsignada]:
         consulta = select(RutinaAsignada).where(RutinaAsignada.alumno_id == alumno_id)
         return list(self.session.exec(consulta).all())
+
+    def existe_de_rutina(self, rutina_id: int) -> bool:
+        """Indica si la rutina fue sugerida alguna vez a un alumno (en cualquier estado)."""
+        consulta = select(RutinaAsignada.id).where(RutinaAsignada.rutina_id == rutina_id)
+        return self.session.exec(consulta.limit(1)).first() is not None
