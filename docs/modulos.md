@@ -22,7 +22,7 @@ En este documento detallan los módulos funcionales del sistema
 **Descripción:** Catálogo de planes ofrecidos por el gimnasio y gestión de la inscripción de cada alumno a un plan
 
 **Funcionalidades:**
-- Alta y edición de planes (nombre, duración, precio y tipo: por tiempo o por clases; en los planes por clases, también la cantidad de clases).
+- Alta, edición y eliminación de planes (nombre, duración, precio y tipo: por tiempo o por clases; en los planes por clases, también la cantidad de clases). Solo se eliminan los planes sin inscripciones.
 - Inscripción de un alumno a un plan, con cálculo automático de fecha de vencimiento y, en planes por clases, inicialización del saldo de clases.
 - Actualización automática del estado de la inscripción (activo / por vencer / vencido) en función de la fecha actual y, en planes por clases, del saldo de clases.
 - Detalle de los planes por clases en [`planes_por_clases.md`](./planes_por_clases.md).
@@ -46,7 +46,7 @@ En este documento detallan los módulos funcionales del sistema
 **Funcionalidades:**
 - Check-in manual: búsqueda del alumno y registro de ingreso con fecha y hora, asociado a su inscripción vigente.
 - Validación para evitar check-ins duplicados dentro de una ventana de 2 horas.
-- En planes por clases, descuento de una clase por ingreso y rechazo del ingreso si el saldo es cero.
+- En planes por clases, descuento de una clase por ingreso, rechazo del ingreso si el saldo es cero y visualización de las clases restantes.
 - Historial de asistencia por alumno.
 - Base para los indicadores de concurrencia del dashboard.
 
@@ -84,7 +84,7 @@ En este documento detallan los módulos funcionales del sistema
 **Descripción:** Banco de rutinas físicas básicas, cargado y mantenido por el entrenador.
 
 **Funcionalidades:**
-- Alta y edición de rutinas (calentamiento, movilidad articular, vuelta a la calma), exclusivas del perfil entrenador.
+- Alta, edición y eliminación de rutinas (calentamiento, movilidad articular, vuelta a la calma), exclusivas del perfil entrenador. Solo se eliminan las rutinas que nunca se sugirieron y no se repiten sus nombres.
 - Cada rutina indica contraindicaciones.
 - Aprobación o rechazo de rutinas sugeridas por el Asistente de IA.
 
@@ -116,7 +116,7 @@ En este documento detallan los módulos funcionales del sistema
 **Descripción:** Administración de los entrenadores que cargan rutinas y aprueban sugerencias del Asistente de IA.
 
 **Funcionalidades:**
-- Alta y edición de entrenadores (nombre, contacto).
+- Alta, edición y baja de entrenadores (nombre, contacto). La baja desactiva su usuario y conserva su historial; no se repiten los nombres.
 - Asociación de cada rutina cargada y cada aprobación al entrenador correspondiente.
 
 ## 11. Módulo de Usuarios y Seguridad
