@@ -14,8 +14,8 @@ export default function Usuarios() {
     queryKey: ['entrenadores'],
     queryFn: listarEntrenadores,
   })
-  // Cada entrenador tiene un solo usuario: al formulario le llegan los que todavía no tienen
-  const libres = entrenadores.filter((e) => !data?.some((u) => u.entrenador_id === e.id))
+  // Cada entrenador tiene un solo usuario: al formulario le llegan los activos que todavía no tienen
+  const libres = entrenadores.filter((e) => e.activo && !data?.some((u) => u.entrenador_id === e.id))
   const nombres = Object.fromEntries(entrenadores.map((e) => [e.id, e.nombre]))
 
   return (
