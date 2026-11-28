@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { crearPlan, editarPlan, listarPlanes } from '../api/planes'
+import { crearPlan, editarPlan, eliminarPlan, listarPlanes } from '../api/planes'
 import FormularioPlan from '../componentes/FormularioPlan'
 import MensajeError from '../componentes/MensajeError'
 import TarjetaSeccion from '../componentes/TarjetaSeccion'
@@ -21,6 +21,16 @@ export default function Planes() {
       queryClient.invalidateQueries({ queryKey: ['planes'] })
     },
   })
+
+  // Solo se elimina un plan sin inscripciones; si las tiene, el servidor lo rechaza
+  const eliminar = useMutation({
+    mutationFn: (plan: Plan) => eliminarPlan(plan.id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['planes'] }),
+  })
+
+  const alEliminar = (plan: Plan) => {
+    if (window.confirm(`¿Eliminar el plan ${plan.nombre}?`)) eliminar.mutate(plan)
+  }
 
   // Carga el plan en el formulario y baja al formulario para verlo
   const editar = (plan: Plan) => {
@@ -58,8 +68,9 @@ export default function Planes() {
                   <td className="p-4">{plan.tipo === 'clases' ? `${plan.cantidad_clases} clases` : 'Por tiempo'}</td>
                   <td className="p-4">{plan.duracion_dias} días</td>
                   <td className="p-4">$ {Number(plan.precio).toLocaleString('es-AR')}</td>
-                  <td className="p-4">
+                  <td className="flex gap-2 p-4">
                     <button onClick={() => editar(plan)} className="boton-claro">Editar</button>
+                    <button onClick={() => alEliminar(plan)} className="boton-claro border-ladrillo text-ladrillo">Eliminar</button>
                   </td>
                 </tr>
               ))}
@@ -67,6 +78,7 @@ export default function Planes() {
           </table>
         </div>
       )}
+      {eliminar.isError && <MensajeError texto={eliminar.error.message} />}
       {!editando && <h2 className="font-titulo text-2xl font-bold">¿Desea crear un nuevo plan?</h2>}
       <TarjetaSeccion titulo={editando ? `Editar ${editando.nombre}` : 'Nuevo plan'}>
         <FormularioPlan
