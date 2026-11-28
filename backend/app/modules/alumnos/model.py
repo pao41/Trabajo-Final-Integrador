@@ -35,6 +35,11 @@ class AlumnoPublic(SQLModel):
     fecha_alta: date
 
 
+# Alumno del listado: además de sus datos, cuántas rutinas aprobadas tiene
+class AlumnoListado(AlumnoPublic):
+    rutinas_aprobadas: int
+
+
 # Respuesta del alta y de la regeneración: el código se muestra una única vez (RN37)
 class AlumnoConCodigo(AlumnoPublic):
     codigo_acceso: str

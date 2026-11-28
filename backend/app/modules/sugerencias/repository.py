@@ -1,4 +1,4 @@
-from sqlmodel import Session, select
+from sqlmodel import Session, func, select
 
 from app.core.base_repository import BaseRepository
 from app.modules.sugerencias.model import RutinaAsignada
@@ -23,3 +23,12 @@ class SugerenciaRepository(BaseRepository[RutinaAsignada]):
         """Indica si la rutina fue sugerida alguna vez a un alumno (en cualquier estado)."""
         consulta = select(RutinaAsignada.id).where(RutinaAsignada.rutina_id == rutina_id)
         return self.session.exec(consulta.limit(1)).first() is not None
+
+    def conteo_aprobadas_por_alumno(self) -> dict[int, int]:
+        """Cuántas rutinas aprobadas tiene cada alumno (los que no tienen ninguna no figuran)."""
+        consulta = (
+            select(RutinaAsignada.alumno_id, func.count())
+            .where(RutinaAsignada.estado == "aprobada")
+            .group_by(RutinaAsignada.alumno_id)
+        )
+        return {alumno_id: total for alumno_id, total in self.session.exec(consulta).all()}
