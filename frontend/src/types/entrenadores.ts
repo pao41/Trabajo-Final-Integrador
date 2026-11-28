@@ -6,5 +6,6 @@ export interface EntrenadorDatos {
 
 export interface Entrenador extends EntrenadorDatos {
   id: number
+  activo: boolean
   fecha_alta: string
 }
