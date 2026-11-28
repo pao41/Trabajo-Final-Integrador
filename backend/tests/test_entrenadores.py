@@ -77,3 +77,16 @@ def test_el_usuario_entrenador_exige_un_entrenador_valido_y_libre(admin):
         "entrenador_id": entrenador_id,
     }
     assert admin.post("/usuarios", json=datos).status_code == 422
+
+
+def test_no_se_repite_el_nombre_de_un_entrenador(admin):
+    primero = alta(admin).json()["id"]
+    otro = alta(admin, nombre="Pedro Ruiz").json()["id"]
+
+    assert alta(admin).status_code == 409
+    # No distingue mayúsculas ni espacios de los costados
+    assert alta(admin, nombre="  LAURA gómez ").status_code == 409
+    assert admin.put(f"/entrenadores/{otro}", json={"nombre": "laura gómez"}).status_code == 409
+    # Editar conservando el propio nombre sí se puede
+    assert admin.put(f"/entrenadores/{primero}", json=NUEVO).status_code == 200
+
