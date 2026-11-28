@@ -1,6 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { crearEntrenador, editarEntrenador, listarEntrenadores } from '../api/entrenadores'
+import {
+  cambiarEstadoEntrenador,
+  crearEntrenador,
+  editarEntrenador,
+  listarEntrenadores,
+} from '../api/entrenadores'
 import { listarUsuarios } from '../api/usuarios'
 import FormularioEntrenador from '../componentes/FormularioEntrenador'
 import MensajeError from '../componentes/MensajeError'
@@ -30,6 +35,20 @@ export default function Entrenadores() {
     },
   })
 
+  // Baja lógica: el entrenador conserva sus rutinas, pero su usuario deja de poder entrar
+  const cambiarEstado = useMutation({
+    mutationFn: (entrenador: Entrenador) => cambiarEstadoEntrenador(entrenador.id, !entrenador.activo),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['entrenadores'] })
+      queryClient.invalidateQueries({ queryKey: ['usuarios'] })
+    },
+  })
+
+  const alCambiarEstado = (entrenador: Entrenador) => {
+    const aviso = `¿Dar de baja a ${entrenador.nombre}? Su usuario dejará de poder entrar al sistema.`
+    if (!entrenador.activo || window.confirm(aviso)) cambiarEstado.mutate(entrenador)
+  }
+
   // Carga el entrenador en el formulario y baja al formulario para verlo
   const editar = (entrenador: Entrenador) => {
     guardar.reset()
@@ -46,7 +65,8 @@ export default function Entrenadores() {
       {isPending && <p>Cargando…</p>}
       {isError && <MensajeError texto={error.message} />}
       {data?.length === 0 && <p className="text-gris-calido">Todavía no hay entrenadores.</p>}
-      {data && data.length > 0 && <TablaEntrenadores entrenadores={data} conUsuario={conUsuario} alEditar={editar} />}
+      {data && data.length > 0 && <TablaEntrenadores entrenadores={data} conUsuario={conUsuario} alEditar={editar} alCambiarEstado={alCambiarEstado} />}
+      {cambiarEstado.isError && <MensajeError texto={cambiarEstado.error.message} />}
       {!editando && <h2 className="font-titulo text-2xl font-bold">¿Desea dar de alta un nuevo entrenador?</h2>}
       <TarjetaSeccion titulo={editando ? `Editar ${editando.nombre}` : 'Nuevo entrenador'}>
         <FormularioEntrenador
