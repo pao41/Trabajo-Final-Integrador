@@ -15,3 +15,7 @@ export const listarInscripciones = (alumnoId?: number) =>
 // Inscribe al alumno desde hoy: el servidor calcula el vencimiento y el saldo de clases
 export const inscribirAlumno = (alumnoId: number, planId: number) =>
   enviarJson<Inscripcion>('/inscripciones', 'POST', { alumno_id: alumnoId, plan_id: planId })
+
+
+// Solo se elimina un plan que nunca se usó en una inscripción
+export const eliminarPlan = (id: number) => enviarJson<void>(`/planes/${id}`, 'DELETE')
