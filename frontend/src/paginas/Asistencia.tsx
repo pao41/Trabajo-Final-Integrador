@@ -76,7 +76,10 @@ export default function Asistencia() {
         {hoy.data?.map((ingreso) => (
           <div key={ingreso.id} className="flex flex-wrap justify-between gap-2 border-t border-borde py-2">
             <span><span className="font-bold">{hora(ingreso.hora)}</span> · {ingreso.alumno_nombre}</span>
-            <span className="text-gris-calido">{ingreso.plan_nombre}</span>
+            <span className="text-gris-calido">
+              {ingreso.plan_nombre}
+              {ingreso.clases_restantes !== null && ` · quedan ${ingreso.clases_restantes} clases`}
+            </span>
           </div>
         ))}
       </TarjetaSeccion>

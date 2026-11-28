@@ -7,6 +7,7 @@ export interface Asistencia {
   alumno_nombre: string
   inscripcion_id: number | null
   plan_nombre: string | null
+  clases_restantes: number | null
   fecha: string
   hora: string
 }
