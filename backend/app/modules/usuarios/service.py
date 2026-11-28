@@ -58,6 +58,10 @@ class UsuarioService:
                 detail="No podés desactivar tu propio usuario",
             )
         usuario = self._buscar(usuario_id)
+        if activo and usuario.entrenador_id:
+            entrenador = self.uow.entrenadores.get_by_id(usuario.entrenador_id)
+            if entrenador and not entrenador.activo:
+                raise HTTPException(status.HTTP_409_CONFLICT, "Ese entrenador está dado de baja")
         usuario.activo = activo
         return UsuarioPublic.model_validate(self.uow.usuarios.update(usuario))
 
@@ -91,11 +95,14 @@ class UsuarioService:
                 status.HTTP_422_UNPROCESSABLE_CONTENT,
                 "Elegí el entrenador al que pertenece el usuario",
             )
-        if not self.uow.entrenadores.get_by_id(datos.entrenador_id):
+        entrenador = self.uow.entrenadores.get_by_id(datos.entrenador_id)
+        if not entrenador:
             raise HTTPException(status.HTTP_404_NOT_FOUND, "Entrenador no encontrado")
+        if not entrenador.activo:
+            raise HTTPException(status.HTTP_409_CONFLICT, "Ese entrenador está dado de baja")
         if self.uow.usuarios.get_by_entrenador_id(datos.entrenador_id):
             raise HTTPException(status.HTTP_409_CONFLICT, "Ese entrenador ya tiene un usuario")
-
+        
     def _validar_largo(self, password: str) -> None:
         # bcrypt solo admite hasta 72 bytes (una letra con tilde ocupa 2)
         if len(password.encode("utf-8")) > 72:
