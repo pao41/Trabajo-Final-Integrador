@@ -90,3 +90,29 @@ def test_no_se_repite_el_nombre_de_un_entrenador(admin):
     # Editar conservando el propio nombre sí se puede
     assert admin.put(f"/entrenadores/{primero}", json=NUEVO).status_code == 200
 
+
+def test_la_baja_de_un_entrenador_desactiva_su_usuario_y_conserva_su_historial(
+    admin, iniciar_sesion
+):
+    entrenador_id = alta(admin).json()["id"]
+    usuario_id = usuario_entrenador(admin, entrenador_id).json()["id"]
+    sesion = TestClient(app)
+    iniciar_sesion(sesion, "laura", "clave-laura-123")
+    rutina = sesion.post("/rutinas", json={"nombre": "Caminata", "tipo": "calentamiento"})
+
+    baja = admin.patch(f"/entrenadores/{entrenador_id}/desactivar")
+
+    assert rutina.status_code == 201
+    assert baja.status_code == 200
+    assert baja.json()["activo"] is False
+    assert iniciar_sesion(TestClient(app), "laura", "clave-laura-123").status_code == 401
+    # El entrenador y su rutina siguen en el sistema
+    assert admin.get("/entrenadores").json()[0]["activo"] is False
+    assert [r["nombre"] for r in admin.get("/rutinas").json()] == ["Caminata"]
+    # Su usuario no se puede reactivar mientras el entrenador esté de baja
+    assert admin.patch(f"/usuarios/{usuario_id}/activar").status_code == 409
+    assert admin.patch(f"/entrenadores/{entrenador_id}/activar").json()["activo"] is True
+    assert admin.patch(f"/usuarios/{usuario_id}/activar").status_code == 200
+    assert admin.patch("/entrenadores/999/desactivar").status_code == 404
+
+
