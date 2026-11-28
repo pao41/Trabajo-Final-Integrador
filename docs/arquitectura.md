@@ -76,7 +76,7 @@ El detalle completo está en [`seguridad_y_permisos.md`](./seguridad_y_permisos.
 
 ## Despliegue
 
-El despliegue de la aplicación —previsto en Vercel (frontend), Render o Railway (backend) y Railway o Supabase (base de datos PostgreSQL)— se definirá de manera definitiva en etapas posteriores, dando cumplimiento al Requerimiento No Funcional RNF04 (Disponibilidad), el cual exige garantizar la accesibilidad continua del sistema mediante servicios de hosting en la nube, sin condicionar la arquitectura a un proveedor tecnológico específico en esta fase.
+El despliegue de la aplicación se realiza en Vercel (frontend), Render (backend) y Supabase (base de datos PostgreSQL), según el procedimiento de la [guía de despliegue](./despliegue.md). Da cumplimiento al Requerimiento No Funcional RNF04 (Disponibilidad), que exige garantizar la accesibilidad continua del sistema mediante servicios de hosting en la nube, sin condicionar la arquitectura a un proveedor tecnológico específico.
 
 En el despliegue, el frontend consumirá la API desde su propio dominio, mediante la redirección de peticiones que ofrece el hosting. De este modo el navegador ve un único origen y envía la cookie de sesión HttpOnly (`SameSite=lax`) en cada petición.
 

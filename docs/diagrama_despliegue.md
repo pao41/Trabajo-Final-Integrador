@@ -43,8 +43,8 @@ flowchart LR
 |---|---|---|---|---|
 | Equipo del usuario | `«device»` | Navegador web | Aplicación React (SPA) descargada del hosting del frontend | Cualquier navegador moderno |
 | Hosting del frontend | `«node»` | Servidor de archivos estáticos | Build de React (HTML, JS y CSS) | Vercel |
-| Hosting del backend | `«node»` | Python | API REST con FastAPI | Render o Railway |
-| Base de datos gestionada | `«node»` | PostgreSQL | Base de datos creada con `database/schema.sql` | Railway o Supabase |
+| Hosting del backend | `«node»` | Python | API REST con FastAPI | Render |
+| Base de datos gestionada | `«node»` | PostgreSQL | Base de datos creada con `database/schema.sql` | Supabase |
 | Servicio externo de IA | `«node»` | Gemini API | Modelo de lenguaje que elige la rutina y explica el motivo (opcional) | Google AI Studio |
 
 ## Caminos de comunicación
