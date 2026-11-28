@@ -36,6 +36,19 @@ class PlanService:
             setattr(plan, campo, valor)
         return PlanPublic.model_validate(self.uow.planes.update(plan))
 
+    def eliminar(self, plan_id: int) -> None:
+        """Elimina un plan que nunca se usó; con inscripciones no se borra (RN28, RN47)."""
+        plan = self.uow.planes.get_by_id(plan_id)
+        if not plan:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Plan no encontrado")
+        if self.uow.inscripciones.existe_de_plan(plan_id):
+            raise HTTPException(
+                status.HTTP_409_CONFLICT,
+                "No se puede eliminar un plan que ya tiene inscripciones",
+            )
+        self.uow.planes.delete(plan)
+
     def _validar_nombre(self, nombre: str) -> None:
         if self.uow.planes.get_by_nombre(nombre):
             raise HTTPException(status.HTTP_409_CONFLICT, "Ya existe un plan con ese nombre")
+

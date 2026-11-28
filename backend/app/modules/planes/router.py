@@ -43,3 +43,14 @@ def editar(
 ):
     with auditar(admin.nombre_usuario, "editar plan", f"plan {plan_id}"), uow:
         return PlanService(uow).editar(plan_id, datos)
+
+
+@router.delete("/{plan_id}", status_code=status.HTTP_204_NO_CONTENT)
+def eliminar(
+    plan_id: int,
+    admin: Annotated[UsuarioPublic, Depends(solo_admin)],
+    uow: Annotated[UnitOfWork, Depends(get_uow)],
+):
+    with auditar(admin.nombre_usuario, "eliminar plan", f"plan {plan_id}"), uow:
+        PlanService(uow).eliminar(plan_id)
+
