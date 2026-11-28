@@ -81,6 +81,7 @@ export default function Alumnos() {
                 <th className="p-4">Contacto</th>
                 <th className="p-4">Estado</th>
                 <th className="p-4">Plan</th>
+                <th className="p-4">Rutinas</th>
                 <th className="p-4">Acciones</th>
               </tr>
             </thead>
@@ -105,6 +106,7 @@ export default function Alumnos() {
                       <span className="text-gris-calido">Sin plan</span>
                     )}
                   </td>
+                  <td className="p-4">{alumno.rutinas_aprobadas}</td>
                   <td className="p-4">
                     <Link
                       to={`/alumnos/${alumno.id}`}

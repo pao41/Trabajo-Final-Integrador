@@ -1,4 +1,4 @@
-import type { Alumno, AlumnoConCodigo, AlumnoDatos } from '../types/alumnos'
+import type { Alumno, AlumnoConCodigo, AlumnoDatos, AlumnoListado } from '../types/alumnos'
 import { enviarJson, pedirJson } from './cliente'
 
 export const listarAlumnos = (buscar: string) =>
