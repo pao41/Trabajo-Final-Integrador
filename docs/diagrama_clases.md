@@ -48,6 +48,7 @@ classDiagram
         +int id
         +string nombre
         +string contacto
+        +boolean activo
         +date fechaAlta
     }
     class Usuario {
